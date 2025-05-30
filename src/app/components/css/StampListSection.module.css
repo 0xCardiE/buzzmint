@@ -5,12 +5,12 @@
 }
 
 .stampListContent {
-  background-color: #0f131ac7;
+  background-color: #FFFFFF;
   border-radius: 12px;
   padding: 2rem;
   margin: 2rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid #30363d;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #E9ECEF;
 }
 
 .stampListHeader {
@@ -19,11 +19,11 @@
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #30363d;
+  border-bottom: 1px solid #E9ECEF;
 }
 
 .stampListHeader h2 {
-  color: #ffffff;
+  color: #2C3E50;
   margin-bottom: 0;
   font-size: 1.5rem;
   font-weight: 600;
@@ -32,125 +32,172 @@
 .stampListCloseButton {
   padding: 0.75rem 1.5rem;
   background-color: transparent;
-  color: white;
-  border: 1px solid #30363d;
+  color: #6C757D;
+  border: 1px solid #E9ECEF;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
   min-width: 120px;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .stampListCloseButton:hover {
-  background-color: rgba(48, 54, 61, 0.5);
+  background-color: #F8F9FA;
+  color: #2C3E50;
+  border-color: #FF6B6B;
 }
 
 .stampListItem {
-  background: #161b22;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
-  border: 1px solid #30363d;
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid #E9ECEF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.stampListItem:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-color: #FF6B6B;
 }
 
 .stampListId {
-  font-family: monospace;
-  font-size: 14px;
-  margin-bottom: 8px;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 13px;
+  margin-bottom: 12px;
   cursor: pointer;
-  border-radius: 4px;
+  padding: 8px 12px;
+  background-color: #F8F9FA;
+  border-radius: 6px;
   transition: all 0.2s ease;
   position: relative;
   word-break: break-all;
+  color: #495057;
+  border: 1px solid #E9ECEF;
 }
 
 .stampListId:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #E9ECEF;
+  border-color: #FF6B6B;
 }
 
 .stampListId[data-copied="true"] {
-  background-color: rgba(40, 167, 69, 0.2);
-  color: #28a745;
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+  border-color: #4CAF50;
 }
 
 .stampListId[data-copied="true"]::after {
   content: "Copied!";
   position: absolute;
-  right: 8px;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 12px;
-  color: #28a745;
+  color: #4CAF50;
+  font-weight: 600;
 }
 
 .stampListDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
   font-size: 0.9em;
-  color: #8b949e;
+  color: #6C757D;
+  margin-bottom: 16px;
+}
+
+.stampListDetails > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #F8F9FA;
+  border-radius: 6px;
+  border: 1px solid #E9ECEF;
+}
+
+.stampListDetails > div strong {
+  color: #2C3E50;
+  font-weight: 600;
 }
 
 .stampListLoading {
   text-align: center;
-  padding: 20px;
-  color: #8b949e;
+  padding: 40px 20px;
+  color: #6C757D;
+  background-color: #F8F9FA;
+  border-radius: 12px;
+  border: 1px solid #E9ECEF;
 }
 
 .stampListEmpty {
   text-align: center;
-  padding: 20px;
-  color: #8b949e;
-  background: #161b22;
-  border-radius: 8px;
-  border: 1px solid #30363d;
+  padding: 40px 20px;
+  color: #6C757D;
+  background: #F8F9FA;
+  border-radius: 12px;
+  border: 1px solid #E9ECEF;
 }
 
 .stampActions {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 12px;
-  gap: 10px;
+  margin-top: 16px;
+  gap: 12px;
 }
 
 .uploadWithStampButton {
   margin-top: 0;
-  padding: 10px 16px;
-  background-color: #ff7a00;
+  padding: 12px 20px;
+  background-color: #FF6B6B;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.2s;
+  font-weight: 600;
+  transition: all 0.2s;
   flex: 1;
+  box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
 }
 
 .uploadWithStampButton:hover {
-  background-color: #e56e00;
+  background-color: #FF5252;
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+  transform: translateY(-1px);
 }
 
 .uploadWithStampButton:disabled {
-  background-color: #30363d;
+  background-color: #ADB5BD;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .topUpButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
-  background-color: #2a4064;
+  padding: 12px 20px;
+  background-color: #4ECDC4;
   color: white;
   text-decoration: none;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.2s;
+  font-weight: 600;
+  transition: all 0.2s;
   white-space: nowrap;
   font-family: inherit;
+  box-shadow: 0 2px 4px rgba(78, 205, 196, 0.2);
 }
 
 .topUpButton:hover {
-  background-color: #35507f;
+  background-color: #45B7B8;
+  box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3);
+  transform: translateY(-1px);
 }

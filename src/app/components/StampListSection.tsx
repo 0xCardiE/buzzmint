@@ -178,16 +178,31 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                   ID: {stamp.batchId.startsWith('0x') ? stamp.batchId.slice(2) : stamp.batchId}
                 </div>
                 <div className={styles.stampListDetails}>
-                  <span>Paid: {Number(stamp.totalAmount).toFixed(2)} BZZ</span>
-                  <span>Size: {stamp.size}</span>
+                  <div>
+                    <span>Paid</span>
+                    <strong>{Number(stamp.totalAmount).toFixed(2)} BZZ</strong>
+                  </div>
+                  <div>
+                    <span>Size</span>
+                    <strong>{stamp.size}</strong>
+                  </div>
                   {stamp.utilization !== undefined && (
-                    <span>Utilization: {stamp.utilization}%</span>
+                    <div>
+                      <span>Utilization</span>
+                      <strong>{stamp.utilization}%</strong>
+                    </div>
                   )}
                   {stamp.batchTTL !== undefined && (
-                    <span>Expires: {Math.floor(stamp.batchTTL / 86400)} days</span>
+                    <div>
+                      <span>Expires</span>
+                      <strong>{Math.floor(stamp.batchTTL / 86400)} days</strong>
+                    </div>
                   )}
                   {stamp.timestamp && (
-                    <span>Created: {new Date(stamp.timestamp * 1000).toLocaleDateString()}</span>
+                    <div>
+                      <span>Created</span>
+                      <strong>{new Date(stamp.timestamp * 1000).toLocaleDateString()}</strong>
+                    </div>
                   )}
                 </div>
                 <div className={styles.stampActions}>
