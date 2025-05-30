@@ -5,8 +5,9 @@ import Script from 'next/script';
 import { TrackJSAgent } from 'trackjs-nextjs';
 
 export const metadata = {
-  title: 'Swarm Storage',
-  description: 'Swarm storage uploader with multichain support',
+  title: 'buzzMint - AI-Powered NFT Minter',
+  description:
+    'Create unique NFTs with AI assistance. The easiest way to mint, customize, and launch your digital art collection.',
   icons: {
     icon: './favicon.png', // Standard favicon
     shortcut: './favicon.png', // Shortcut icon for iOS
@@ -38,12 +39,8 @@ function RootLayout({ children }: { children: React.ReactNode }) {
           `}
         </Script>
       </head>
-      <body className="swarm-theme">
+      <body className="buzz-theme">
         <div className="main-container">
-          <video autoPlay muted playsInline className="background-video">
-            <source src="/doors_v3.mp4" type="video/mp4" />
-          </video>
-
           <main className="content">
             <Providers>{children}</Providers>
           </main>

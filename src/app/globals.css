@@ -1,17 +1,25 @@
-/* Combined global styles */
+/* buzzMint - AI-Powered NFT Minter Global Styles */
 
 :root {
-  /* Swarm color palette */
-  --swarm-black: #0e1216;
-  --swarm-dark: #161b22;
-  --swarm-dark-gray: #1e2328;
-  --swarm-border: #30363d;
-  --swarm-text-primary: #ffffff;
-  --swarm-text-secondary: #8b949e;
-  --swarm-accent: #ff7a00;
-  --swarm-accent-hover: #e56e00;
-  --swarm-success: #3fb950;
-  --swarm-error: #ff5a52;
+  /* buzzMint minimalist cream palette */
+  --buzz-white: #FFFFFF;
+  --buzz-cream: #FFF8DC;
+  --buzz-light-beige: #F5F5DC;
+  --buzz-soft-gray: #F8F9FA;
+  --buzz-border: #E9ECEF;
+  --buzz-text-primary: #2C3E50;
+  --buzz-text-secondary: #6C757D;
+  --buzz-text-muted: #ADB5BD;
+  --buzz-accent-coral: #FF6B6B;
+  --buzz-accent-coral-hover: #FF5252;
+  --buzz-accent-mint: #4ECDC4;
+  --buzz-accent-mint-hover: #26D0CE;
+  --buzz-success: #28A745;
+  --buzz-error: #DC3545;
+  --buzz-warning: #FFC107;
+  --buzz-shadow-light: rgba(0, 0, 0, 0.05);
+  --buzz-shadow-medium: rgba(0, 0, 0, 0.1);
+  --buzz-shadow-strong: rgba(0, 0, 0, 0.15);
 }
 
 * {
@@ -22,96 +30,233 @@
 
 html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background-color: var(--swarm-black);
-  color: var(--swarm-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--buzz-white);
+  color: var(--buzz-text-primary);
   min-height: 100vh;
+  line-height: 1.6;
+  font-weight: 400;
 }
 
-.swarm-theme {
-  background-color: var(--swarm-black);
-  color: var(--swarm-text-primary);
+.buzz-theme {
+  background-color: var(--buzz-white);
+  color: var(--buzz-text-primary);
 }
 
-.swarm-container {
+.buzz-container {
   margin: 0 auto;
   padding: 2rem 1rem;
+  max-width: 1200px;
 }
 
-.swarm-header {
-  background-color: var(--swarm-black);
-  padding: 1rem 2rem;
+.buzz-header {
+  background-color: var(--buzz-white);
+  padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--swarm-dark-gray);
+  border-bottom: 1px solid var(--buzz-border);
+  box-shadow: 0 2px 4px var(--buzz-shadow-light);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.swarm-logo-container {
+.buzz-logo-container {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.swarm-logo-text {
+.buzz-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--buzz-accent-coral), var(--buzz-accent-mint));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
   font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--swarm-text-primary);
 }
 
-.swarm-header-buttons {
+.buzz-logo-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--buzz-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.buzz-header-buttons {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 
-.swarm-button {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+.buzz-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px var(--buzz-shadow-light);
 }
 
-.swarm-button-primary {
-  background-color: var(--swarm-accent);
-  color: var(--swarm-text-primary);
+.buzz-button-primary {
+  background: linear-gradient(135deg, var(--buzz-accent-coral), var(--buzz-accent-coral-hover));
+  color: white;
 }
 
-.swarm-button-primary:hover {
-  background-color: var(--swarm-accent-hover);
+.buzz-button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--buzz-shadow-medium);
 }
 
-.swarm-button-secondary {
-  background-color: transparent;
-  border: 1px solid var(--swarm-border);
-  color: var(--swarm-text-primary);
+.buzz-button-secondary {
+  background-color: var(--buzz-white);
+  border: 1px solid var(--buzz-border);
+  color: var(--buzz-text-primary);
 }
 
-.swarm-button-secondary:hover {
-  background-color: rgba(48, 54, 61, 0.5);
+.buzz-button-secondary:hover {
+  background-color: var(--buzz-soft-gray);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--buzz-shadow-medium);
 }
 
-/* Default component styling */
+.buzz-button-mint {
+  background: linear-gradient(135deg, var(--buzz-accent-mint), var(--buzz-accent-mint-hover));
+  color: white;
+}
+
+.buzz-button-mint:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--buzz-shadow-medium);
+}
+
+/* Typography */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--swarm-text-primary);
+  color: var(--buzz-text-primary);
   margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
 }
 
 a {
-  color: var(--swarm-accent);
+  color: var(--buzz-accent-coral);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 a:hover {
+  color: var(--buzz-accent-coral-hover);
   text-decoration: underline;
+}
+
+/* Page title styling */
+.buzz-page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--buzz-accent-coral), var(--buzz-accent-mint));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.buzz-subtitle {
+  color: var(--buzz-text-secondary);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  font-weight: 400;
+}
+
+/* Form elements */
+input,
+textarea,
+select {
+  background-color: var(--buzz-white);
+  color: var(--buzz-text-primary);
+  border: 1px solid var(--buzz-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px var(--buzz-shadow-light);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--buzz-accent-coral);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--buzz-text-muted);
+}
+
+/* Cards and containers */
+.buzz-card {
+  background-color: var(--buzz-white);
+  border: 1px solid var(--buzz-border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px var(--buzz-shadow-light);
+  transition: all 0.2s ease;
+}
+
+.buzz-card:hover {
+  box-shadow: 0 8px 25px var(--buzz-shadow-medium);
+  transform: translateY(-2px);
+}
+
+.buzz-card-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--buzz-border);
+}
+
+/* Dropdown styling */
+.dropdown,
+.dropdownList,
+.dropdownContainer {
+  z-index: 100;
+  background-color: var(--buzz-white);
+  border: 1px solid var(--buzz-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--buzz-shadow-medium);
 }
 
 /* Animation keyframes */
@@ -121,95 +266,250 @@ a:hover {
   }
 }
 
-/* For the page title */
-.swarm-page-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.swarm-subtitle {
-  color: var(--swarm-text-secondary);
-  font-size: 1.1rem;
-  line-height: 1.5;
-  margin-bottom: 2rem;
-  max-width: 600px;
+.buzz-fade-in {
+  animation: fadeIn 0.3s ease-out;
 }
 
-/* Add these styles to ensure inputs have the right styling */
-input {
-  background-color: var(--swarm-dark);
-  color: var(--swarm-text-primary);
-  border: 1px solid var(--swarm-border);
+/* Rainbow Kit Professional Styling for buzzMint */
+
+/* Connect Button - Main styling */
+[data-rk] button[data-testid="rk-connect-button"] {
+  background: linear-gradient(135deg, var(--buzz-accent-coral), var(--buzz-accent-coral-hover)) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 12px 24px !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2) !important;
+  transition: all 0.2s ease !important;
+  font-family: inherit !important;
 }
 
-input::placeholder {
-  color: var(--swarm-text-secondary);
+[data-rk] button[data-testid="rk-connect-button"]:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.3) !important;
 }
 
-/* Ensure dropdown menus have the correct z-index */
-.dropdown,
-.dropdownList,
-.dropdownContainer {
-  z-index: 100;
+/* Account Button when connected */
+[data-rk] button[data-testid="rk-account-button"] {
+  background: var(--buzz-white) !important;
+  border: 1px solid var(--buzz-border) !important;
+  border-radius: 12px !important;
+  padding: 8px 16px !important;
+  color: var(--buzz-text-primary) !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 4px var(--buzz-shadow-light) !important;
+  transition: all 0.2s ease !important;
 }
 
-/* Rainbow Kit Custom Styles */
-[data-rk] .ju367v4c {
-  /* Custom connect button styles */
-  background-color: var(--swarm-accent) !important;
-  transition: background-color 0.3s ease;
+[data-rk] button[data-testid="rk-account-button"]:hover {
+  background: var(--buzz-soft-gray) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px var(--buzz-shadow-medium) !important;
 }
 
-[data-rk] .ju367v4c:hover {
-  background-color: var(--swarm-accent-hover) !important;
+/* Modal Overlay */
+[data-rk] [role="dialog"] {
+  background: rgba(44, 62, 80, 0.4) !important;
+  backdrop-filter: blur(8px) !important;
 }
 
-/* Modal styles */
-[data-rk] .ju367v1j {
-  background-color: var(--swarm-black) !important;
-  border: 1px solid var(--swarm-border) !important;
+/* Modal Container */
+[data-rk] [role="dialog"] > div {
+  background: var(--buzz-white) !important;
+  border: 1px solid var(--buzz-border) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+  padding: 0 !important;
+  max-width: 420px !important;
+  width: 90vw !important;
 }
 
-/* List items in the modal */
-[data-rk] .ju367v0 {
-  background-color: var(--swarm-dark) !important;
-  border: 1px solid var(--swarm-border) !important;
+/* Modal Header */
+[data-rk] [role="dialog"] h1,
+[data-rk] [role="dialog"] h2 {
+  color: var(--buzz-text-primary) !important;
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  margin: 0 !important;
+  padding: 24px 24px 16px 24px !important;
+  border-bottom: 1px solid var(--buzz-border) !important;
 }
 
-/* List item hover */
-[data-rk] .ju367v0:hover {
-  background-color: var(--swarm-dark-gray) !important;
+/* Close Button */
+[data-rk] button[aria-label="Close"] {
+  background: var(--buzz-soft-gray) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  width: 32px !important;
+  height: 32px !important;
+  color: var(--buzz-text-secondary) !important;
+  transition: all 0.2s ease !important;
 }
 
-/* Button text */
-[data-rk] .ju367va0 {
-  color: var(--swarm-text-primary) !important;
+[data-rk] button[aria-label="Close"]:hover {
+  background: var(--buzz-border) !important;
+  color: var(--buzz-text-primary) !important;
 }
 
-/* Selected Wallet Icon background */
-[data-rk] .ju367v2s {
-  background-color: var(--swarm-dark) !important;
+/* Wallet Options List */
+[data-rk] [role="dialog"] ul {
+  padding: 16px 24px 24px 24px !important;
+  margin: 0 !important;
+  list-style: none !important;
 }
 
-/* Background video and layout styles */
+/* Individual Wallet Option */
+[data-rk] [role="dialog"] li {
+  margin: 8px 0 !important;
+}
+
+[data-rk] [role="dialog"] li button {
+  width: 100% !important;
+  background: var(--buzz-white) !important;
+  border: 1px solid var(--buzz-border) !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  transition: all 0.2s ease !important;
+  color: var(--buzz-text-primary) !important;
+  font-weight: 500 !important;
+}
+
+[data-rk] [role="dialog"] li button:hover {
+  background: var(--buzz-soft-gray) !important;
+  border-color: var(--buzz-accent-coral) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px var(--buzz-shadow-light) !important;
+}
+
+/* Wallet Icons */
+[data-rk] [role="dialog"] img {
+  border-radius: 8px !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+/* Wallet Names */
+[data-rk] [role="dialog"] li button span {
+  color: var(--buzz-text-primary) !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+}
+
+/* Account Modal specific styling */
+[data-rk] [data-testid="rk-account-modal"] {
+  background: var(--buzz-white) !important;
+}
+
+/* Account Info Section */
+[data-rk] [data-testid="rk-account-modal"] > div > div:first-child {
+  background: var(--buzz-soft-gray) !important;
+  border: 1px solid var(--buzz-border) !important;
+  border-radius: 12px !important;
+  margin: 16px 24px !important;
+  padding: 16px !important;
+}
+
+/* Balance and Address Text */
+[data-rk] [data-testid="rk-account-modal"] span {
+  color: var(--buzz-text-primary) !important;
+}
+
+/* Action Buttons in Account Modal */
+[data-rk] [data-testid="rk-account-modal"] button {
+  background: var(--buzz-white) !important;
+  border: 1px solid var(--buzz-border) !important;
+  border-radius: 8px !important;
+  color: var(--buzz-text-primary) !important;
+  padding: 12px 16px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  margin: 4px !important;
+}
+
+[data-rk] [data-testid="rk-account-modal"] button:hover {
+  background: var(--buzz-soft-gray) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Disconnect Button */
+[data-rk] button[data-testid="rk-disconnect-button"] {
+  background: var(--buzz-error) !important;
+  color: white !important;
+  border: none !important;
+}
+
+[data-rk] button[data-testid="rk-disconnect-button"]:hover {
+  background: #c82333 !important;
+}
+
+/* QR Code Container */
+[data-rk] [data-testid="rk-qr-code"] {
+  background: var(--buzz-white) !important;
+  border: 1px solid var(--buzz-border) !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+}
+
+/* Download Links */
+[data-rk] a {
+  color: var(--buzz-accent-coral) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+[data-rk] a:hover {
+  color: var(--buzz-accent-coral-hover) !important;
+  text-decoration: underline !important;
+}
+
+/* Loading States */
+[data-rk] [data-testid="rk-loading-spinner"] {
+  border-color: var(--buzz-accent-coral) transparent var(--buzz-accent-coral) transparent !important;
+}
+
+/* Remove any conflicting styles */
+[data-rk] * {
+  font-family: inherit !important;
+}
+
+/* Ensure proper text colors throughout */
+[data-rk] div,
+[data-rk] span,
+[data-rk] p {
+  color: var(--buzz-text-primary) !important;
+}
+
+/* Secondary text */
+[data-rk] [data-testid="rk-wallet-option-description"] {
+  color: var(--buzz-text-secondary) !important;
+  font-size: 13px !important;
+}
+
+/* Background and layout styles */
 .main-container {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  background: linear-gradient(135deg, var(--buzz-white) 0%, var(--buzz-cream) 50%, var(--buzz-light-beige) 100%);
 }
 
 .background-video {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  right: 0;
-  width: auto;
-  max-width: 100%;
-  height: 150vh;
-  object-fit: contain;
-  object-position: right top;
-  pointer-events: none;
+  display: none; /* Hide the dark video for light theme */
 }
 
 .content {
@@ -217,7 +517,33 @@ input::placeholder {
   z-index: 1;
 }
 
-/* Global rule to remove all dropdown arrows */
+/* AI-themed elements */
+.buzz-ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--buzz-accent-mint), var(--buzz-accent-mint-hover));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.buzz-ai-icon {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--buzz-accent-mint);
+}
+
+/* Remove dropdown arrows globally */
 select {
   appearance: none !important;
   -webkit-appearance: none !important;
@@ -225,14 +551,12 @@ select {
   background-image: none !important;
 }
 
-/* Hide all pseudo-elements that might be used for arrows */
 select::-ms-expand,
 .select::-ms-expand,
 .dropdown::-ms-expand {
   display: none !important;
 }
 
-/* Target all dropdown elements */
 select,
 [role="listbox"],
 [role="combobox"],
@@ -247,7 +571,6 @@ select,
   background-image: none !important;
 }
 
-/* Target dropdown icons and arrows */
 .dropdown-icon,
 .arrow-icon,
 .caret-icon,
@@ -259,9 +582,43 @@ svg[class*="dropdown"] {
   display: none !important;
 }
 
-/* This will catch any custom arrow implementations */
 [class*="dropdown"] svg,
 [class*="select"] svg,
 [class*="combobox"] svg {
   display: none !important;
+}
+
+/* Utility classes */
+.buzz-text-center {
+  text-align: center;
+}
+
+.buzz-mb-4 {
+  margin-bottom: 2rem;
+}
+
+.buzz-mt-4 {
+  margin-top: 2rem;
+}
+
+.buzz-flex {
+  display: flex;
+}
+
+.buzz-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buzz-gap-4 {
+  gap: 1rem;
+}
+
+.buzz-rounded {
+  border-radius: 8px;
+}
+
+.buzz-shadow {
+  box-shadow: 0 4px 6px var(--buzz-shadow-light);
 }
