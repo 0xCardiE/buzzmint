@@ -9,8 +9,9 @@
   padding: 10px;
   padding-left: 36px; /* Space for logo */
   border-radius: 5px;
-  border: 1px solid #ddd;
-  background-color: white;
+  border: 1px solid #E9ECEF;
+  background-color: #FFFFFF;
+  color: #2C3E50;
   font-size: 16px;
   padding-right: 120px;
   width: 100%;
@@ -35,12 +36,12 @@
 
 .balanceAmount {
   font-size: 16px;
-  color: #333;
+  color: #2C3E50;
 }
 
 .balanceUsd {
   font-size: 12px;
-  color: #666;
+  color: #6C757D;
 }
 
 .tokenOptionContent {
@@ -62,7 +63,7 @@
 }
 
 .tokenBalance {
-  color: #666;
+  color: #6C757D;
   margin-left: auto;
 }
 
@@ -85,10 +86,10 @@
   align-items: center;
   width: 100%;
   padding: 12px 16px;
-  background-color: #161b22;
-  border: 1px solid #30363d;
+  background-color: #FFFFFF;
+  border: 1px solid #E9ECEF;
   border-radius: 8px;
-  color: #ffffff;
+  color: #2C3E50;
   font-size: 16px;
   cursor: default;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -98,13 +99,17 @@
   cursor: pointer;
 }
 
+.dropdownButton.clickable:hover {
+  border-color: #FF6B6B;
+}
+
 .dropdownButton.open {
-  border-color: #ff7a00;
-  box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.2);
+  border-color: #FF6B6B;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
 }
 
 .placeholder {
-  color: #8b949e;
+  color: #6C757D;
   font-size: 14px;
 }
 
@@ -114,15 +119,15 @@
   left: 0;
   width: 100%;
   margin-top: 4px;
-  background-color: #161b22;
-  border: 1px solid #30363d;
+  background-color: #FFFFFF;
+  border: 1px solid #E9ECEF;
   border-radius: 8px;
   max-height: 250px;
   overflow-y: auto;
   z-index: 100;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   scrollbar-width: thin;
-  scrollbar-color: #30363d #161b22;
+  scrollbar-color: #E9ECEF #FFFFFF;
 }
 
 .dropdown::-webkit-scrollbar {
@@ -130,14 +135,14 @@
 }
 
 .dropdown::-webkit-scrollbar-track {
-  background: #161b22;
+  background: #FFFFFF;
   border-radius: 4px;
 }
 
 .dropdown::-webkit-scrollbar-thumb {
-  background-color: #30363d;
+  background-color: #E9ECEF;
   border-radius: 4px;
-  border: 2px solid #161b22;
+  border: 2px solid #FFFFFF;
 }
 
 .option {
@@ -146,9 +151,9 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  background-color: #161b22;
-  color: #ffffff;
-  border-bottom: 1px solid #30363d;
+  background-color: #FFFFFF;
+  color: #2C3E50;
+  border-bottom: 1px solid #F8F9FA;
   transition: background-color 0.2s;
 }
 
@@ -157,11 +162,12 @@
 }
 
 .option:hover {
-  background-color: #1f2937;
+  background-color: #F8F9FA;
 }
 
 .option.selected {
-  background-color: #2d3748;
+  background-color: rgba(255, 107, 107, 0.1);
+  color: #FF6B6B;
 }
 
 .tokenLeft {
@@ -175,7 +181,7 @@
   height: 24px;
   min-width: 24px;
   border-radius: 50%;
-  background-color: #30363d;
+  background-color: #F8F9FA;
   object-fit: contain;
 }
 
@@ -187,12 +193,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  color: #ffffff;
+  color: #2C3E50;
 }
 
 .tokenUsdValue {
   font-size: 12px;
-  color: #8b949e;
+  color: #6C757D;
 }
 
 /* Add these styles to remove dropdown arrows */
@@ -202,7 +208,7 @@
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   background-image: none !important;
-  background: #161b22 !important; /* Override any background that might have an arrow */
+  background: #FFFFFF !important; /* Override any background that might have an arrow */
 }
 
 /* For Firefox */
