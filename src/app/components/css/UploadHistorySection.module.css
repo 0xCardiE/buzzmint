@@ -7,6 +7,8 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   color: #2C3E50;
   border: 1px solid #E9ECEF;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .header {
@@ -139,6 +141,9 @@
   border-radius: 12px;
   padding: 20px;
   transition: all 0.3s ease;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .collectionCard:hover {
@@ -234,8 +239,10 @@
 
 .nftGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 16px;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .nftItem {
@@ -245,6 +252,7 @@
   overflow: hidden;
   transition: all 0.2s ease;
   cursor: pointer;
+  max-width: 100%;
 }
 
 .nftItem:hover {
@@ -261,6 +269,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .nftImage {
@@ -268,6 +277,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.2s ease;
+  max-width: 100%;
 }
 
 .nftItem:hover .nftImage {
@@ -339,6 +349,7 @@
   .container {
     margin: 10px;
     padding: 16px;
+    max-width: calc(100vw - 20px);
   }
 
   .header {
@@ -361,8 +372,9 @@
   }
 
   .nftGrid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 12px;
+    max-width: 100%;
   }
 
   .nftThumbnail {
@@ -383,9 +395,16 @@
 }
 
 @media (max-width: 480px) {
+  .container {
+    margin: 5px;
+    padding: 12px;
+    max-width: calc(100vw - 10px);
+  }
+
   .nftGrid {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: 8px;
+    max-width: 100%;
   }
 
   .nftThumbnail {
@@ -394,6 +413,7 @@
 
   .collectionCard {
     padding: 16px;
+    max-width: 100%;
   }
 
   .collectionName {

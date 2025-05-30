@@ -212,7 +212,7 @@ const UploadHistorySection: React.FC<UploadHistoryProps> = ({ address, setShowUp
     return (
       <div className={styles.container}>
         <div className={styles.header}>
-          <h2 className={styles.title}>NFT History</h2>
+          <h2 className={styles.title}>Minted NFTs</h2>
           <div className={styles.buttonGroup}>
             <button className={styles.downloadButton} title="Download CSV">
               <svg
@@ -241,7 +241,7 @@ const UploadHistorySection: React.FC<UploadHistoryProps> = ({ address, setShowUp
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>NFT History</h2>
+        <h2 className={styles.title}>Minted NFTs</h2>
         <div className={styles.buttonGroup}>
           <button className={styles.downloadButton} title="Download CSV">
             <svg
