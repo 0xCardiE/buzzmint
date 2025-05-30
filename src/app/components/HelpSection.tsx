@@ -169,16 +169,16 @@ const HelpSection: React.FC<HelpSectionProps> = ({
             <h3>What happens if my upload fails?</h3>
             <p>
               If an upload fails, the system will automatically retry several times. If it continues
-              to fail, your stamps and tokens remain safe, and you can try the upload again. The
-              most common cause of upload failures is network connectivity issues.
+              to fail, your collections and tokens remain safe, and you can try the upload again.
+              The most common cause of upload failures is network connectivity issues.
             </p>
           </div>
 
           <div className={styles.faqItem}>
             <h3>How long does it take for my storage to become available?</h3>
             <p>
-              After purchasing storage, it typically takes 2-5 minutes for your storage stamps to
-              become usable. The app will automatically notify you once your storage is ready for
+              After purchasing storage, it typically takes 2-5 minutes for your storage collections
+              to become usable. The app will automatically notify you once your storage is ready for
               use.
             </p>
           </div>

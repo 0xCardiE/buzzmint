@@ -315,8 +315,8 @@ const SwapComponent: React.FC = () => {
         console.log('BZZ amount needed:', formatUnits(BigInt(bzzAmount), 16));
         console.log('Selected days:', selectedDays);
         console.log(
-          'Selected stamps size:',
-          STORAGE_OPTIONS.find(option => option.depth === selectedDepth)?.size || 'Unknown'
+          'Selected collection size:',
+          STORAGE_OPTIONS.find(option => option.depth === selectedDepth)?.size
         );
 
         const { gnosisContactCallsQuoteResponse } = await performWithRetry(
@@ -1082,7 +1082,7 @@ const SwapComponent: React.FC = () => {
         message: 'Calculating amounts...',
       });
 
-      // Deciding if we are buying stamps directly or swaping/bridging
+      // Deciding if we are buying collection directly or swaping/bridging
       if (
         selectedChainId !== null &&
         selectedChainId === ChainId.DAI &&
@@ -1357,7 +1357,7 @@ const SwapComponent: React.FC = () => {
             setShowUploadHistory(false);
           }}
         >
-          Stamps
+          Collections
         </button>
         <button
           className={`${styles.tabButton} ${showUploadHistory ? styles.activeTab : ''}`}
@@ -1454,9 +1454,9 @@ const SwapComponent: React.FC = () => {
             <div className={styles.inputGroup}>
               <label
                 className={styles.label}
-                data-tooltip="Storage stamps are used to pay to store and host data in Swarm"
+                data-tooltip="Storage collections are used to pay to store and host data in Swarm"
               >
-                Storage stamps
+                Storage collections
               </label>
               <div className={styles.sizeButtonGroup}>
                 {STORAGE_OPTIONS.map(({ depth, size, description }) => (
@@ -1479,7 +1479,7 @@ const SwapComponent: React.FC = () => {
           <div className={styles.inputGroup}>
             <label
               className={styles.label}
-              data-tooltip="Duration of storage stamps for which you are paying for"
+              data-tooltip="Duration of storage collections for which you are paying for"
             >
               {isTopUp ? 'Additional duration' : 'Storage duration'}
             </label>
@@ -1622,7 +1622,8 @@ const SwapComponent: React.FC = () => {
                         : 'Upload File'}
                     </h3>
                     <div className={styles.uploadWarning}>
-                      Warning! Upload data is public and can not be removed from the Swarm network
+                      Warning: Adding first image will take more time as it will trigger storage
+                      creation and NFT smart contract creation
                     </div>
                     {statusMessage.step === 'waiting_creation' ||
                     statusMessage.step === 'waiting_usable' ? (
@@ -1818,7 +1819,7 @@ const SwapComponent: React.FC = () => {
 
                     {uploadStampInfo && (
                       <div className={styles.stampInfoBox}>
-                        <h4>Storage Stamps Details</h4>
+                        <h4>Storage Collection Details</h4>
                         <div className={styles.stampDetails}>
                           <div className={styles.stampDetail}>
                             <span>Utilization:</span>

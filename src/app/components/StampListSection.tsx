@@ -47,7 +47,7 @@ const StampListSection: React.FC<StampListSectionProps> = ({
   setShowOverlay,
   setUploadStep,
 }) => {
-  const [stamps, setStamps] = useState<BatchEvent[]>([]);
+  const [collections, setCollections] = useState<BatchEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Helper function to get the size string for a depth value
@@ -58,19 +58,19 @@ const StampListSection: React.FC<StampListSectionProps> = ({
 
   useEffect(() => {
     // Move fetchStampInfo inside useEffect since it's only used here
-    const fetchStampInfo = async (batchId: string): Promise<StampInfo | null> => {
+    const fetchCollectionInfo = async (batchId: string): Promise<StampInfo | null> => {
       try {
         const response = await fetch(`${beeApiUrl}/stamps/${batchId.slice(2)}`);
         if (!response.ok) return null;
         const data = await response.json();
         return data;
       } catch (error) {
-        console.error(`Error fetching stamps info for ${batchId}:`, error);
+        console.error(`Error fetching collection info for ${batchId}:`, error);
         return null;
       }
     };
 
-    const fetchStamps = async () => {
+    const fetchCollections = async () => {
       if (!address) {
         setIsLoading(false);
         return;
@@ -92,12 +92,12 @@ const StampListSection: React.FC<StampListSectionProps> = ({
         });
 
         // Process the batches data
-        const stampPromises = (batchesData as any[]).map(async batch => {
+        const collectionPromises = (batchesData as any[]).map(async batch => {
           const batchId = batch.batchId.toString();
-          const stampInfo = await fetchStampInfo(batchId);
+          const collectionInfo = await fetchCollectionInfo(batchId);
 
-          // Skip this stamps if stampInfo is null (expired or non-existent)
-          if (!stampInfo) {
+          // Skip this collection if collectionInfo is null (expired or non-existent)
+          if (!collectionInfo) {
             return null;
           }
 
@@ -109,29 +109,29 @@ const StampListSection: React.FC<StampListSectionProps> = ({
             depth,
             size: getSizeForDepth(depth),
             timestamp: Number(batch.timestamp),
-            utilization: stampInfo.utilization,
-            batchTTL: stampInfo.batchTTL,
+            utilization: collectionInfo.utilization,
+            batchTTL: collectionInfo.batchTTL,
           };
         });
 
-        // Resolve all promises and filter out null values (expired stamps)
-        const stampEventsWithNull = await Promise.all(stampPromises);
-        const stampEvents = stampEventsWithNull.filter(
-          (stamp): stamp is NonNullable<typeof stamp> => stamp !== null
+        // Resolve all promises and filter out null values (expired collections)
+        const collectionEventsWithNull = await Promise.all(collectionPromises);
+        const collectionEvents = collectionEventsWithNull.filter(
+          (collection): collection is NonNullable<typeof collection> => collection !== null
         );
 
-        setStamps(stampEvents.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)));
+        setCollections(collectionEvents.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)));
       } catch (error) {
-        console.error('Error fetching stamps:', error);
+        console.error('Error fetching collections:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchStamps();
+    fetchCollections();
   }, [address, beeApiUrl]); // Only dependencies that actually need to trigger re-fetching
 
-  const handleStampSelect = (stamp: any) => {
+  const handleCollectionSelect = (stamp: any) => {
     setPostageBatchId(stamp.batchId.slice(2));
     setShowOverlay(true);
     setUploadStep('ready');
@@ -142,18 +142,18 @@ const StampListSection: React.FC<StampListSectionProps> = ({
     <div className={styles.stampListContainer}>
       <div className={styles.stampListContent}>
         <div className={styles.stampListHeader}>
-          <h2>Your Stamps</h2>
+          <h2>Your Collections</h2>
         </div>
 
         {!address ? (
-          <div className={styles.stampListLoading}>Connect wallet to check stamps</div>
+          <div className={styles.stampListLoading}>Connect wallet to check collections</div>
         ) : isLoading ? (
-          <div className={styles.stampListLoading}>Loading stamps...</div>
-        ) : stamps.length === 0 ? (
-          <div className={styles.stampListEmpty}>No stamps found</div>
+          <div className={styles.stampListLoading}>Loading collections...</div>
+        ) : collections.length === 0 ? (
+          <div className={styles.stampListEmpty}>No collections found</div>
         ) : (
           <>
-            {stamps.map((stamp, index) => (
+            {collections.map((stamp, index) => (
               <div key={index} className={styles.stampListItem}>
                 <div
                   className={styles.stampListId}
@@ -194,15 +194,15 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                   <button
                     className={styles.uploadWithStampButton}
                     onClick={() => {
-                      handleStampSelect(stamp);
+                      handleCollectionSelect(stamp);
                     }}
                   >
-                    Upload with these stamps
+                    Upload with this collection
                   </button>
 
                   <button
                     className={styles.topUpButton}
-                    title="Top up this stamp"
+                    title="Top up this collection"
                     onClick={() => {
                       try {
                         console.log('Top-up button clicked');
@@ -221,7 +221,9 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                       } catch (error) {
                         console.error('Error during top-up navigation:', error);
                         // Emergency fallback if all else fails
-                        alert('Navigation failed. Please copy the stamp ID and use it manually.');
+                        alert(
+                          'Navigation failed. Please copy the collection ID and use it manually.'
+                        );
                       }
                     }}
                   >
