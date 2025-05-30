@@ -8,8 +8,9 @@ This directory contains the smart contracts for the BuzzMint AI-powered NFT plat
 
 The factory contract responsible for:
 
-- Deploying individual NFT collection contracts for users
-- Managing user-to-contract mappings
+- Deploying individual NFT collection contracts per stamp ID (collection ID)
+- Managing stamp ID to contract mappings
+- Supporting multiple collections per user
 - Minting NFTs through the factory pattern
 - Preventing duplicate minting of the same data URI
 
@@ -20,11 +21,29 @@ The individual NFT collection contract that:
 - Extends ERC721A for gas-efficient batch minting
 - Stores on-chain metadata with BuzzMint branding
 - Tracks minted references to prevent duplicates
-- Generates Base64-encoded JSON metadata
+- Stores the stamp ID (collection ID) for identification
+- Generates Base64-encoded JSON metadata with collection ID
 
 ### StampsRegistry.sol
 
 Registry contract for managing Swarm postage stamps (storage collections).
+
+## Architecture
+
+### Collection ID = Stamp ID
+
+Each NFT collection is tied to a **stamp ID** (from storage collections):
+
+- **Stamp ID**: Unique identifier from storage system
+- **One Collection per Stamp ID**: Each stamp ID gets its own NFT collection contract
+- **Multiple Collections per User**: Users can have multiple stamp IDs, thus multiple collections
+- **Auto-Creation**: First NFT mint for a stamp ID automatically creates the collection
+
+### Flow
+
+1. **User uploads file** → Gets stamp ID from storage
+2. **First NFT mint** → Factory creates new collection contract for that stamp ID
+3. **Subsequent mints** → Factory uses existing collection contract for that stamp ID
 
 ## Deployment
 
@@ -81,41 +100,61 @@ After deployment, contract addresses will be saved in `deployments/gnosis/` dire
 ```solidity
 // Call the factory to create collection and mint first NFT
 (address collectionAddress, uint256 tokenId) = factory.createContractAndMint(
-    "My First NFT",           // fileName
+    "abc123def456...",        // stampId (collection ID from storage)
+    "My First NFT.png",       // fileName
     "bzz://abc123...",        // dataURI from Swarm
     "My BuzzMint Collection", // collection name (optional)
     "BUZZ"                    // collection symbol (optional)
 );
 ```
 
-### Minting Additional NFTs
+### Minting Additional NFTs (Auto-creates collection if needed)
 
 ```solidity
-// Mint additional NFTs to existing collection
+// Mint NFT - creates collection if doesn't exist, or uses existing one
 uint256 tokenId = factory.mintNFT(
-    "My Second NFT",     // fileName
-    "bzz://def456..."    // dataURI from Swarm
+    "abc123def456...",     // stampId (collection ID from storage)
+    "My Second NFT.png",   // fileName
+    "bzz://def456...",     // dataURI from Swarm
+    "My Collection",       // collection name (used only if creating new)
+    "BUZZ"                 // collection symbol (used only if creating new)
 );
+```
+
+### Checking if Collection Exists
+
+```solidity
+(bool exists, address contractAddress) = factory.hasContract("abc123def456...");
 ```
 
 ### Checking if Data Already Minted
 
 ```solidity
-bool alreadyMinted = factory.isReferenceMinted(userAddress, "bzz://abc123...");
+bool alreadyMinted = factory.isReferenceMinted("abc123def456...", "bzz://abc123...");
 ```
 
-## Features
+### Getting User's Collections
 
+```solidity
+string[] memory userStampIds = factory.getUserStampIds(userAddress);
+```
+
+## Key Features
+
+- **Stamp ID Based**: Collections are identified by stamp IDs from storage system
+- **Multiple Collections**: Users can have multiple collections (one per stamp ID)
+- **Auto-Creation**: Collections are created automatically on first NFT mint
 - **Gas Efficient**: Uses ERC721A for optimized batch minting
-- **Duplicate Prevention**: Prevents minting the same data URI twice
+- **Duplicate Prevention**: Prevents minting the same data URI twice per collection
 - **On-chain Metadata**: Stores metadata directly on-chain with Base64 encoding
-- **Factory Pattern**: One factory deploys individual collections per user
+- **Collection Tracking**: Each NFT includes its collection ID in metadata
 - **BuzzMint Branding**: Metadata includes BuzzMint platform attribution
 - **Swarm Integration**: Designed to work with Swarm storage URIs
 
 ## Security
 
 - Factory-only minting prevents unauthorized NFT creation
+- Stamp ID ownership verification for existing collections
 - Owner controls for emergency functions
-- Reference tracking prevents duplicate minting
+- Reference tracking prevents duplicate minting per collection
 - Proper access controls on all functions

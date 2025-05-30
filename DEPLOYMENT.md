@@ -82,6 +82,7 @@ export const BUZZMINT_FACTORY_ADDRESS = '0x...'; // From deployment
 const factory = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, signer);
 
 const tx = await factory.createContractAndMint(
+  'abc123def456...', // stampId (collection ID from storage)
   'My AI Art.png', // fileName
   'bzz://abc123...', // dataURI from Swarm
   'My BuzzMint Collection', // collection name (optional)
@@ -92,19 +93,35 @@ const receipt = await tx.wait();
 // Extract collection address and token ID from events
 ```
 
-### Mint Additional NFTs
+### Mint Additional NFTs (Auto-creates collection if needed)
 
 ```typescript
 const tx = await factory.mintNFT(
+  'abc123def456...', // stampId (collection ID from storage)
   'Another AI Art.png', // fileName
-  'bzz://def456...' // dataURI from Swarm
+  'bzz://def456...', // dataURI from Swarm
+  'My Collection', // collection name (used only if creating new)
+  'BUZZ' // collection symbol (used only if creating new)
 );
+```
+
+### Check if Collection Exists
+
+```typescript
+const [exists, contractAddress] = await factory.hasContract('abc123def456...');
 ```
 
 ### Check if Already Minted
 
 ```typescript
-const alreadyMinted = await factory.isReferenceMinted(userAddress, 'bzz://abc123...');
+const alreadyMinted = await factory.isReferenceMinted('abc123def456...', 'bzz://abc123...');
+```
+
+### Get User's Collections
+
+```typescript
+const userStampIds = await factory.getUserStampIds(userAddress);
+// Returns array of stamp IDs (collection IDs) owned by user
 ```
 
 ## Troubleshooting

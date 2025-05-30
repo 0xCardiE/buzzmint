@@ -25,21 +25,27 @@ contract BuzzMintCollection is ERC721A, Ownable {
     // Factory address that's allowed to mint NFTs
     address public factoryAddress;
     
+    // Stamp ID (Collection ID) that this contract represents
+    string public stampId;
+    
     // Event emitted when a new NFT is minted
-    event BuzzMintNFTMinted(address indexed to, uint256 tokenId, string fileName, string dataURI);
+    event BuzzMintNFTMinted(address indexed to, uint256 tokenId, string fileName, string dataURI, string stampId);
     
     /**
      * @dev Constructor
      * @param name The name of the NFT collection
      * @param symbol The symbol of the NFT collection
      * @param initialOwner The initial owner of the contract
+     * @param _stampId The stamp ID (collection ID) from storage
      */
     constructor(
         string memory name,
         string memory symbol,
-        address initialOwner
+        address initialOwner,
+        string memory _stampId
     ) ERC721A(name, symbol) Ownable(initialOwner) {
         factoryAddress = msg.sender;  // Set factory as the allowed minter
+        stampId = _stampId;
     }
     
     /**
@@ -89,7 +95,7 @@ contract BuzzMintCollection is ERC721A, Ownable {
         _dataURIs[tokenId] = _dataURI;
         _fileNames[tokenId] = _fileName;
         
-        emit BuzzMintNFTMinted(to, tokenId, _fileName, _dataURI);
+        emit BuzzMintNFTMinted(to, tokenId, _fileName, _dataURI, stampId);
         
         return tokenId;
     }
@@ -139,7 +145,9 @@ contract BuzzMintCollection is ERC721A, Ownable {
                 image,
                 '","attributes":[{"trait_type":"Token ID","value":"',
                 tokenId.toString(),
-                '"},{"trait_type":"Platform","value":"BuzzMint"}]}'
+                '"},{"trait_type":"Platform","value":"BuzzMint"},{"trait_type":"Collection ID","value":"',
+                stampId,
+                '"}]}'
             )
         );
     }
