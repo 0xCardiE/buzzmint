@@ -1,195 +1,402 @@
 .container {
-  color: #ffffff;
   max-width: 800px;
   margin: 0 auto;
+  padding: 20px;
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  color: #2C3E50;
+  border: 1px solid #E9ECEF;
 }
 
-.titleContainer {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-left: 18px;
-  padding-right: 18px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #F5F5DC;
 }
 
 .title {
-  font-size: 20px;
-  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  color: #2C3E50;
   margin: 0;
 }
 
 .buttonGroup {
   display: flex;
   gap: 8px;
-  align-items: center;
 }
 
-.downloadButton,
-.clearButton,
-.uploadButton {
-  background-color: transparent;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  color: #8b949e;
+.downloadButton {
+  background-color: #4ECDC4;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
   cursor: pointer;
-  padding: 8px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.downloadButton:hover,
-.clearButton:hover,
-.uploadButton:hover {
-  background-color: rgba(48, 54, 61, 0.5);
-  border-color: #424a53;
-  color: #ffffff;
+.downloadButton:hover {
+  background-color: #45B7B8;
+  transform: translateY(-1px);
 }
 
-.clearButton:hover {
-  background-color: rgba(220, 53, 69, 0.2);
-  border-color: #dc3545;
-  color: #dc3545;
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
 }
 
-.hiddenInput {
-  display: none;
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #F5F5DC;
+  border-top: 4px solid #FF6B6B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.smallSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #F5F5DC;
+  border-top: 2px solid #FF6B6B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.errorState button {
+  background-color: #FF6B6B;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.errorState button:hover {
+  background-color: #E55A5A;
 }
 
 .emptyState {
-  text-align: center;
-  padding: 30px;
-  color: #8b949e;
-  font-size: 16px;
-  background-color: #161b22;
-  border-radius: 8px;
-  border: 1px dashed #30363d;
-}
-
-.historyList {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #6C757D;
+}
+
+.emptyState p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.emptyState p:first-child {
+  font-weight: 600;
+  color: #2C3E50;
+}
+
+.collectionsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.collectionCard {
+  background-color: #FFF8DC;
+  border: 2px solid #F5F5DC;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.collectionCard:hover {
+  border-color: #FF6B6B;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.15);
+  transform: translateY(-2px);
+}
+
+.collectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
   gap: 16px;
 }
 
-.historyItem {
-  padding: 20px;
-  background-color: #161b22;
-  border-radius: 8px;
-  border: 1px solid #30363d;
-  transition: border-color 0.2s;
+.collectionInfo {
+  flex: 1;
 }
 
-.historyItem:hover {
-  border-color: #424a53;
-}
-
-.itemHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #30363d;
-}
-
-.filename {
+.collectionName {
+  font-size: 20px;
   font-weight: 600;
-  font-size: 18px;
-  color: #ffffff;
-  word-break: break-all;
+  color: #2C3E50;
+  margin: 0 0 4px 0;
 }
 
-.date {
-  color: #8b949e;
+.collectionSymbol {
   font-size: 14px;
+  color: #6C757D;
+  margin: 0 0 12px 0;
+  font-weight: 500;
 }
 
-.itemDetails {
+.collectionMeta {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
 }
 
-.referenceRow,
-.stampRow,
-.expiryRow {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.label {
-  width: 100px;
-  font-weight: 500;
-  color: #8b949e;
-  flex-shrink: 0;
-}
-
-.link {
-  display: inline-block;
-  color: #ff7a00;
-  text-decoration: none;
-  font-family: monospace;
-  background-color: #1f2937;
-  padding: 6px 10px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-  word-break: break-all;
-}
-
-.link:hover {
-  background-color: #2d3748;
-  text-decoration: underline;
-}
-
-.stampId {
-  font-family: monospace;
+.nftCount {
   font-size: 14px;
-  color: #8b949e;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  position: relative;
+  font-weight: 600;
+  color: #FF6B6B;
 }
 
-.stampId:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.stampId[data-copied="true"] {
-  background-color: rgba(40, 167, 69, 0.2);
-  color: #28a745;
-  width: 50%;
-}
-
-.stampId[data-copied="true"]::after {
-  content: "Copied!";
-  position: absolute;
-  right: 8px;
+.stampIdLabel {
   font-size: 12px;
-  color: #28a745;
+  color: #6C757D;
 }
 
-.expiryDate {
-  color: #8b949e;
+.contractInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.contractLink {
+  background-color: #4ECDC4;
+  color: white;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.contractLink:hover {
+  background-color: #45B7B8;
+  transform: translateY(-1px);
+}
+
+.nftLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #6C757D;
+}
+
+.noNfts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #6C757D;
+  font-style: italic;
+}
+
+.nftGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.nftItem {
+  background-color: #FFFFFF;
+  border: 1px solid #E9ECEF;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nftItem:hover {
+  border-color: #FF6B6B;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  transform: translateY(-2px);
+}
+
+.nftThumbnail {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  background-color: #F5F5DC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nftImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.nftItem:hover .nftImage {
+  transform: scale(1.05);
+}
+
+.nftInfo {
+  padding: 12px;
+}
+
+.nftFileName {
+  font-size: 12px;
+  font-weight: 500;
+  color: #2C3E50;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nftTokenId {
+  font-size: 11px;
+  color: #6C757D;
+  margin: 0;
+  font-weight: 600;
+}
+
+.moreNfts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F5DC;
+  border: 2px dashed #E9ECEF;
+  border-radius: 8px;
+  height: 120px;
+  color: #6C757D;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.moreNfts:hover {
+  border-color: #FF6B6B;
+  color: #FF6B6B;
+  background-color: rgba(255, 107, 107, 0.05);
 }
 
 .backButton {
-  margin-top: 20px;
-  padding: 10px 16px;
-  background-color: transparent;
-  border: 1px solid #30363d;
+  background-color: #6C757D;
+  border: none;
   border-radius: 8px;
-  color: #ffffff;
+  padding: 12px 24px;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.2s;
-  display: block;
-  margin: 20px auto 0;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
 .backButton:hover {
-  background-color: rgba(48, 54, 61, 0.5);
+  background-color: #5A6268;
+  transform: translateY(-1px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    margin: 10px;
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .collectionHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contractInfo {
+    align-items: flex-start;
+  }
+
+  .nftGrid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+
+  .nftThumbnail {
+    height: 100px;
+  }
+
+  .nftInfo {
+    padding: 8px;
+  }
+
+  .nftFileName {
+    font-size: 11px;
+  }
+
+  .nftTokenId {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nftGrid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+
+  .nftThumbnail {
+    height: 80px;
+  }
+
+  .collectionCard {
+    padding: 16px;
+  }
+
+  .collectionName {
+    font-size: 18px;
+  }
 }

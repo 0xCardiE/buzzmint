@@ -29,6 +29,7 @@ import {
   ACCEPT_EXCHANGE_RATE_UPDATES,
   BUZZMINT_FACTORY_ADDRESS,
   BUZZMINT_FACTORY_ABI,
+  BUZZMINT_COLLECTION_ABI,
 } from './constants';
 
 import HelpSection from './HelpSection';
