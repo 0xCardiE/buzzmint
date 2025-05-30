@@ -32,7 +32,7 @@ const config: HardhatUserConfig = {
       chainId: 100,
       verify: {
         etherscan: {
-          apiUrl: "https://api.gnosisscan.io",
+          apiUrl: "https://gnosis.blockscout.com/api",
           apiKey: GNOSIS_API_KEY,
         },
       },
@@ -47,8 +47,8 @@ const config: HardhatUserConfig = {
         network: "gnosis",
         chainId: 100,
         urls: {
-          apiURL: "https://api.gnosisscan.io/api",
-          browserURL: "https://gnosisscan.io",
+          apiURL: "https://gnosis.blockscout.com/api",
+          browserURL: "https://gnosis.blockscout.com",
         },
       },
     ],

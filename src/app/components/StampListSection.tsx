@@ -249,7 +249,7 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                     <div className={styles.contractAddress}>
                       <span className={styles.nftLabel}>Contract:</span>
                       <a
-                        href={`https://gnosisscan.io/address/${stamp.nftContractAddress}`}
+                        href={`https://gnosis.blockscout.com/address/${stamp.nftContractAddress}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.contractLink}

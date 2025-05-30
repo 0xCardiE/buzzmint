@@ -144,7 +144,7 @@ Ensure your wallet is connected to Gnosis Chain:
 
 - **Chain ID**: 100
 - **RPC URL**: https://gnosis-rpc.publicnode.com
-- **Explorer**: https://gnosisscan.io
+- **Explorer**: https://gnosis.blockscout.com
 
 ## Security Notes
 

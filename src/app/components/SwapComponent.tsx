@@ -1970,7 +1970,7 @@ const SwapComponent: React.FC = () => {
                         <div className={styles.detailRow}>
                           <span className={styles.detailLabel}>NFT Contract:</span>
                           <a
-                            href={`https://gnosisscan.io/address/${statusMessage.nftContractAddress}`}
+                            href={`https://gnosis.blockscout.com/address/${statusMessage.nftContractAddress}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.contractLink}
@@ -1986,7 +1986,7 @@ const SwapComponent: React.FC = () => {
                     <div className={styles.actionLinks}>
                       {statusMessage.transactionHash && (
                         <a
-                          href={`https://gnosisscan.io/tx/${statusMessage.transactionHash}`}
+                          href={`https://gnosis.blockscout.com/tx/${statusMessage.transactionHash}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={styles.scanLink}
