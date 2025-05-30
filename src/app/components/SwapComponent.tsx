@@ -2131,17 +2131,7 @@ const SwapComponent: React.FC = () => {
           )}
         </>
       ) : showHelp ? (
-        <HelpSection
-          nodeAddress={nodeAddress}
-          beeApiUrl={beeApiUrl}
-          setBeeApiUrl={setBeeApiUrl}
-          isCustomNode={isCustomNode}
-          setIsCustomNode={setIsCustomNode}
-          isCustomRpc={isCustomRpc}
-          setIsCustomRpc={setIsCustomRpc}
-          customRpcUrl={customRpcUrl}
-          setCustomRpcUrl={setCustomRpcUrl}
-        />
+        <HelpSection nodeAddress={nodeAddress} />
       ) : showStampList ? (
         <StampListSection
           setShowStampList={setShowStampList}

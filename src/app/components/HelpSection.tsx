@@ -1,164 +1,47 @@
 import React from 'react';
 import styles from './css/HelpSection.module.css';
-import { DEFAULT_BEE_API_URL } from './constants';
 
 interface HelpSectionProps {
   nodeAddress: string;
-  beeApiUrl: string;
-  setBeeApiUrl: (value: string) => void;
-  isCustomNode: boolean;
-  setIsCustomNode: (value: boolean) => void;
-  isCustomRpc: boolean;
-  setIsCustomRpc: (value: boolean) => void;
-  customRpcUrl: string;
-  setCustomRpcUrl: (value: string) => void;
 }
 
-const HelpSection: React.FC<HelpSectionProps> = ({
-  nodeAddress,
-  beeApiUrl,
-  setBeeApiUrl,
-  isCustomNode,
-  setIsCustomNode,
-  isCustomRpc,
-  setIsCustomRpc,
-  customRpcUrl,
-  setCustomRpcUrl,
-}) => {
-  const handleBeeApiUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    // Remove trailing slashes
-    value = value.replace(/\/+$/, '');
-    setBeeApiUrl(value);
-  };
-
-  const handleCustomNodeToggle = (checked: boolean) => {
-    setIsCustomNode(checked);
-    if (!checked) {
-      // Reset to default URL when turning off custom node
-      setBeeApiUrl(DEFAULT_BEE_API_URL);
-    }
-  };
-
-  const handleCustomRpcUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    // Remove trailing slashes
-    value = value.replace(/\/+$/, '');
-    setCustomRpcUrl(value);
-  };
-
-  const handleCustomRpcToggle = (checked: boolean) => {
-    setIsCustomRpc(checked);
-    if (!checked) {
-      // Reset to default when turning off custom RPC
-      setCustomRpcUrl('');
-    }
-  };
-
+const HelpSection: React.FC<HelpSectionProps> = ({ nodeAddress }) => {
   return (
     <div className={styles.helpContainer}>
       <div className={styles.helpContent}>
         <div className={styles.helpHeader}>
-          <h2>Settings</h2>
+          <h2>How to use BuzzMint?</h2>
         </div>
 
-        <div className={styles.customNodeSection}>
-          <div className={styles.switchContainer}>
-            <span className={styles.switchLabel}>Custom Node</span>
-            <label className={styles.switch}>
-              <input
-                type="checkbox"
-                checked={isCustomNode}
-                onChange={e => handleCustomNodeToggle(e.target.checked)}
-              />
-              <span className={styles.slider}></span>
-            </label>
-          </div>
-
-          {isCustomNode && (
-            <div className={styles.customNodeConfig}>
-              <div className={styles.formSection}>
-                <label className={styles.label}>BEE API URL:</label>
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={beeApiUrl}
-                  onChange={handleBeeApiUrlChange}
-                  placeholder="Enter Bee API URL"
-                />
-
-                <div className={styles.hint}>
-                  Change API URL to custom value if you have remote node or local node running
-                </div>
-                <div className={styles.nodeAddress}>API Node Address {nodeAddress}</div>
-              </div>
-            </div>
-          )}
-
-          <div className={styles.switchContainer} style={{ marginTop: '20px' }}>
-            <span className={styles.switchLabel}>Custom RPC</span>
-            <label className={styles.switch}>
-              <input
-                type="checkbox"
-                checked={isCustomRpc}
-                onChange={e => handleCustomRpcToggle(e.target.checked)}
-              />
-              <span className={styles.slider}></span>
-            </label>
-          </div>
-
-          {isCustomRpc && (
-            <div className={styles.customNodeConfig}>
-              <div className={styles.formSection}>
-                <label className={styles.label}>Gnosis RPC URL:</label>
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={customRpcUrl}
-                  onChange={handleCustomRpcUrlChange}
-                  placeholder="Enter Gnosis RPC URL"
-                />
-
-                <div className={styles.hint}>
-                  Set custom RPC URL for the Gnosis chain. This will be used for all Gnosis chain
-                  operations.
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <h2>How to use this dapp?</h2>
         <ol>
           <li>
-            <h3>Using swarm central node</h3>
+            <h3>Connect Your Wallet</h3>
             <p>
-              By default this app provides central node for uploads and you can just buy storage and
-              upload data
+              Connect your Web3 wallet (MetaMask, WalletConnect, etc.) to get started. Make sure you
+              have some tokens on supported chains to pay for storage and NFT minting.
             </p>
           </li>
           <li>
-            <h3>Using local node</h3>
+            <h3>Buy Storage</h3>
             <p>
-              Connect to your local node, you need a PAID plan for NGROK to expose it to world and
-              then start it with this command &quot;ngrok http 1633
-              --request-header-add=&quot;ngrok-skip-browser-warning:1&quot;&quot;
+              Purchase decentralized storage on the Swarm network. Choose your storage size (Pixel
+              Art ~100MB, Standard ~600MB, or HQ ~2GB) and duration (1 year, 5 years, or 10 years).
             </p>
           </li>
           <li>
-            <h3>Remote node</h3>
+            <h3>Upload & Mint NFTs</h3>
             <p>
-              This app can also be run with remote node, hosted on a server and its endpoints
-              exposed, you can use{' '}
-              <a
-                href="https://github.com/ethersphere/multichain/blob/main/backend/index.js"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.link}
-              >
-                this code snippet
-              </a>{' '}
-              for that, or make your own
+              Upload your images, videos, or any files to create NFT collections. Your first upload
+              creates a new collection, and subsequent uploads mint additional NFTs to the same
+              collection.
+            </p>
+          </li>
+          <li>
+            <h3>View Your Collections</h3>
+            <p>
+              Check your minted NFTs in the "Minted" tab and manage your storage collections in the
+              "Collections" tab. All your NFTs are stored permanently on the decentralized Swarm
+              network.
             </p>
           </li>
         </ol>
@@ -166,11 +49,19 @@ const HelpSection: React.FC<HelpSectionProps> = ({
         <h2>Frequently Asked Questions</h2>
         <div className={styles.faqSection}>
           <div className={styles.faqItem}>
-            <h3>What happens if my upload fails?</h3>
+            <h3>What is BuzzMint?</h3>
             <p>
-              If an upload fails, the system will automatically retry several times. If it continues
-              to fail, your collections and tokens remain safe, and you can try the upload again.
-              The most common cause of upload failures is network connectivity issues.
+              BuzzMint is an AI-powered NFT minter that combines decentralized storage with NFT
+              creation. Upload any file to the Swarm network and automatically mint it as an NFT on
+              multiple blockchains.
+            </p>
+          </div>
+
+          <div className={styles.faqItem}>
+            <h3>Which blockchains are supported?</h3>
+            <p>
+              BuzzMint supports Ethereum, Gnosis, Arbitrum, Optimism, Base, Polygon, Rootstock,
+              Abstract, and Berachain. You can pay for storage with tokens from any of these chains.
             </p>
           </div>
 
@@ -182,19 +73,48 @@ const HelpSection: React.FC<HelpSectionProps> = ({
               use.
             </p>
           </div>
+
           <div className={styles.faqItem}>
-            <h3>I get &quot;no routes available&quot;, why? </h3>
+            <h3>What happens if my upload fails?</h3>
             <p>
-              If messaged &quot;no routes available&quot;, this usually means that you choose too
-              low amount of USD value to be crossed between chains. For below $0.5 you should try to
-              swap and upload directly from Gnosis chain.
+              If an upload fails, the system will automatically retry several times. If it continues
+              to fail, your collections and tokens remain safe, and you can try the upload again.
+              The most common cause is network connectivity issues.
             </p>
           </div>
+
           <div className={styles.faqItem}>
-            <h3>How to prepare archives? </h3>
+            <h3>Can I mint multiple NFTs to the same collection?</h3>
             <p>
-              Use &quot;tar -C my_folder -cf my_folder.tar .&quot; command to make your folder ready
-              for upload as TAR file. You can also upload ZIP files and GZIP files.
+              Yes! Your first upload to a storage collection creates a new NFT collection. All
+              subsequent uploads to the same storage collection will mint additional NFTs to that
+              same collection.
+            </p>
+          </div>
+
+          <div className={styles.faqItem}>
+            <h3>What file types are supported?</h3>
+            <p>
+              BuzzMint supports all file types including images (PNG, JPG, GIF), videos (MP4, MOV),
+              audio files, documents, and archives (ZIP, TAR, GZIP). Files are stored permanently on
+              Swarm.
+            </p>
+          </div>
+
+          <div className={styles.faqItem}>
+            <h3>How do I prepare archive files?</h3>
+            <p>
+              Use "tar -C my_folder -cf my_folder.tar ." command to make your folder ready for
+              upload as TAR file. You can also upload ZIP files and GZIP files directly.
+            </p>
+          </div>
+
+          <div className={styles.faqItem}>
+            <h3>I get "no routes available", why?</h3>
+            <p>
+              If you see "no routes available", this usually means the USD value is too low for
+              cross-chain swaps. For amounts below $0.5, try swapping and uploading directly from
+              Gnosis chain.
             </p>
           </div>
         </div>
