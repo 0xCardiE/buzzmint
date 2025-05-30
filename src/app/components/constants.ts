@@ -51,68 +51,19 @@ export const DISABLE_MESSAGE_SIGNING = true;
 // Accept exchange rate updates automatically for executeRoute calls
 export const ACCEPT_EXCHANGE_RATE_UPDATES = true;
 
-// Check if we're running on the production domain
-const isProduction =
-  typeof window !== 'undefined' && window.location.hostname === 'app.ethswarm.org';
+// Define the simplified storage options for buzzMint
+export const STORAGE_OPTIONS: StorageOption[] = [
+  { depth: 19, size: 'Pixel Art', description: '~100 MB' },
+  { depth: 20, size: 'Medium', description: '~600 MB' },
+  { depth: 21, size: 'HQ', description: '~2 GB' },
+];
 
-// Define all time options
-const ALL_TIME_OPTIONS = [
-  { days: 1, display: '1 day' },
-  { days: 2, display: '2 days' },
-  { days: 7, display: '7 days' },
-  { days: 15, display: '15 days' },
-  { days: 30, display: '30 days' },
-  { days: 90, display: '90 days' },
-  { days: 180, display: '180 days' },
+// Define the simplified time options for buzzMint
+export const TIME_OPTIONS = [
   { days: 365, display: '1 year' },
-  { days: 365 * 2, display: '2 years' },
   { days: 365 * 5, display: '5 years' },
   { days: 365 * 10, display: '10 years' },
 ];
-
-// Define production-only time options
-const PRODUCTION_TIME_OPTIONS = [
-  { days: 30, display: '30 days' },
-  { days: 90, display: '90 days' },
-  { days: 180, display: '180 days' },
-  { days: 365, display: '1 year' },
-  { days: 365 * 2, display: '2 years' },
-  { days: 365 * 5, display: '5 years' },
-  { days: 365 * 10, display: '10 years' },
-];
-
-// Export the appropriate options based on environment
-export const TIME_OPTIONS = isProduction ? PRODUCTION_TIME_OPTIONS : ALL_TIME_OPTIONS;
-
-// Define all storage options
-const ALL_STORAGE_OPTIONS: StorageOption[] = [
-  { depth: 19, size: '110MB' },
-  { depth: 20, size: '680MB' },
-  { depth: 21, size: '2.6GB' },
-  { depth: 22, size: '7.7GB' },
-  { depth: 23, size: '20GB' },
-  { depth: 24, size: '47GB' },
-  { depth: 25, size: '105GB' },
-  { depth: 26, size: '227GB' },
-  { depth: 27, size: '476GB' },
-];
-
-// Define production-only storage options
-const PRODUCTION_STORAGE_OPTIONS: StorageOption[] = [
-  { depth: 20, size: '680MB' },
-  { depth: 21, size: '2.6GB' },
-  { depth: 22, size: '7.7GB' },
-  { depth: 23, size: '20GB' },
-  { depth: 24, size: '47GB' },
-  { depth: 25, size: '105GB' },
-  { depth: 26, size: '227GB' },
-  { depth: 27, size: '476GB' },
-];
-
-// Export the appropriate options based on environment
-export const STORAGE_OPTIONS: StorageOption[] = isProduction
-  ? PRODUCTION_STORAGE_OPTIONS
-  : ALL_STORAGE_OPTIONS;
 
 export const DEFAULT_SWARM_CONFIG: SwarmConfigType = {
   toChain: ChainId.DAI,

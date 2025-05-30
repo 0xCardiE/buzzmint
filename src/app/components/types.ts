@@ -28,6 +28,7 @@ export type SwarmConfigType = {
 export type StorageOption = {
   depth: number;
   size: string;
+  description?: string;
 };
 
 export interface GetGnosisQuoteParams {

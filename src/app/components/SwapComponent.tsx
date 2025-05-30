@@ -85,7 +85,7 @@ const SwapComponent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPrice, setCurrentPrice] = useState<bigint | null>(null);
   const [selectedDays, setSelectedDays] = useState<number | null>(null);
-  const [selectedDepth, setSelectedDepth] = useState(22);
+  const [selectedDepth, setSelectedDepth] = useState(20);
   const [nodeAddress, setNodeAddress] = useState<string>(DEFAULT_NODE_ADDRESS);
   const [isWebpageUpload, setIsWebpageUpload] = useState(false);
   const [isTarFile, setIsTarFile] = useState(false);
@@ -1441,17 +1441,21 @@ const SwapComponent: React.FC = () => {
               >
                 Storage stamps
               </label>
-              <select
-                className={styles.select}
-                value={selectedDepth}
-                onChange={e => handleDepthChange(Number(e.target.value))}
-              >
-                {STORAGE_OPTIONS.map(({ depth, size }) => (
-                  <option key={depth} value={depth}>
-                    {size}
-                  </option>
+              <div className={styles.sizeButtonGroup}>
+                {STORAGE_OPTIONS.map(({ depth, size, description }) => (
+                  <button
+                    key={depth}
+                    type="button"
+                    className={`${styles.sizeButton} ${
+                      selectedDepth === depth ? styles.selected : ''
+                    }`}
+                    onClick={() => handleDepthChange(depth)}
+                  >
+                    <span className={styles.sizeButtonTitle}>{size}</span>
+                    <span className={styles.sizeButtonSize}>{description}</span>
+                  </button>
                 ))}
-              </select>
+              </div>
             </div>
           )}
 
@@ -1462,21 +1466,20 @@ const SwapComponent: React.FC = () => {
             >
               {isTopUp ? 'Additional duration' : 'Storage duration'}
             </label>
-            <select
-              className={styles.select}
-              value={selectedDays || ''}
-              onChange={e => {
-                const value = e.target.value;
-                setSelectedDays(value === '' ? null : Number(value));
-              }}
-            >
-              <option value="">Please select duration</option>
+            <div className={styles.buttonGroup}>
               {TIME_OPTIONS.map(option => (
-                <option key={option.days} value={option.days}>
+                <button
+                  key={option.days}
+                  type="button"
+                  className={`${styles.optionButton} ${
+                    selectedDays === option.days ? styles.selected : ''
+                  }`}
+                  onClick={() => setSelectedDays(option.days)}
+                >
                   {option.display}
-                </option>
+                </button>
               ))}
-            </select>
+            </div>
           </div>
 
           {selectedDays && totalUsdAmount !== null && Number(totalUsdAmount) !== 0 && (
