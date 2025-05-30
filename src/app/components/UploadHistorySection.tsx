@@ -208,6 +208,25 @@ const UploadHistorySection: React.FC<UploadHistoryProps> = ({ address, setShowUp
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
+  const formatCollectionName = (name: string) => {
+    if (!name) return 'Unnamed Collection';
+
+    // If it's a default BuzzMint collection name with hash, truncate it
+    if (name.startsWith('BuzzMint Collection - ') && name.length > 30) {
+      const hashPart = name.replace('BuzzMint Collection - ', '');
+      if (hashPart.length > 20) {
+        return `BuzzMint Collection - ${hashPart.slice(0, 6)}...${hashPart.slice(-4)}`;
+      }
+    }
+
+    // For other long names, truncate at 30 characters
+    if (name.length > 30) {
+      return `${name.slice(0, 27)}...`;
+    }
+
+    return name;
+  };
+
   if (!address) {
     return (
       <div className={styles.container}>
@@ -281,7 +300,9 @@ const UploadHistorySection: React.FC<UploadHistoryProps> = ({ address, setShowUp
             <div key={collection.stampId} className={styles.collectionCard}>
               <div className={styles.collectionHeader}>
                 <div className={styles.collectionInfo}>
-                  <h3 className={styles.collectionName}>{collection.name}</h3>
+                  <h3 className={styles.collectionName} title={collection.name}>
+                    {formatCollectionName(collection.name)}
+                  </h3>
                   <p className={styles.collectionSymbol}>{collection.symbol}</p>
                   <div className={styles.collectionMeta}>
                     <span className={styles.nftCount}>{collection.totalNFTs} NFTs</span>
