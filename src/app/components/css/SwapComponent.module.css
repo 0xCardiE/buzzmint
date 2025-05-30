@@ -1354,7 +1354,7 @@
   font-weight: 600;
 }
 
-.buttonGroup {
+.collectionForm .buttonGroup {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1409,7 +1409,7 @@
     gap: 15px;
   }
   
-  .buttonGroup {
+  .collectionForm .buttonGroup {
     gap: 8px;
   }
   
