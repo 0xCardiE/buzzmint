@@ -54,9 +54,62 @@ npm run deploy:all:gnosis
 
 ### 1. Verify Contracts
 
+### 1. Verify Contracts on Both Explorers
+
+BuzzMint automatically verifies contracts on both Gnosis Blockscout and GnosisScan during deployment. You can also verify manually:
+
+#### Option 1: Verify on Both Explorers (Recommended)
+
 ```bash
-npm run verify:gnosis
+npm run verify:factory
 ```
+
+#### Option 2: Verify on Specific Explorer
+
+```bash
+# Blockscout only
+npm run verify:factory:blockscout
+
+# GnosisScan only
+npm run verify:factory:gnosisscan
+```
+
+#### Option 3: Use Custom Verification Script
+
+```bash
+npm run verify:contracts
+```
+
+#### Option 4: Manual Verification with Hardhat
+
+```bash
+# Verify on Blockscout
+npx hardhat verify --network gnosis 0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4
+
+# Verify on GnosisScan
+npx hardhat verify --network gnosisscan 0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4
+
+# Force verification if already verified
+npx hardhat verify --network gnosis --force 0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4
+```
+
+#### Verify Individual Collection Contracts
+
+When users create NFT collections, you can verify them on both explorers:
+
+```bash
+# Blockscout
+npx hardhat verify --network gnosis COLLECTION_ADDRESS "stampId" "Collection Name" "SYMBOL" "0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4"
+
+# GnosisScan
+npx hardhat verify --network gnosisscan COLLECTION_ADDRESS "stampId" "Collection Name" "SYMBOL" "0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4"
+```
+
+**Notes**:
+
+- Blockscout doesn't require a real API key - our configuration uses a placeholder value
+- GnosisScan requires `MAINNET_ETHERSCAN_KEY` in your `.env` file
+- Deployment script automatically attempts verification on both explorers
 
 ### 2. Get Contract Addresses
 
@@ -132,6 +185,20 @@ const userStampIds = await factory.getUserStampIds(userAddress);
 2. **"This data has already been minted"**: Trying to mint duplicate data URI
 3. **"Only factory or owner can mint"**: Calling mint directly on collection instead of factory
 
+### Blockscout Verification Issues
+
+1. **"Contract already verified"**: Use `--force` flag to re-verify
+2. **"Verification failed"**: Check constructor arguments match exactly
+3. **"API key error"**: Blockscout doesn't need real API key, any string works
+4. **"Network not supported"**: Ensure customChains configuration is correct
+
+### Verification Tips
+
+- Blockscout ignores constructor arguments for verification, but Hardhat still requires them
+- Use `--force` flag if contract was automatically verified but you want to add sources
+- Individual collection contracts need 4 constructor arguments: `stampId`, `name`, `symbol`, `factoryAddress`
+- Factory contract has no constructor arguments
+
 ### Gas Estimation
 
 - **Factory Deployment**: ~2-3M gas
@@ -152,4 +219,4 @@ Ensure your wallet is connected to Gnosis Chain:
 - Individual collections are owned by the user who created them
 - Only factory can mint NFTs (prevents unauthorized minting)
 - Reference tracking prevents duplicate minting
-- All contracts are verified on GnosisScan for transparency
+- All contracts are verified on Gnosis Blockscout for transparency

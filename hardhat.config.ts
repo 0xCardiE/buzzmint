@@ -30,17 +30,14 @@ const config: HardhatUserConfig = {
       url: GNOSIS_RPC_URL,
       accounts: [PRIVATE_KEY],
       chainId: 100,
-      verify: {
-        etherscan: {
-          apiUrl: "https://gnosis.blockscout.com/api",
-          apiKey: GNOSIS_API_KEY,
-        },
-      },
     },
   },
   etherscan: {
     apiKey: {
-      gnosis: GNOSIS_API_KEY,
+      // Blockscout doesn't require a real API key, any non-empty string works
+      gnosis: "abc123",
+      // GnosisScan requires a real API key
+      gnosisscan: GNOSIS_API_KEY,
     },
     customChains: [
       {
@@ -51,7 +48,19 @@ const config: HardhatUserConfig = {
           browserURL: "https://gnosis.blockscout.com",
         },
       },
+      {
+        network: "gnosisscan",
+        chainId: 100,
+        urls: {
+          apiURL: "https://api.gnosisscan.io/api",
+          browserURL: "https://gnosisscan.io",
+        },
+      },
     ],
+  },
+  sourcify: {
+    // Disable Sourcify to avoid conflicts with Blockscout verification
+    enabled: false,
   },
   paths: {
     sources: "./contracts",

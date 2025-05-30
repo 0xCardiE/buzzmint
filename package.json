@@ -13,7 +13,12 @@
     "deploy:local": "hardhat deploy --network hardhat",
     "deploy:gnosis": "hardhat deploy --network gnosis --tags BuzzMintFactory",
     "deploy:all:gnosis": "hardhat deploy --network gnosis",
-    "verify:gnosis": "hardhat verify --network gnosis"
+    "verify:gnosis": "hardhat verify --network gnosis",
+    "verify:factory:blockscout": "hardhat verify --network gnosis 0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4",
+    "verify:factory:gnosisscan": "hardhat verify --network gnosisscan 0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4",
+    "verify:factory": "npm run verify:factory:blockscout && npm run verify:factory:gnosisscan",
+    "verify:blockscout": "hardhat verify --network gnosis --force",
+    "verify:contracts": "npx hardhat run scripts/verify-contracts.ts --network gnosis"
   },
   "dependencies": {
     "@lifi/sdk": "3.6.7",
