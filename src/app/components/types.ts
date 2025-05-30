@@ -7,6 +7,12 @@ export type ExecutionStatus = {
   isSuccess?: boolean;
   reference?: string;
   filename?: string;
+  transactionHash?: string;
+  nftContractAddress?: string;
+  collectionName?: string;
+  collectionSymbol?: string;
+  stampId?: string;
+  dataURI?: string;
 };
 
 export type UploadStep = 'idle' | 'ready' | 'uploading' | 'complete';

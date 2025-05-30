@@ -1291,7 +1291,15 @@ const SwapComponent: React.FC = () => {
       });
 
       // Wait for transaction confirmation
-      await publicClient.waitForTransactionReceipt({ hash });
+      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+
+      // Get NFT contract address for this stamp ID
+      const nftContractAddress = await publicClient.readContract({
+        address: BUZZMINT_FACTORY_ADDRESS,
+        abi: BUZZMINT_FACTORY_ABI,
+        functionName: 'getContractAddress',
+        args: [stampId],
+      });
 
       setStatusMessage({
         step: 'Complete',
@@ -1299,6 +1307,10 @@ const SwapComponent: React.FC = () => {
         isSuccess: true,
         reference,
         filename,
+        transactionHash: hash,
+        nftContractAddress: nftContractAddress as string,
+        stampId,
+        dataURI,
       });
       setUploadStep('complete');
     } catch (error) {
@@ -1339,7 +1351,15 @@ const SwapComponent: React.FC = () => {
       });
 
       // Wait for transaction confirmation
-      await publicClient.waitForTransactionReceipt({ hash });
+      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+
+      // Get the newly created NFT contract address
+      const nftContractAddress = await publicClient.readContract({
+        address: BUZZMINT_FACTORY_ADDRESS,
+        abi: BUZZMINT_FACTORY_ABI,
+        functionName: 'getContractAddress',
+        args: [stampId],
+      });
 
       setStatusMessage({
         step: 'Complete',
@@ -1347,6 +1367,12 @@ const SwapComponent: React.FC = () => {
         isSuccess: true,
         reference,
         filename,
+        transactionHash: hash,
+        nftContractAddress: nftContractAddress as string,
+        collectionName,
+        collectionSymbol,
+        stampId,
+        dataURI,
       });
       setUploadStep('complete');
 
@@ -1909,94 +1935,113 @@ const SwapComponent: React.FC = () => {
                 {uploadStep === 'complete' && (
                   <div className={styles.successMessage}>
                     <div className={styles.successIcon}>✓</div>
-                    <h3>Upload Successful!</h3>
-                    <div className={styles.referenceBox}>
-                      <p>Reference:</p>
-                      <div className={styles.referenceCopyWrapper}>
-                        <code
-                          className={styles.referenceCode}
-                          onClick={() => {
-                            navigator.clipboard.writeText(statusMessage.reference || '');
-                            // Show a temporary "Copied!" message by using a data attribute
-                            const codeEl = document.querySelector(`.${styles.referenceCode}`);
-                            if (codeEl) {
-                              codeEl.setAttribute('data-copied', 'true');
-                              setTimeout(() => {
-                                codeEl.setAttribute('data-copied', 'false');
-                              }, 2000);
-                            }
-                          }}
-                          data-copied="false"
-                        >
-                          {statusMessage.reference}
-                        </code>
-                      </div>
-                      <div className={styles.linkButtonsContainer}>
-                        <button
-                          className={`${styles.referenceLink} ${styles.copyLinkButton}`}
-                          onClick={() => {
-                            const url =
-                              statusMessage.filename && !isArchiveFile(statusMessage.filename)
-                                ? `${BEE_GATEWAY_URL}${statusMessage.reference}/${statusMessage.filename}`
-                                : `${BEE_GATEWAY_URL}${statusMessage.reference}/`;
-                            navigator.clipboard.writeText(url);
+                    <h3>NFT Minted Successfully!</h3>
 
-                            // Show a temporary message using a more specific selector
-                            const button = document.querySelector(`.${styles.copyLinkButton}`);
-                            if (button) {
-                              const originalText = button.textContent;
-                              button.textContent = 'Link copied!';
-                              setTimeout(() => {
-                                button.textContent = originalText;
-                              }, 2000);
-                            }
+                    {/* Image Preview */}
+                    {statusMessage.dataURI && (
+                      <div className={styles.imagePreview}>
+                        <img
+                          src={statusMessage.dataURI}
+                          alt={statusMessage.filename || 'Uploaded file'}
+                          className={styles.previewImage}
+                          onError={e => {
+                            // Hide image if it fails to load
+                            (e.target as HTMLImageElement).style.display = 'none';
                           }}
-                        >
-                          Copy link
-                        </button>
-                        <a
-                          href={
-                            statusMessage.filename && !isArchiveFile(statusMessage.filename)
-                              ? `${BEE_GATEWAY_URL}${statusMessage.reference}/${statusMessage.filename}`
-                              : `${BEE_GATEWAY_URL}${statusMessage.reference}/`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.referenceLink}
-                        >
-                          Open link
-                        </a>
+                        />
                       </div>
+                    )}
+
+                    {/* File and Collection Info */}
+                    <div className={styles.nftDetails}>
+                      <div className={styles.detailRow}>
+                        <span className={styles.detailLabel}>File:</span>
+                        <span className={styles.detailValue}>{statusMessage.filename}</span>
+                      </div>
+
+                      {statusMessage.collectionName && (
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Collection:</span>
+                          <span className={styles.detailValue}>{statusMessage.collectionName}</span>
+                        </div>
+                      )}
+
+                      {statusMessage.nftContractAddress && (
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>NFT Contract:</span>
+                          <a
+                            href={`https://gnosisscan.io/address/${statusMessage.nftContractAddress}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.contractLink}
+                          >
+                            {statusMessage.nftContractAddress.slice(0, 6)}...
+                            {statusMessage.nftContractAddress.slice(-4)}
+                          </a>
+                        </div>
+                      )}
                     </div>
 
+                    {/* Action Links */}
+                    <div className={styles.actionLinks}>
+                      {statusMessage.transactionHash && (
+                        <a
+                          href={`https://gnosisscan.io/tx/${statusMessage.transactionHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.scanLink}
+                        >
+                          Scan Link
+                        </a>
+                      )}
+
+                      {statusMessage.dataURI && (
+                        <a
+                          href={statusMessage.dataURI}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.viewLink}
+                        >
+                          View File
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Storage Collection Details */}
                     {uploadStampInfo && (
                       <div className={styles.stampInfoBox}>
                         <h4>Storage Collection Details</h4>
                         <div className={styles.stampDetails}>
                           <div className={styles.stampDetail}>
                             <span>Utilization:</span>
-                            <span>{uploadStampInfo.utilizationPercent?.toFixed(2) || 0}%</span>
+                            <span className={styles.utilizationValue}>
+                              {uploadStampInfo.utilizationPercent?.toFixed(2)}%
+                            </span>
                           </div>
                           <div className={styles.stampDetail}>
                             <span>Total Size:</span>
-                            <span>{uploadStampInfo.totalSize}</span>
+                            <span className={styles.sizeValue}>{uploadStampInfo.totalSize}</span>
                           </div>
                           <div className={styles.stampDetail}>
                             <span>Remaining:</span>
-                            <span>{uploadStampInfo.remainingSize}</span>
+                            <span className={styles.remainingValue}>
+                              {(100 - (uploadStampInfo.utilizationPercent || 0)).toFixed(2)}%
+                            </span>
                           </div>
                           <div className={styles.stampDetail}>
                             <span>Expires in:</span>
-                            <span>{Math.floor(uploadStampInfo.batchTTL / 86400)} days</span>
+                            <span className={styles.expiryValue}>
+                              {Math.floor((uploadStampInfo.batchTTL || 0) / 86400)} days
+                            </span>
                           </div>
                         </div>
+
+                        {/* Utilization Bar */}
                         <div className={styles.utilizationBarContainer}>
                           <div
                             className={styles.utilizationBar}
-                            style={{
-                              width: `${uploadStampInfo.utilizationPercent?.toFixed(2) || 0}%`,
-                            }}
-                          ></div>
+                            style={{ width: `${uploadStampInfo.utilizationPercent || 0}%` }}
+                          />
                         </div>
                       </div>
                     )}

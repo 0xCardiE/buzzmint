@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styles from './css/StampListSection.module.css';
 import { formatUnits } from 'viem';
 import { UploadStep } from './types';
-import { GNOSIS_CUSTOM_REGISTRY_ADDRESS, STORAGE_OPTIONS, REGISTRY_ABI } from './constants';
+import {
+  GNOSIS_CUSTOM_REGISTRY_ADDRESS,
+  STORAGE_OPTIONS,
+  REGISTRY_ABI,
+  BUZZMINT_FACTORY_ADDRESS,
+  BUZZMINT_FACTORY_ABI,
+} from './constants';
 import { createPublicClient, http } from 'viem';
 import { gnosis } from 'viem/chains';
 
@@ -23,6 +29,8 @@ interface BatchEvent {
   timestamp?: number;
   utilization?: number;
   batchTTL?: number;
+  nftContractAddress?: string;
+  collectionName?: string;
 }
 
 interface StampInfo {
@@ -70,6 +78,54 @@ const StampListSection: React.FC<StampListSectionProps> = ({
       }
     };
 
+    // Fetch NFT contract information for a stamp ID
+    const fetchNFTContractInfo = async (
+      stampId: string,
+      client: any
+    ): Promise<{ address?: string; name?: string }> => {
+      try {
+        // Check if NFT contract exists for this stamp ID
+        const [hasContract, contractAddress] = (await client.readContract({
+          address: BUZZMINT_FACTORY_ADDRESS,
+          abi: BUZZMINT_FACTORY_ABI,
+          functionName: 'hasContract',
+          args: [stampId.slice(2)], // Remove 0x prefix for stamp ID
+        })) as [boolean, string];
+
+        if (hasContract && contractAddress !== '0x0000000000000000000000000000000000000000') {
+          // Get collection name from the NFT contract
+          try {
+            const collectionName = await client.readContract({
+              address: contractAddress as `0x${string}`,
+              abi: [
+                {
+                  inputs: [],
+                  name: 'name',
+                  outputs: [{ internalType: 'string', name: '', type: 'string' }],
+                  stateMutability: 'view',
+                  type: 'function',
+                },
+              ],
+              functionName: 'name',
+            });
+
+            return {
+              address: contractAddress,
+              name: collectionName as string,
+            };
+          } catch (error) {
+            console.error('Error fetching collection name:', error);
+            return { address: contractAddress };
+          }
+        }
+
+        return {};
+      } catch (error) {
+        console.error('Error fetching NFT contract info:', error);
+        return {};
+      }
+    };
+
     const fetchCollections = async () => {
       if (!address) {
         setIsLoading(false);
@@ -103,6 +159,9 @@ const StampListSection: React.FC<StampListSectionProps> = ({
 
           const depth = Number(batch.depth);
 
+          // Fetch NFT contract information
+          const nftInfo = await fetchNFTContractInfo(batchId, client);
+
           return {
             batchId,
             totalAmount: formatUnits(batch.totalAmount, 16),
@@ -111,6 +170,8 @@ const StampListSection: React.FC<StampListSectionProps> = ({
             timestamp: Number(batch.timestamp),
             utilization: collectionInfo.utilization,
             batchTTL: collectionInfo.batchTTL,
+            nftContractAddress: nftInfo.address,
+            collectionName: nftInfo.name,
           };
         });
 
@@ -177,6 +238,29 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                 >
                   ID: {stamp.batchId.startsWith('0x') ? stamp.batchId.slice(2) : stamp.batchId}
                 </div>
+
+                {/* NFT Collection Info */}
+                {stamp.nftContractAddress && (
+                  <div className={styles.nftCollectionInfo}>
+                    <div className={styles.collectionName}>
+                      <span className={styles.nftLabel}>NFT Collection:</span>
+                      <strong>{stamp.collectionName || 'Unnamed Collection'}</strong>
+                    </div>
+                    <div className={styles.contractAddress}>
+                      <span className={styles.nftLabel}>Contract:</span>
+                      <a
+                        href={`https://gnosisscan.io/address/${stamp.nftContractAddress}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.contractLink}
+                      >
+                        {stamp.nftContractAddress.slice(0, 6)}...
+                        {stamp.nftContractAddress.slice(-4)}
+                      </a>
+                    </div>
+                  </div>
+                )}
+
                 <div className={styles.stampListDetails}>
                   <div>
                     <span>Paid</span>

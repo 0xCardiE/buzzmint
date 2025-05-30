@@ -201,3 +201,50 @@
   box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3);
   transform: translateY(-1px);
 }
+
+/* NFT Collection Info Styles */
+.nftCollectionInfo {
+  background-color: rgba(255, 107, 107, 0.05);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+  margin: 8px 0;
+}
+
+.collectionName {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.contractAddress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nftLabel {
+  font-size: 12px;
+  color: #6C757D;
+  font-weight: 500;
+}
+
+.collectionName strong {
+  color: #2C3E50;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.contractLink {
+  color: #FF6B6B;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+
+.contractLink:hover {
+  color: #FF5252;
+  text-decoration: underline;
+}

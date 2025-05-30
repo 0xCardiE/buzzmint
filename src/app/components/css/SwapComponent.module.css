@@ -409,12 +409,235 @@
 
 .successMessage {
   text-align: center;
+  padding: 20px;
 }
 
 .successIcon {
   font-size: 48px;
   color: #3fb950;
   margin-bottom: 15px;
+}
+
+.successMessage h3 {
+  color: #2C3E50;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Image Preview */
+.imagePreview {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.previewImage {
+  max-width: 300px;
+  max-height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+/* NFT Details */
+.nftDetails {
+  background-color: #F8F9FA;
+  border: 1px solid #E9ECEF;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.detailRow:last-child {
+  margin-bottom: 0;
+}
+
+.detailLabel {
+  font-weight: 600;
+  color: #6C757D;
+  font-size: 14px;
+}
+
+.detailValue {
+  color: #2C3E50;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.contractLink {
+  color: #FF6B6B;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.contractLink:hover {
+  color: #FF5252;
+  text-decoration: underline;
+}
+
+/* Action Links */
+.actionLinks {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.scanLink,
+.viewLink {
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+  min-width: 120px;
+  text-align: center;
+}
+
+.scanLink {
+  background-color: #FF6B6B;
+  color: #FFFFFF;
+  border: 2px solid #FF6B6B;
+}
+
+.scanLink:hover {
+  background-color: #FF5252;
+  border-color: #FF5252;
+}
+
+.viewLink {
+  background-color: #FFFFFF;
+  color: #FF6B6B;
+  border: 2px solid #FF6B6B;
+}
+
+.viewLink:hover {
+  background-color: #FF6B6B;
+  color: #FFFFFF;
+}
+
+/* Enhanced Stamp Info Box */
+.stampInfoBox {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.stampInfoBox h4 {
+  color: #FFFFFF;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.stampDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stampDetail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stampDetail span:first-child {
+  color: #8B949E;
+  font-size: 13px;
+}
+
+.utilizationValue {
+  color: #FF6B6B !important;
+  font-weight: 600 !important;
+}
+
+.sizeValue {
+  color: #4ECDC4 !important;
+  font-weight: 600 !important;
+}
+
+.remainingValue {
+  color: #3fb950 !important;
+  font-weight: 600 !important;
+}
+
+.expiryValue {
+  color: #FFA500 !important;
+  font-weight: 600 !important;
+}
+
+.utilizationBarContainer {
+  height: 6px;
+  width: 100%;
+  background-color: #21262d;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.utilizationBar {
+  height: 100%;
+  background: linear-gradient(90deg, #4ECDC4, #FF6B6B);
+  transition: width 0.3s ease;
+}
+
+.closeSuccessButton {
+  padding: 12px 24px;
+  background-color: #FF6B6B;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 20px;
+}
+
+.closeSuccessButton:hover {
+  background-color: #FF5252;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .previewImage {
+    max-width: 250px;
+    max-height: 150px;
+  }
+  
+  .actionLinks {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .scanLink,
+  .viewLink {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .stampDetails {
+    grid-template-columns: 1fr;
+  }
+  
+  .nftDetails {
+    padding: 12px;
+  }
 }
 
 .referenceBox {
@@ -504,21 +727,6 @@
   background-color: #ff7a00;
   color: #ffffff;
   text-decoration: none;
-}
-
-.closeSuccessButton {
-  padding: 12px 24px;
-  background-color: #ff7a00;
-  border: none;
-  border-radius: 8px;
-  color: #ffffff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.closeSuccessButton:hover {
-  background-color: #e56e00;
 }
 
 /* Chain and token dropdowns */
