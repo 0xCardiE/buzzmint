@@ -27,6 +27,8 @@ import {
   LIFI_API_KEY,
   DISABLE_MESSAGE_SIGNING,
   ACCEPT_EXCHANGE_RATE_UPDATES,
+  BUZZMINT_FACTORY_ADDRESS,
+  BUZZMINT_FACTORY_ABI,
 } from './constants';
 
 import HelpSection from './HelpSection';
@@ -1167,6 +1169,37 @@ const SwapComponent: React.FC = () => {
     localStorage.setItem('uploadHistory', JSON.stringify(history));
   };
 
+  // Add new state for collection creation workflow
+  const [showCollectionForm, setShowCollectionForm] = useState(false);
+  const [collectionName, setCollectionName] = useState('');
+  const [collectionSymbol, setCollectionSymbol] = useState('');
+  const [pendingUploadData, setPendingUploadData] = useState<{
+    reference: string;
+    filename: string;
+    stampId: string;
+  } | null>(null);
+
+  // New function to check if collection exists for stamp ID
+  const checkCollectionExists = async (stampId: string): Promise<boolean> => {
+    if (!publicClient) return false;
+
+    try {
+      // Check if contract exists for this stamp ID
+      const [hasContract] = (await publicClient.readContract({
+        address: BUZZMINT_FACTORY_ADDRESS,
+        abi: BUZZMINT_FACTORY_ABI,
+        functionName: 'hasContract',
+        args: [stampId],
+      })) as [boolean, string];
+
+      return hasContract;
+    } catch (error) {
+      console.error('Error checking collection existence:', error);
+      return false;
+    }
+  };
+
+  // Modified upload function to handle collection workflow
   const handleFileUpload = async () => {
     if (!selectedFile || !postageBatchId || !walletClient || !publicClient) {
       console.error('Missing file, postage batch ID, or wallet');
@@ -1182,7 +1215,8 @@ const SwapComponent: React.FC = () => {
     setUploadStep('uploading');
 
     try {
-      await uploadFile({
+      // First upload the file to get the reference
+      const reference = await uploadFile({
         selectedFile,
         postageBatchId,
         walletClient,
@@ -1202,6 +1236,26 @@ const SwapComponent: React.FC = () => {
         setUploadStampInfo,
         saveUploadReference,
       });
+
+      if (reference) {
+        // Check if collection exists for this stamp ID
+        const collectionExists = await checkCollectionExists(postageBatchId);
+
+        if (!collectionExists) {
+          // First upload - show collection creation form
+          setPendingUploadData({
+            reference,
+            filename: selectedFile.name,
+            stampId: postageBatchId,
+          });
+          setShowCollectionForm(true);
+          setUploadStep('idle');
+          setIsLoading(false);
+        } else {
+          // Collection exists - proceed directly to minting
+          await mintToExistingCollection(reference, selectedFile.name, postageBatchId);
+        }
+      }
     } catch (error) {
       console.error('Upload error:', error);
       setStatusMessage({
@@ -1213,6 +1267,104 @@ const SwapComponent: React.FC = () => {
       setUploadStep('idle');
       setUploadProgress(0);
       setIsDistributing(false);
+    }
+  };
+
+  // Function to mint to existing collection
+  const mintToExistingCollection = async (reference: string, filename: string, stampId: string) => {
+    if (!walletClient || !publicClient) return;
+
+    try {
+      setStatusMessage({
+        step: 'Minting',
+        message: 'Minting NFT to existing collection...',
+      });
+
+      const dataURI = `https://bzz.link/bzz/${reference}`;
+
+      // Call mintNFT function on factory contract
+      const hash = await walletClient.writeContract({
+        address: BUZZMINT_FACTORY_ADDRESS,
+        abi: BUZZMINT_FACTORY_ABI,
+        functionName: 'mintNFT',
+        args: [stampId, filename, dataURI, '', ''], // Empty name/symbol for existing collection
+      });
+
+      // Wait for transaction confirmation
+      await publicClient.waitForTransactionReceipt({ hash });
+
+      setStatusMessage({
+        step: 'Complete',
+        message: 'NFT minted successfully!',
+        isSuccess: true,
+        reference,
+        filename,
+      });
+      setUploadStep('complete');
+    } catch (error) {
+      console.error('Minting error:', error);
+      setStatusMessage({
+        step: 'Error',
+        message: 'Minting failed',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        isError: true,
+      });
+    }
+  };
+
+  // Function to create collection and mint first NFT
+  const handleCollectionCreation = async () => {
+    if (!pendingUploadData || !walletClient || !publicClient) return;
+
+    try {
+      setIsLoading(true);
+      setShowCollectionForm(false);
+      setShowOverlay(true);
+      setUploadStep('uploading');
+
+      setStatusMessage({
+        step: 'Creating',
+        message: 'Creating collection and minting first NFT...',
+      });
+
+      const { reference, filename, stampId } = pendingUploadData;
+      const dataURI = `https://bzz.link/bzz/${reference}`;
+
+      // Call createContractAndMint function on factory contract
+      const hash = await walletClient.writeContract({
+        address: BUZZMINT_FACTORY_ADDRESS,
+        abi: BUZZMINT_FACTORY_ABI,
+        functionName: 'createContractAndMint',
+        args: [stampId, filename, dataURI, collectionName, collectionSymbol],
+      });
+
+      // Wait for transaction confirmation
+      await publicClient.waitForTransactionReceipt({ hash });
+
+      setStatusMessage({
+        step: 'Complete',
+        message: 'Collection created and NFT minted successfully!',
+        isSuccess: true,
+        reference,
+        filename,
+      });
+      setUploadStep('complete');
+
+      // Reset form state
+      setPendingUploadData(null);
+      setCollectionName('');
+      setCollectionSymbol('');
+    } catch (error) {
+      console.error('Collection creation error:', error);
+      setStatusMessage({
+        step: 'Error',
+        message: 'Collection creation failed',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        isError: true,
+      });
+      setUploadStep('idle');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -1622,8 +1774,8 @@ const SwapComponent: React.FC = () => {
                         : 'Upload File'}
                     </h3>
                     <div className={styles.uploadWarning}>
-                      Warning: Adding first image will take more time as it will trigger storage
-                      creation and NFT smart contract creation
+                      Warning: After uploading, you'll be prompted to create your NFT collection if
+                      this is your first upload to this storage collection.
                     </div>
                     {statusMessage.step === 'waiting_creation' ||
                     statusMessage.step === 'waiting_usable' ? (
@@ -1953,6 +2105,94 @@ const SwapComponent: React.FC = () => {
       ) : showUploadHistory ? (
         <UploadHistorySection address={address} setShowUploadHistory={setShowUploadHistory} />
       ) : null}
+
+      {/* Collection Creation Form Modal */}
+      {showCollectionForm && (
+        <div className={styles.overlay}>
+          <div className={styles.statusBox}>
+            <button
+              className={styles.closeButton}
+              onClick={() => {
+                setShowCollectionForm(false);
+                setPendingUploadData(null);
+                setCollectionName('');
+                setCollectionSymbol('');
+              }}
+            >
+              ×
+            </button>
+
+            <h3 className={styles.uploadTitle}>Create NFT Collection</h3>
+            <p className={styles.collectionDescription}>
+              This is your first upload to this storage collection. Please provide details for your
+              NFT collection:
+            </p>
+
+            <div className={styles.collectionForm}>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Collection Name</label>
+                <input
+                  type="text"
+                  value={collectionName}
+                  onChange={e => setCollectionName(e.target.value)}
+                  placeholder="e.g., My AI Art Collection"
+                  className={styles.input}
+                  maxLength={50}
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Collection Symbol</label>
+                <input
+                  type="text"
+                  value={collectionSymbol}
+                  onChange={e => setCollectionSymbol(e.target.value.toUpperCase())}
+                  placeholder="e.g., MYART"
+                  className={styles.input}
+                  maxLength={10}
+                />
+              </div>
+
+              <div className={styles.collectionInfo}>
+                <p>
+                  <strong>File:</strong> {pendingUploadData?.filename}
+                </p>
+                <p>
+                  <strong>Storage ID:</strong> {pendingUploadData?.stampId?.slice(0, 8)}...
+                  {pendingUploadData?.stampId?.slice(-4)}
+                </p>
+                <p>
+                  <strong>Data URI:</strong> https://bzz.link/bzz/{pendingUploadData?.reference}
+                </p>
+              </div>
+
+              <div className={styles.buttonGroup}>
+                <button
+                  onClick={handleCollectionCreation}
+                  disabled={!collectionName.trim() || !collectionSymbol.trim()}
+                  className={`${styles.button} ${!collectionName.trim() || !collectionSymbol.trim() ? styles.buttonDisabled : ''}`}
+                >
+                  Create Collection & Mint NFT
+                </button>
+
+                <button
+                  onClick={() => {
+                    // Use default values
+                    setCollectionName(
+                      `BuzzMint Collection - ${pendingUploadData?.stampId?.slice(0, 8)}`
+                    );
+                    setCollectionSymbol(`BUZZ-${pendingUploadData?.stampId?.slice(0, 6)}`);
+                    setTimeout(() => handleCollectionCreation(), 100);
+                  }}
+                  className={`${styles.button} ${styles.secondaryButton}`}
+                >
+                  Use Default Names
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

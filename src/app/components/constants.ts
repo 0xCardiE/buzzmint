@@ -182,3 +182,197 @@ export const REGISTRY_ABI = [
     type: 'function',
   },
 ] as const;
+
+// BuzzMint Factory Contract
+export const BUZZMINT_FACTORY_ADDRESS = '0xEEF13Ef9eD9cDD169701eeF3cd832df298dD1bB4' as const;
+
+export const BUZZMINT_FACTORY_ABI = [
+  {
+    inputs: [],
+    name: 'BuzzMintCollectionFactory',
+    type: 'constructor',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'stampId',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'fileName',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'dataURI',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'name',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'symbol',
+        type: 'string',
+      },
+    ],
+    name: 'createContractAndMint',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'stampId',
+        type: 'string',
+      },
+    ],
+    name: 'getContractAddress',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'stampId',
+        type: 'string',
+      },
+    ],
+    name: 'hasContract',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: 'stampId',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'fileName',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'dataURI',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'name',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'symbol',
+        type: 'string',
+      },
+    ],
+    name: 'mintNFT',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    name: 'stampIdToContract',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    name: 'stampIdToOwner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+    ],
+    name: 'getUserStampIds',
+    outputs: [
+      {
+        internalType: 'string[]',
+        name: '',
+        type: 'string[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const;

@@ -303,26 +303,14 @@ export const handleFileUpload = async (params: FileUploadParams): Promise<string
 
     console.log('Upload successful, reference:', parsedReference);
 
+    // Don't set completion states here - let the calling component handle the workflow
     setStatusMessage({
-      step: 'Complete',
-      message: `Upload Successful. Reference: ${parsedReference.reference.slice(
-        0,
-        6
-      )}...${parsedReference.reference.slice(-4)}`,
-      isSuccess: true,
+      step: 'Uploaded',
+      message: 'File uploaded successfully. Processing...',
+      isSuccess: false, // Don't show as complete yet
       reference: parsedReference.reference,
       filename: processedFile?.name,
     });
-
-    setUploadStep('complete');
-    setSelectedDays(null);
-    setTimeout(() => {
-      setUploadStep('idle');
-      setShowOverlay(false);
-      setIsLoading(false);
-      setUploadProgress(0);
-      setIsDistributing(false);
-    }, 900000);
 
     if (parsedReference.reference) {
       try {
