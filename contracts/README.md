@@ -1,64 +1,121 @@
-# StampsRegistry Smart Contract
+# BuzzMint Smart Contracts
 
-This directory contains the StampsRegistry smart contract, which provides a registry for Swarm Postage Stamps.
+This directory contains the smart contracts for the BuzzMint AI-powered NFT platform.
 
-## Overview
+## Contracts
 
-The StampsRegistry contract allows users to create and manage batches of stamps for the Swarm network. It serves as a registry that tracks ownership and provides methods for retrieving batch information.
+### BuzzMintCollectionFactory.sol
 
-## Deployment with Hardhat
+The factory contract responsible for:
+
+- Deploying individual NFT collection contracts for users
+- Managing user-to-contract mappings
+- Minting NFTs through the factory pattern
+- Preventing duplicate minting of the same data URI
+
+### BuzzMintCollection.sol
+
+The individual NFT collection contract that:
+
+- Extends ERC721A for gas-efficient batch minting
+- Stores on-chain metadata with BuzzMint branding
+- Tracks minted references to prevent duplicates
+- Generates Base64-encoded JSON metadata
+
+### StampsRegistry.sol
+
+Registry contract for managing Swarm postage stamps (storage collections).
+
+## Deployment
 
 ### Prerequisites
 
-1. Node.js and npm installed
-2. Hardhat and required dependencies installed:
-   ```bash
-   npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox @nomicfoundation/hardhat-verify @nomicfoundation/hardhat-ethers hardhat-deploy ethers@^6.0.0 dotenv
+1. Set up environment variables in `.env`:
+   ```
+   WALLET_SECRET=your_private_key
+   PRIVATE_RPC_MAINNET=https://gnosis-rpc.publicnode.com
+   MAINNET_ETHERSCAN_KEY=your_gnosisscan_api_key
    ```
 
-### Environment Variables
+### Deploy to Gnosis Chain
 
-Create a `.env.local` file in the project root with the following variables:
+1. **Compile contracts:**
 
-```
-# Hardhat Deployment
-DEPLOYER_PRIVATE_KEY=your_private_key_here
-GNOSIS_RPC_URL=https://gnosis-rpc.publicnode.com
-GNOSIS_API_KEY=your_gnosisscan_api_key_here
-SWARM_CONTRACT_ADDRESS=0x45a1502382541Cd610CC9068e88727426b696293
-```
+   ```bash
+   npm run compile
+   ```
 
-### Deployment Commands
+2. **Deploy BuzzMint Factory only:**
 
-To deploy to Gnosis Chain:
+   ```bash
+   npm run deploy:gnosis
+   ```
+
+3. **Deploy all contracts:**
+
+   ```bash
+   npm run deploy:all:gnosis
+   ```
+
+4. **Verify contracts (optional):**
+   ```bash
+   npm run verify:gnosis
+   ```
+
+### Local Development
+
+Deploy to local Hardhat network:
 
 ```bash
-npx hardhat deploy --network gnosis --tags StampsRegistry
+npm run deploy:local
 ```
 
-The deployment script will:
+## Contract Addresses
 
-1. Deploy the StampsRegistry contract
-2. Automatically verify the contract on GnosisScan (if API key is provided)
+After deployment, contract addresses will be saved in `deployments/gnosis/` directory.
 
-### Verification
+## Usage
 
-If the automatic verification fails, you can manually verify the contract:
+### Creating a Collection and Minting First NFT
 
-```bash
-npx hardhat verify --network gnosis DEPLOYED_CONTRACT_ADDRESS SWARM_CONTRACT_ADDRESS
+```solidity
+// Call the factory to create collection and mint first NFT
+(address collectionAddress, uint256 tokenId) = factory.createContractAndMint(
+    "My First NFT",           // fileName
+    "bzz://abc123...",        // dataURI from Swarm
+    "My BuzzMint Collection", // collection name (optional)
+    "BUZZ"                    // collection symbol (optional)
+);
 ```
 
-## Contract Interaction
+### Minting Additional NFTs
 
-Once deployed, you can interact with the contract using the following functions:
+```solidity
+// Mint additional NFTs to existing collection
+uint256 tokenId = factory.mintNFT(
+    "My Second NFT",     // fileName
+    "bzz://def456..."    // dataURI from Swarm
+);
+```
 
-1. `createBatchRegistry`: Create a new batch of stamps
-2. `getOwnerBatches`: Get all batches for a specific owner
-3. `getOwnerBatchCount`: Get the count of batches for a specific owner
-4. `getBatchPayer`: Get the payer address for a specific batch ID
-5. `updateSwarmContract`: Update the Swarm contract address (admin only)
+### Checking if Data Already Minted
 
-## Notes
+```solidity
+bool alreadyMinted = factory.isReferenceMinted(userAddress, "bzz://abc123...");
+```
 
-The terms "Batch" and "Stamps" are used interchangeably throughout the codebase. "Batch" refers to a collection of stamps created in a single transaction and is the terminology used in the Swarm protocol, while "Stamps" is a more user-friendly term used to describe the same concept.
+## Features
+
+- **Gas Efficient**: Uses ERC721A for optimized batch minting
+- **Duplicate Prevention**: Prevents minting the same data URI twice
+- **On-chain Metadata**: Stores metadata directly on-chain with Base64 encoding
+- **Factory Pattern**: One factory deploys individual collections per user
+- **BuzzMint Branding**: Metadata includes BuzzMint platform attribution
+- **Swarm Integration**: Designed to work with Swarm storage URIs
+
+## Security
+
+- Factory-only minting prevents unauthorized NFT creation
+- Owner controls for emergency functions
+- Reference tracking prevents duplicate minting
+- Proper access controls on all functions

@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "compile": "hardhat compile",
+    "deploy:local": "hardhat deploy --network hardhat",
+    "deploy:gnosis": "hardhat deploy --network gnosis --tags BuzzMintFactory",
+    "deploy:all:gnosis": "hardhat deploy --network gnosis",
+    "verify:gnosis": "hardhat verify --network gnosis"
   },
   "dependencies": {
     "@lifi/sdk": "3.6.7",
@@ -35,12 +40,14 @@
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.13",
+    "@openzeppelin/contracts": "^5.1.0",
     "@types/node": "^20.17.30",
     "@types/pako": "^2.0.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/tar-js": "^0.3.5",
     "dotenv": "^16.5.0",
+    "erc721a": "^4.3.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "eslint-config-prettier": "^10.1.3",

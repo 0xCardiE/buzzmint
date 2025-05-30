@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.23;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "./MyNFTCollection.sol";
+import "./BuzzMintCollection.sol";
 
 /**
- * @title MyNFTCollectionFactory
- * @dev Factory contract for deploying and managing MyNFTCollection contracts
+ * @title BuzzMintCollectionFactory
+ * @dev Factory contract for deploying and managing BuzzMintCollection contracts
  */
-contract MyNFTCollectionFactory is Ownable {
+contract BuzzMintCollectionFactory is Ownable {
     // Mapping from user address to their NFT contract address
     mapping(address => address) public userContracts;
     
     // Default NFT collection name and symbol prefixes
-    string private constant NAME_PREFIX = "Data Collection - ";
-    string private constant SYMBOL_PREFIX = "DATA-";
+    string private constant NAME_PREFIX = "BuzzMint Collection - ";
+    string private constant SYMBOL_PREFIX = "BUZZ-";
     
     // Events
     event ContractCreated(address indexed user, address contractAddress, string name, string symbol);
@@ -27,7 +27,7 @@ contract MyNFTCollectionFactory is Ownable {
     constructor() Ownable(msg.sender) {}
     
     /**
-     * @dev Creates a new MyNFTCollection contract for a user
+     * @dev Creates a new BuzzMintCollection contract for a user
      * @param name The name of the NFT collection
      * @param symbol The symbol of the NFT collection
      * @return The address of the newly created contract
@@ -35,8 +35,8 @@ contract MyNFTCollectionFactory is Ownable {
     function createContract(string memory name, string memory symbol) public returns (address) {
         require(userContracts[msg.sender] == address(0), "Contract already exists for this address");
         
-        // Create a new MyNFTCollection contract
-        MyNFTCollection newContract = new MyNFTCollection(name, symbol, msg.sender);
+        // Create a new BuzzMintCollection contract
+        BuzzMintCollection newContract = new BuzzMintCollection(name, symbol, msg.sender);
         address contractAddress = address(newContract);
         
         // Register the contract in the mapping
@@ -66,8 +66,8 @@ contract MyNFTCollectionFactory is Ownable {
         string memory finalSymbol = bytes(symbol).length > 0 ? 
             symbol : string(abi.encodePacked(SYMBOL_PREFIX, Strings.toHexString(uint160(userAddress) & 0xFFFFFF, 6)));
         
-        // Create a new MyNFTCollection contract
-        MyNFTCollection newContract = new MyNFTCollection(finalName, finalSymbol, userAddress);
+        // Create a new BuzzMintCollection contract
+        BuzzMintCollection newContract = new BuzzMintCollection(finalName, finalSymbol, userAddress);
         address contractAddress = address(newContract);
         
         // Register the contract in the mapping
@@ -90,7 +90,7 @@ contract MyNFTCollectionFactory is Ownable {
             return false;
         }
         
-        MyNFTCollection userContract = MyNFTCollection(contractAddress);
+        BuzzMintCollection userContract = BuzzMintCollection(contractAddress);
         return userContract.isReferenceMinted(dataURI);
     }
     
@@ -114,7 +114,7 @@ contract MyNFTCollectionFactory is Ownable {
         address contractAddress = _createContractForUser(msg.sender, name, symbol);
         
         // Mint the first NFT
-        MyNFTCollection userContract = MyNFTCollection(contractAddress);
+        BuzzMintCollection userContract = BuzzMintCollection(contractAddress);
         uint256 tokenId = userContract.mint(msg.sender, fileName, dataURI);
         
         emit NFTMinted(msg.sender, contractAddress, tokenId, fileName, dataURI);
@@ -133,7 +133,7 @@ contract MyNFTCollectionFactory is Ownable {
         require(contractAddress != address(0), "No contract exists for this address");
         
         // Get the user's NFT contract
-        MyNFTCollection userContract = MyNFTCollection(contractAddress);
+        BuzzMintCollection userContract = BuzzMintCollection(contractAddress);
         
         // Check if this reference has already been minted
         require(!userContract.isReferenceMinted(dataURI), "This data has already been minted as an NFT");

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.23;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -7,10 +7,10 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
 /**
- * @title MyNFTCollection
- * @dev ERC721A NFT contract for minting data NFTs with on-chain metadata
+ * @title BuzzMintCollection
+ * @dev ERC721A NFT contract for minting AI-powered NFTs with on-chain metadata
  */
-contract MyNFTCollection is ERC721A, Ownable {
+contract BuzzMintCollection is ERC721A, Ownable {
     using Strings for uint256;
     
     // Mapping from token ID to data URI
@@ -26,7 +26,7 @@ contract MyNFTCollection is ERC721A, Ownable {
     address public factoryAddress;
     
     // Event emitted when a new NFT is minted
-    event DataNFTMinted(address indexed to, uint256 tokenId, string fileName, string dataURI);
+    event BuzzMintNFTMinted(address indexed to, uint256 tokenId, string fileName, string dataURI);
     
     /**
      * @dev Constructor
@@ -89,7 +89,7 @@ contract MyNFTCollection is ERC721A, Ownable {
         _dataURIs[tokenId] = _dataURI;
         _fileNames[tokenId] = _fileName;
         
-        emit DataNFTMinted(to, tokenId, _fileName, _dataURI);
+        emit BuzzMintNFTMinted(to, tokenId, _fileName, _dataURI);
         
         return tokenId;
     }
@@ -135,11 +135,11 @@ contract MyNFTCollection is ERC721A, Ownable {
             abi.encodePacked(
                 '{"name":"', 
                 name,
-                '","description":"Data NFT minted from Honey Store","image":"', 
+                '","description":"AI-powered NFT created with BuzzMint","image":"', 
                 image,
                 '","attributes":[{"trait_type":"Token ID","value":"',
                 tokenId.toString(),
-                '"}]}'
+                '"},{"trait_type":"Platform","value":"BuzzMint"}]}'
             )
         );
     }
