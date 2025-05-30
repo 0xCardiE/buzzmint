@@ -238,7 +238,24 @@ const SwapComponent: React.FC = () => {
       try {
         setIsChainsLoading(true);
         const chains = await getChains({ chainTypes: [ChainType.EVM] });
-        setAvailableChains(chains);
+
+        // Define the allowed chain IDs for buzzMint
+        const allowedChainIds = [
+          1, // Ethereum Mainnet
+          100, // Gnosis
+          42161, // Arbitrum One
+          10, // Optimism
+          8453, // Base
+          137, // Polygon
+          30, // Rootstock
+          2741, // Abstract
+          80094, // Berachain
+        ];
+
+        // Filter chains to only include the allowed ones
+        const filteredChains = chains.filter(chain => allowedChainIds.includes(chain.id));
+
+        setAvailableChains(filteredChains);
       } catch (error) {
         console.error('Error fetching chains:', error);
       } finally {

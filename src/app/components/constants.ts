@@ -54,7 +54,7 @@ export const ACCEPT_EXCHANGE_RATE_UPDATES = true;
 // Define the simplified storage options for buzzMint
 export const STORAGE_OPTIONS: StorageOption[] = [
   { depth: 19, size: 'Pixel Art', description: '~100 MB' },
-  { depth: 20, size: 'Medium', description: '~600 MB' },
+  { depth: 20, size: 'Standard', description: '~600 MB' },
   { depth: 21, size: 'HQ', description: '~2 GB' },
 ];
 
