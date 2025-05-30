@@ -234,6 +234,11 @@
   color: #2C3E50;
   font-size: 14px;
   font-weight: 600;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .contractLink {
@@ -247,4 +252,45 @@
 .contractLink:hover {
   color: #FF5252;
   text-decoration: underline;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .stampListContent {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .stampListItem {
+    padding: 16px;
+  }
+
+  .stampListDetails {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .stampActions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .topUpButton {
+    width: 100%;
+  }
+
+  .collectionName strong {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .collectionName strong {
+    max-width: 150px;
+  }
+
+  .stampListId {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }

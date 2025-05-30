@@ -1635,7 +1635,7 @@ const SwapComponent: React.FC = () => {
                 className={styles.label}
                 data-tooltip="Storage collections are used to pay to store and host data in Swarm"
               >
-                Storage collections
+                Storage size
               </label>
               <div className={styles.sizeButtonGroup}>
                 {STORAGE_OPTIONS.map(({ depth, size, description }) => (

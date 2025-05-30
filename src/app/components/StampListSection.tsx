@@ -244,7 +244,9 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                   <div className={styles.nftCollectionInfo}>
                     <div className={styles.collectionName}>
                       <span className={styles.nftLabel}>NFT Collection:</span>
-                      <strong>{stamp.collectionName || 'Unnamed Collection'}</strong>
+                      <strong title={stamp.collectionName || 'Unnamed Collection'}>
+                        {stamp.collectionName || 'Unnamed Collection'}
+                      </strong>
                     </div>
                     <div className={styles.contractAddress}>
                       <span className={styles.nftLabel}>Contract:</span>

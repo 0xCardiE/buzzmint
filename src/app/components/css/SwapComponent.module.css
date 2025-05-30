@@ -479,22 +479,25 @@
   word-break: break-all;
   /* Show full text on hover */
   position: relative;
+  cursor: pointer;
 }
 
 .detailValue:hover {
   overflow: visible;
   white-space: normal;
   word-break: break-word;
-  background-color: #FFFFFF;
+  background-color: #2C3E50;
+  color: #FFFFFF;
   border: 1px solid #E9ECEF;
   border-radius: 4px;
   padding: 4px 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 100%;
   min-width: 200px;
+  margin-top: 2px;
 }
 
 .contractLink {
@@ -653,51 +656,51 @@
     max-width: 250px;
     max-height: 150px;
   }
-  
+
   .actionLinks {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .scanLink,
   .viewLink {
     min-width: auto;
   }
-  
+
   .stampDetails {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
+
   .nftDetails {
     padding: 12px;
   }
-  
+
   .detailValue {
     max-width: 150px;
   }
-  
+
   .detailValue:hover {
     min-width: 150px;
     position: fixed;
     right: 10px;
     top: auto;
   }
-  
+
   .stampInfoBox {
     padding: 16px;
     margin: 16px 0;
   }
-  
+
   .stampInfoBox h4 {
     font-size: 16px;
     margin-bottom: 12px;
   }
-  
+
   .stampDetail {
     padding: 6px 0;
   }
-  
+
   .stampDetail span:first-child,
   .utilizationValue,
   .sizeValue,
@@ -1407,58 +1410,6 @@
     top: 50%;
     left: 10%;
   }
-}
-
-.stampInfoBox {
-  margin: 20px 0;
-  padding: 15px;
-  background-color: #161b22;
-  border-radius: 8px;
-  border: 1px solid #30363d;
-  text-align: left;
-}
-
-.stampInfoBox h4 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 16px;
-  color: #ffffff;
-}
-
-.stampDetails {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.stampDetail {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-}
-
-.stampDetail span:first-child {
-  color: #8b949e;
-}
-
-.stampDetail span:last-child {
-  font-weight: 500;
-}
-
-.utilizationBarContainer {
-  height: 6px;
-  width: 100%;
-  background-color: #1e2328;
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 15px;
-}
-
-.utilizationBar {
-  height: 100%;
-  background-color: #ff7a00;
-  transition: width 0.3s ease;
 }
 
 .linkButtonsContainer {
