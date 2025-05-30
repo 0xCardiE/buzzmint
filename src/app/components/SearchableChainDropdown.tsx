@@ -7,12 +7,13 @@ const PRIORITY_CHAINS = [
   100, // Gnosis (DAI) - First priority as it's the destination chain
   1, // Ethereum Mainnet
   8453, // Base
-  42161, // Arbitrum
+  30, // Rootstock - 4th in order as requested
+  42161, // Arbitrum One
   10, // Optimism
-  43114, // Avalanche
-  56, // Binance Smart Chain
   137, // Polygon
-]; // Prioritize Gnosis and other major chains
+  2741, // Abstract
+  80094, // Berachain
+]; // Prioritize chains for buzzMint
 
 export interface ChainDropdownProps {
   selectedChainId: number;
