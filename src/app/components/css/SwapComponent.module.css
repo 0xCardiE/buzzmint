@@ -701,13 +701,13 @@
 .tabContainer {
   display: flex;
   margin-bottom: 24px;
-  border-bottom: 1px solid #1e2328;
+  border-bottom: 1px solid #E9ECEF;
 }
 
 .tabButton {
   background: transparent;
   border: none;
-  color: #8b949e;
+  color: #6C757D;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
@@ -716,12 +716,12 @@
 }
 
 .tabButton:hover {
-  color: #ffffff;
+  color: #2C3E50;
 }
 
 .activeTab {
-  color: #ffffff;
-  font-weight: 500;
+  color: #FF6B6B;
+  font-weight: 600;
 }
 
 .activeTab::after {
@@ -730,8 +730,9 @@
   bottom: -1px;
   left: 0;
   right: 0;
-  height: 2px;
-  background-color: #ff7a00;
+  height: 3px;
+  background-color: #FF6B6B;
+  border-radius: 2px 2px 0 0;
 }
 
 .buttonDisabled {
