@@ -20,7 +20,7 @@ const buzzMintTheme: Theme = {
     // Connect button styling
     connectButtonBackground: '#FF6B6B',
     connectButtonBackgroundError: '#DC3545',
-    connectButtonInnerBackground: '#FFFFFF',
+    connectButtonInnerBackground: '#F8F9FA',
     connectButtonText: '#FFFFFF',
     connectButtonTextError: '#FFFFFF',
 
@@ -43,9 +43,9 @@ const buzzMintTheme: Theme = {
     actionButtonSecondaryBackground: '#F8F9FA',
 
     // Profile and account modal
-    profileAction: '#FFFFFF',
-    profileActionHover: '#F8F9FA',
-    profileForeground: '#FFFFFF',
+    profileAction: '#F8F9FA',
+    profileActionHover: '#E9ECEF',
+    profileForeground: '#F8F9FA',
 
     // Selection and interaction states
     selectedOptionBorder: '#FF6B6B',

@@ -3,24 +3,25 @@
   margin: 0 auto;
   margin-top: 50px; /* Add 50px top margin for non-mobile screens */
   padding: 25px;
-  background-color: #0f131ac7;
+  background-color: #FFFFFF;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  color: #2C3E50;
   position: relative;
+  border: 1px solid #E9ECEF;
 }
 
 .betaBadge {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: #ff7a00;
+  background-color: #FF6B6B;
   color: white;
   font-size: 12px;
   font-weight: bold;
   padding: 5px 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(255, 107, 107, 0.3);
   z-index: 10;
 }
 
@@ -49,7 +50,7 @@
 
 .title {
   text-align: center;
-  color: #333;
+  color: #2C3E50;
   margin-bottom: 20px;
 }
 
@@ -57,6 +58,7 @@
   text-align: center;
   margin-bottom: 20px;
   font-weight: bold;
+  color: #2C3E50;
 }
 
 .inputGroup {
@@ -68,7 +70,7 @@
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  color: #8b949e;
+  color: #6C757D;
   position: relative;
 }
 
@@ -78,13 +80,13 @@
   position: absolute;
   bottom: 100%;
   left: 0;
-  background-color: #1f2937;
+  background-color: #2C3E50;
   color: #ffffff;
   padding: 6px 10px;
   border-radius: 6px;
   font-size: 12px;
   white-space: nowrap;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   z-index: 100;
   margin-bottom: 5px;
 }
@@ -95,10 +97,10 @@
 .searchInput {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #30363d;
+  border: 1px solid #E9ECEF;
   border-radius: 8px;
-  background-color: #161b22;
-  color: #ffffff;
+  background-color: #FFFFFF;
+  color: #2C3E50;
   font-size: 16px;
   transition: border 0.2s, box-shadow 0.2s;
   appearance: none;
@@ -115,9 +117,9 @@
 .select:focus,
 .input:focus,
 .searchInput:focus {
-  border-color: #ff7a00;
+  border-color: #FF6B6B;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.2);
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
 }
 
 .tokenBalance {
@@ -129,12 +131,12 @@
 
 .balanceAmount {
   font-size: 14px;
-  color: #ffffff;
+  color: #2C3E50;
 }
 
 .balanceUsd {
   font-size: 12px;
-  color: #8b949e;
+  color: #6C757D;
 }
 
 .button {
@@ -143,7 +145,7 @@
   margin-top: 10px;
   border: none;
   border-radius: 8px;
-  background-color: #ff7a00;
+  background-color: #FF6B6B;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
@@ -152,20 +154,21 @@
 }
 
 .button:hover {
-  background-color: #e56e00;
+  background-color: #FF5252;
 }
 
 .buttonDisabled {
-  background-color: #3d3d3d;
+  background-color: #ADB5BD;
   cursor: not-allowed;
+  color: #6C757D;
 }
 
 .buttonDisabled:hover {
-  background-color: #f44336;
+  background-color: #DC3545;
 }
 
 .calculatingButton {
-  background-color: #454545;
+  background-color: #6C757D;
   cursor: wait;
 }
 
@@ -173,19 +176,19 @@
   text-align: center;
   font-size: 14px;
   margin: 12px 0;
-  color: #8b949e;
+  color: #6C757D;
 }
 
 .resultBox {
   margin-top: 20px;
   padding: 15px;
-  background-color: #161b22;
+  background-color: #F8F9FA;
   border-radius: 8px;
-  border: 1px solid #30363d;
+  border: 1px solid #E9ECEF;
   overflow-x: auto;
   font-family: monospace;
   font-size: 14px;
-  color: #ffffff;
+  color: #2C3E50;
 }
 
 .overlay {
@@ -194,7 +197,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(44, 62, 80, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -205,11 +208,12 @@
   position: relative;
   width: 90%;
   max-width: 500px;
-  background-color: #0f131a;
+  background-color: #FFFFFF;
   border-radius: 12px;
   padding: 25px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  color: #ffffff;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  color: #2C3E50;
+  border: 1px solid #E9ECEF;
 }
 
 .closeButton {
@@ -218,13 +222,13 @@
   right: 10px;
   background: transparent;
   border: none;
-  color: #8b949e;
+  color: #6C757D;
   font-size: 24px;
   cursor: pointer;
 }
 
 .closeButton:hover {
-  color: #ffffff;
+  color: #2C3E50;
 }
 
 .statusMessage {
@@ -236,29 +240,30 @@
   margin: 0;
   font-size: 18px;
   font-weight: 500;
+  color: #2C3E50;
 }
 
 .errorMessage {
   margin-top: 10px;
   padding: 10px;
-  background-color: rgba(229, 83, 75, 0.1);
-  border: 1px solid rgba(229, 83, 75, 0.3);
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
   border-radius: 8px;
-  color: #ff5a52;
+  color: #DC3545;
   font-size: 14px;
 }
 
 .success {
-  color: #3fb950;
+  color: #28A745;
 }
 
 .spinner {
   margin: 20px auto;
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(255, 122, 0, 0.3);
+  border: 3px solid rgba(255, 107, 107, 0.3);
   border-radius: 50%;
-  border-top-color: #ff7a00;
+  border-top-color: #FF6B6B;
   animation: spin 1s linear infinite;
 }
 
@@ -266,9 +271,9 @@
   display: inline-block;
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(108, 117, 125, 0.3);
   border-radius: 50%;
-  border-top-color: #ffffff;
+  border-top-color: #2C3E50;
   animation: spin 1s linear infinite;
   margin-right: 8px;
   vertical-align: middle;
@@ -287,16 +292,16 @@
 .uploadTitle {
   margin-bottom: 20px;
   font-size: 20px;
-  color: #ffffff;
+  color: #2C3E50;
 }
 
 .uploadWarning {
   margin-bottom: 15px;
   padding: 8px 12px;
-  background-color: rgba(255, 122, 0, 0.1);
-  border-left: 3px solid #ff7a00;
+  background-color: rgba(255, 107, 107, 0.1);
+  border-left: 3px solid #FF6B6B;
   font-size: 14px;
-  color: #e0e0e0;
+  color: #6C757D;
   text-align: left;
   border-radius: 0 4px 4px 0;
 }
@@ -324,10 +329,10 @@
 .fileInputLabel {
   display: block;
   padding: 12px 16px;
-  background-color: #161b22;
-  border: 1px dashed #30363d;
+  background-color: #FFFFFF;
+  border: 1px dashed #E9ECEF;
   border-radius: 8px;
-  color: #8b949e;
+  color: #6C757D;
   text-align: center;
   cursor: pointer;
   transition: border-color 0.2s;
@@ -337,7 +342,7 @@
 }
 
 .fileInputLabel:hover {
-  border-color: #ff7a00;
+  border-color: #FF6B6B;
 }
 
 .checkboxWrapper {
@@ -349,17 +354,17 @@
 .checkbox {
   width: 18px;
   height: 18px;
-  accent-color: #ff7a00;
+  accent-color: #FF6B6B;
 }
 
 .checkboxLabel {
   font-size: 14px;
-  color: #8b949e;
+  color: #6C757D;
 }
 
 .uploadButton {
   padding: 12px;
-  background-color: #ff7a00;
+  background-color: #FF6B6B;
   border: none;
   border-radius: 8px;
   color: #ffffff;
@@ -372,18 +377,18 @@
 }
 
 .uploadButton:hover {
-  background-color: #e56e00;
+  background-color: #FF5252;
 }
 
 .uploadButton:disabled {
-  background-color: #3d3d3d;
+  background-color: #ADB5BD;
   cursor: not-allowed;
 }
 
 .progressBarContainer {
   height: 6px;
   width: 100%;
-  background-color: #1e2328;
+  background-color: #F8F9FA;
   border-radius: 3px;
   overflow: hidden;
   margin-top: 10px;
@@ -391,7 +396,7 @@
 
 .progressBar {
   height: 100%;
-  background-color: #ff7a00;
+  background-color: #FF6B6B;
   transition: width 0.3s ease;
 }
 
