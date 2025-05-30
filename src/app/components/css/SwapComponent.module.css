@@ -471,6 +471,30 @@
   color: #2C3E50;
   font-size: 14px;
   font-weight: 500;
+  /* Handle long file names with ellipsis */
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+  /* Show full text on hover */
+  position: relative;
+}
+
+.detailValue:hover {
+  overflow: visible;
+  white-space: normal;
+  word-break: break-word;
+  background-color: #FFFFFF;
+  border: 1px solid #E9ECEF;
+  border-radius: 4px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  position: absolute;
+  right: 0;
+  top: 0;
+  min-width: 200px;
 }
 
 .contractLink {
@@ -530,71 +554,81 @@
 
 /* Enhanced Stamp Info Box */
 .stampInfoBox {
-  background-color: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 20px 0;
+  background-color: #FFF8DC;
+  border: 2px solid #F5F5DC;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
   text-align: left;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .stampInfoBox h4 {
-  color: #FFFFFF;
-  margin-bottom: 12px;
-  font-size: 16px;
+  color: #2C3E50;
+  margin-bottom: 16px;
+  font-size: 18px;
   font-weight: 600;
+  text-align: center;
 }
 
 .stampDetails {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .stampDetail {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px 0;
 }
 
 .stampDetail span:first-child {
-  color: #8B949E;
-  font-size: 13px;
+  color: #6C757D;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .utilizationValue {
   color: #FF6B6B !important;
   font-weight: 600 !important;
+  font-size: 14px !important;
 }
 
 .sizeValue {
   color: #4ECDC4 !important;
   font-weight: 600 !important;
+  font-size: 14px !important;
 }
 
 .remainingValue {
   color: #3fb950 !important;
   font-weight: 600 !important;
+  font-size: 14px !important;
 }
 
 .expiryValue {
   color: #FFA500 !important;
   font-weight: 600 !important;
+  font-size: 14px !important;
 }
 
 .utilizationBarContainer {
-  height: 6px;
+  height: 8px;
   width: 100%;
-  background-color: #21262d;
-  border-radius: 3px;
+  background-color: #F5F5DC;
+  border-radius: 4px;
   overflow: hidden;
+  border: 1px solid #E9ECEF;
 }
 
 .utilizationBar {
   height: 100%;
   background: linear-gradient(90deg, #4ECDC4, #FF6B6B);
   transition: width 0.3s ease;
+  border-radius: 3px;
 }
 
 .closeSuccessButton {
@@ -622,21 +656,54 @@
   
   .actionLinks {
     flex-direction: column;
-    align-items: center;
+    gap: 8px;
   }
   
   .scanLink,
   .viewLink {
-    width: 100%;
-    max-width: 200px;
+    min-width: auto;
   }
   
   .stampDetails {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
   
   .nftDetails {
     padding: 12px;
+  }
+  
+  .detailValue {
+    max-width: 150px;
+  }
+  
+  .detailValue:hover {
+    min-width: 150px;
+    position: fixed;
+    right: 10px;
+    top: auto;
+  }
+  
+  .stampInfoBox {
+    padding: 16px;
+    margin: 16px 0;
+  }
+  
+  .stampInfoBox h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .stampDetail {
+    padding: 6px 0;
+  }
+  
+  .stampDetail span:first-child,
+  .utilizationValue,
+  .sizeValue,
+  .remainingValue,
+  .expiryValue {
+    font-size: 13px !important;
   }
 }
 

@@ -1760,9 +1760,12 @@ const SwapComponent: React.FC = () => {
                       <div className={styles.spinner}></div>
                     )}
                     <div className={styles.statusMessage}>
-                      <h3 className={statusMessage.isSuccess ? styles.success : ''}>
-                        {statusMessage.message}
-                      </h3>
+                      {/* Remove the duplicate h3 title here since we have it in the success message section */}
+                      {!statusMessage.isSuccess && (
+                        <h3 className={statusMessage.isSuccess ? styles.success : ''}>
+                          {statusMessage.message}
+                        </h3>
+                      )}
                       {statusMessage.error && (
                         <div className={styles.errorMessage}>{statusMessage.error}</div>
                       )}
