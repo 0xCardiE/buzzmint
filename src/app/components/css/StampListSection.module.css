@@ -1,16 +1,10 @@
 .stampListContainer {
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
 }
 
 .stampListContent {
   background-color: #FFFFFF;
-  border-radius: 12px;
-  padding: 2rem;
-  margin: 2rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid #E9ECEF;
 }
 
 .stampListHeader {
@@ -257,8 +251,6 @@
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .stampListContent {
-    padding: 1rem;
-    margin: 1rem 0;
   }
 
   .stampListItem {

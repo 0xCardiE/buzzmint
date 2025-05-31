@@ -185,7 +185,7 @@ const StampListSection: React.FC<StampListSectionProps> = ({
           (collection): collection is NonNullable<typeof collection> => collection !== null
         );
 
-        setCollections(collectionEvents.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)));
+        setCollections(collectionEvents);
       } catch (error) {
         console.error('Error fetching collections:', error);
       } finally {
