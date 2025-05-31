@@ -192,6 +192,12 @@ const SwapComponent: React.FC = () => {
   // Add state for OpenAI API key
   const [openAiApiKey, setOpenAiApiKey] = useState<string>('');
 
+  // Add state for AI image generation
+  const [uploadMode, setUploadMode] = useState<'file' | 'ai'>('file');
+  const [aiPrompt, setAiPrompt] = useState<string>('');
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
+
   // Watch for changes to custom RPC URL settings and update global setting
   useEffect(() => {
     // Update the global RPC URL when custom RPC settings change
@@ -217,6 +223,85 @@ const SwapComponent: React.FC = () => {
       } else {
         localStorage.removeItem('buzzmint_openai_key');
       }
+    }
+  };
+
+  // AI Image Generation function
+  const generateAiImage = async (prompt: string): Promise<string> => {
+    if (!openAiApiKey) {
+      throw new Error('OpenAI API key is required for AI image generation');
+    }
+
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${openAiApiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'dall-e-3',
+        prompt: prompt,
+        n: 1,
+        size: '1024x1024',
+        quality: 'standard',
+        response_format: 'b64_json', // Use base64 instead of URL to avoid CORS
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error?.message || `API request failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.data[0].b64_json;
+  };
+
+  // Convert base64 to File object
+  const base64ToFile = async (base64Data: string, filename: string): Promise<File> => {
+    // Create data URL from base64
+    const dataUrl = `data:image/png;base64,${base64Data}`;
+
+    // Convert data URL to blob
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+
+    return new File([blob], filename, { type: 'image/png' });
+  };
+
+  // Handle AI image generation
+  const handleAiGeneration = async () => {
+    if (!aiPrompt.trim()) {
+      alert('Please enter a prompt for AI image generation');
+      return;
+    }
+
+    if (!openAiApiKey) {
+      alert('Please configure your OpenAI API key in Settings first');
+      return;
+    }
+
+    setIsGeneratingImage(true);
+    try {
+      const base64Data = await generateAiImage(aiPrompt.trim());
+
+      // Create data URL for display
+      const imageDataUrl = `data:image/png;base64,${base64Data}`;
+      setGeneratedImageUrl(imageDataUrl);
+
+      // Convert the generated image to a File object
+      const filename = `ai-generated-${Date.now()}.png`;
+      const file = await base64ToFile(base64Data, filename);
+      setSelectedFile(file);
+      setIsTarFile(false);
+
+      // Ensure upload step is ready so the upload button becomes enabled
+      setUploadStep('ready');
+    } catch (error) {
+      console.error('AI generation error:', error);
+      alert(error instanceof Error ? error.message : 'Failed to generate image');
+    } finally {
+      setIsGeneratingImage(false);
     }
   };
 
@@ -1455,6 +1540,12 @@ const SwapComponent: React.FC = () => {
         collectionName: currentCollectionName, // Use the fetched collection name
       });
       setUploadStep('complete');
+
+      // Reset AI generation state
+      setUploadMode('file');
+      setAiPrompt('');
+      setGeneratedImageUrl('');
+      setIsGeneratingImage(false);
     } catch (error) {
       console.error('Minting error:', error);
       setStatusMessage({
@@ -1522,6 +1613,12 @@ const SwapComponent: React.FC = () => {
       setCollectionName('');
       setCollectionSymbol('');
       setPendingUploadData(null);
+
+      // Reset AI generation state
+      setUploadMode('file');
+      setAiPrompt('');
+      setGeneratedImageUrl('');
+      setIsGeneratingImage(false);
     } catch (error) {
       console.error('Collection creation error:', error);
       setStatusMessage({
@@ -2100,58 +2197,144 @@ const SwapComponent: React.FC = () => {
                       </div>
                     ) : (
                       <div className={styles.uploadForm}>
-                        <div className={styles.fileInputWrapper}>
-                          <input
-                            type="file"
-                            onChange={e => {
-                              const file = e.target.files?.[0] || null;
-                              setSelectedFile(file);
-                              setIsTarFile(
-                                file?.name.toLowerCase().endsWith('.tar') ||
-                                  file?.name.toLowerCase().endsWith('.zip') ||
-                                  file?.name.toLowerCase().endsWith('.gz') ||
-                                  false
-                              );
+                        {/* Upload Mode Toggle */}
+                        <div className={styles.uploadModeToggle}>
+                          <button
+                            className={`${styles.modeButton} ${uploadMode === 'file' ? styles.active : ''}`}
+                            onClick={() => {
+                              setUploadMode('file');
+                              setAiPrompt('');
+                              setGeneratedImageUrl('');
                             }}
-                            className={styles.fileInput}
-                            disabled={uploadStep === 'uploading'}
-                            id="file-upload"
-                          />
-                          <label htmlFor="file-upload" className={styles.fileInputLabel}>
-                            {selectedFile ? selectedFile.name : 'Choose file'}
-                          </label>
+                            disabled={uploadStep === 'uploading' || isGeneratingImage}
+                          >
+                            📁 Upload File
+                          </button>
+                          <button
+                            className={`${styles.modeButton} ${uploadMode === 'ai' ? styles.active : ''}`}
+                            onClick={() => {
+                              setUploadMode('ai');
+                              setSelectedFile(null);
+                            }}
+                            disabled={
+                              uploadStep === 'uploading' || isGeneratingImage || !openAiApiKey
+                            }
+                            title={
+                              !openAiApiKey ? 'Configure OpenAI API key in Settings first' : ''
+                            }
+                          >
+                            🎨 Generate with AI
+                          </button>
                         </div>
 
-                        {(selectedFile?.name.toLowerCase().endsWith('.zip') ||
-                          selectedFile?.name.toLowerCase().endsWith('.gz')) && (
-                          <div className={styles.checkboxWrapper}>
-                            <input
-                              type="checkbox"
-                              id="serve-uncompressed"
-                              checked={serveUncompressed}
-                              onChange={e => setServeUncompressed(e.target.checked)}
-                              className={styles.checkbox}
-                              disabled={uploadStep === 'uploading'}
-                            />
-                            <label htmlFor="serve-uncompressed" className={styles.checkboxLabel}>
-                              Serve uncompressed
-                            </label>
-                          </div>
-                        )}
+                        {uploadMode === 'file' ? (
+                          /* File Upload Mode */
+                          <div className={styles.fileUploadSection}>
+                            <div className={styles.fileInputWrapper}>
+                              <input
+                                type="file"
+                                onChange={e => {
+                                  const file = e.target.files?.[0] || null;
+                                  setSelectedFile(file);
+                                  setIsTarFile(
+                                    file?.name.toLowerCase().endsWith('.tar') ||
+                                      file?.name.toLowerCase().endsWith('.zip') ||
+                                      file?.name.toLowerCase().endsWith('.gz') ||
+                                      false
+                                  );
+                                  setGeneratedImageUrl(''); // Clear any generated image
+                                }}
+                                className={styles.fileInput}
+                                disabled={uploadStep === 'uploading'}
+                                id="file-upload"
+                              />
+                              <label htmlFor="file-upload" className={styles.fileInputLabel}>
+                                {selectedFile ? selectedFile.name : 'Choose file'}
+                              </label>
+                            </div>
 
-                        {isTarFile && (
-                          <div className={styles.checkboxWrapper}>
-                            <input
-                              type="checkbox"
-                              id="webpage-upload"
-                              checked={isWebpageUpload}
-                              onChange={e => setIsWebpageUpload(e.target.checked)}
-                              className={styles.checkbox}
-                              disabled={uploadStep === 'uploading'}
-                            />
-                            <label htmlFor="webpage-upload" className={styles.checkboxLabel}>
-                              Upload as webpage
-                            </label>
+                            {(selectedFile?.name.toLowerCase().endsWith('.zip') ||
+                              selectedFile?.name.toLowerCase().endsWith('.gz')) && (
+                              <div className={styles.checkboxWrapper}>
+                                <input
+                                  type="checkbox"
+                                  id="serve-uncompressed"
+                                  checked={serveUncompressed}
+                                  onChange={e => setServeUncompressed(e.target.checked)}
+                                  className={styles.checkbox}
+                                  disabled={uploadStep === 'uploading'}
+                                />
+                                <label
+                                  htmlFor="serve-uncompressed"
+                                  className={styles.checkboxLabel}
+                                >
+                                  Serve uncompressed
+                                </label>
+                              </div>
+                            )}
+
+                            {isTarFile && (
+                              <div className={styles.checkboxWrapper}>
+                                <input
+                                  type="checkbox"
+                                  id="webpage-upload"
+                                  checked={isWebpageUpload}
+                                  onChange={e => setIsWebpageUpload(e.target.checked)}
+                                  className={styles.checkbox}
+                                  disabled={uploadStep === 'uploading'}
+                                />
+                                <label htmlFor="webpage-upload" className={styles.checkboxLabel}>
+                                  Upload as webpage
+                                </label>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          /* AI Generation Mode */
+                          <div className={styles.aiGenerationSection}>
+                            <div className={styles.promptInputWrapper}>
+                              <textarea
+                                value={aiPrompt}
+                                onChange={e => setAiPrompt(e.target.value)}
+                                placeholder="Describe the image you want to generate..."
+                                className={styles.promptInput}
+                                disabled={isGeneratingImage || uploadStep === 'uploading'}
+                                rows={3}
+                              />
+                            </div>
+
+                            {generatedImageUrl && (
+                              <div className={styles.generatedImagePreview}>
+                                <img
+                                  src={generatedImageUrl}
+                                  alt="Generated image"
+                                  className={styles.generatedImage}
+                                />
+                                <p className={styles.generatedImageLabel}>
+                                  Generated Image Ready for Upload
+                                </p>
+                              </div>
+                            )}
+
+                            <button
+                              onClick={handleAiGeneration}
+                              disabled={
+                                !aiPrompt.trim() ||
+                                isGeneratingImage ||
+                                uploadStep === 'uploading' ||
+                                !openAiApiKey
+                              }
+                              className={`${styles.generateButton} ${isGeneratingImage ? styles.generating : ''}`}
+                            >
+                              {isGeneratingImage ? (
+                                <>
+                                  <div className={styles.smallSpinner}></div>
+                                  Generating...
+                                </>
+                              ) : (
+                                '✨ Generate Image'
+                              )}
+                            </button>
                           </div>
                         )}
 
@@ -2173,6 +2356,8 @@ const SwapComponent: React.FC = () => {
                                       : `Uploading... ${uploadProgress.toFixed(1)}%`
                                     : 'Processing...'}
                             </>
+                          ) : uploadMode === 'ai' && generatedImageUrl ? (
+                            'Upload Generated Image'
                           ) : (
                             'Upload'
                           )}
@@ -2245,7 +2430,12 @@ const SwapComponent: React.FC = () => {
                     <div className={styles.nftDetails}>
                       <div className={styles.detailRow}>
                         <span className={styles.detailLabel}>File:</span>
-                        <span className={styles.detailValue}>{statusMessage.filename}</span>
+                        <span className={styles.detailValue}>
+                          {statusMessage.filename}
+                          {statusMessage.filename?.includes('ai-generated') && (
+                            <span className={styles.aiGeneratedBadge}> ✨ AI Generated</span>
+                          )}
+                        </span>
                       </div>
 
                       {statusMessage.collectionName && (
