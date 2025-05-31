@@ -92,7 +92,7 @@ const HelpSection: React.FC<HelpSectionProps> = ({
             <p>
               BuzzMint is an AI-powered NFT minter that combines decentralized storage with NFT
               creation. Upload any file to the Swarm network and automatically mint it as an NFT on
-              multiple blockchains.
+              Gnosis blockchain.
             </p>
           </div>
 
@@ -107,7 +107,7 @@ const HelpSection: React.FC<HelpSectionProps> = ({
           <div className={styles.faqItem}>
             <h3>How long does it take for my storage to become available?</h3>
             <p>
-              After purchasing storage, it typically takes 2-5 minutes for your storage collections
+              After purchasing storage, it typically takes 2-3 minutes for your storage collections
               to become usable. The app will automatically notify you once your storage is ready for
               use.
             </p>
@@ -137,23 +137,6 @@ const HelpSection: React.FC<HelpSectionProps> = ({
               BuzzMint supports all file types including images (PNG, JPG, GIF), videos (MP4, MOV),
               audio files, documents, and archives (ZIP, TAR, GZIP). Files are stored permanently on
               Swarm.
-            </p>
-          </div>
-
-          <div className={styles.faqItem}>
-            <h3>How do I prepare archive files?</h3>
-            <p>
-              Use "tar -C my_folder -cf my_folder.tar ." command to make your folder ready for
-              upload as TAR file. You can also upload ZIP files and GZIP files directly.
-            </p>
-          </div>
-
-          <div className={styles.faqItem}>
-            <h3>I get "no routes available", why?</h3>
-            <p>
-              If you see "no routes available", this usually means the USD value is too low for
-              cross-chain swaps. For amounts below $0.5, try swapping and uploading directly from
-              Gnosis chain.
             </p>
           </div>
         </div>
