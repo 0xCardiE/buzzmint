@@ -1,12 +1,7 @@
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
   background-color: #FFFFFF;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   color: #2C3E50;
-  border: 1px solid #E9ECEF;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -357,8 +352,6 @@
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .container {
-    margin: 10px;
-    padding: 16px;
     max-width: calc(100vw - 20px);
   }
 
@@ -406,8 +399,6 @@
 
 @media (max-width: 480px) {
   .container {
-    margin: 5px;
-    padding: 12px;
     max-width: calc(100vw - 10px);
   }
 

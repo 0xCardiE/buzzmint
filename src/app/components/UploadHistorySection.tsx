@@ -232,22 +232,6 @@ const UploadHistorySection: React.FC<UploadHistoryProps> = ({ address, setShowUp
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 className={styles.title}>Minted NFTs</h2>
-          <div className={styles.buttonGroup}>
-            <button className={styles.downloadButton} title="Download CSV">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7,10 12,15 17,10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-            </button>
-          </div>
         </div>
         <div className={styles.emptyState}>Connect wallet to view your NFT collections</div>
         <button className={styles.backButton} onClick={() => setShowUploadHistory(false)}>
@@ -261,22 +245,6 @@ const UploadHistorySection: React.FC<UploadHistoryProps> = ({ address, setShowUp
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>Minted NFTs</h2>
-        <div className={styles.buttonGroup}>
-          <button className={styles.downloadButton} title="Download CSV">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7,10 12,15 17,10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-          </button>
-        </div>
       </div>
 
       {isLoading ? (
