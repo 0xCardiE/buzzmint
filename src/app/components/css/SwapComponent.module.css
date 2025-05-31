@@ -416,35 +416,35 @@
 
 .successMessage {
   text-align: center;
-  padding: 15px;
+  padding: 12px;
 }
 
 .successIcon {
-  font-size: 32px;
+  font-size: 24px;
   color: #3fb950;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .successMessage h3 {
   color: #2C3E50;
-  margin-bottom: 15px;
-  font-size: 20px;
+  margin-bottom: 12px;
+  font-size: 18px;
   font-weight: 600;
 }
 
 /* Image Preview */
 .imagePreview {
-  margin: 15px 0;
+  margin: 12px 0;
   display: flex;
   justify-content: center;
 }
 
 .previewImage {
-  max-width: 300px;
-  max-height: 200px;
-  height: 200px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 200px;
+  max-height: 120px;
+  height: 120px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   object-fit: contain;
 }
 
@@ -452,9 +452,9 @@
 .nftDetails {
   background-color: #F8F9FA;
   border: 1px solid #E9ECEF;
-  border-radius: 8px;
-  padding: 12px;
-  margin: 15px 0;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 12px 0;
   text-align: left;
 }
 
@@ -462,7 +462,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .detailRow:last-child {
@@ -472,14 +472,14 @@
 .detailLabel {
   font-weight: 600;
   color: #6C757D;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .detailValue {
   color: #2C3E50;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  max-width: 200px;
+  max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -488,8 +488,8 @@
   cursor: pointer;
   transition: all 0.15s ease;
   background-color: transparent;
-  border-radius: 4px;
-  padding: 2px 4px;
+  border-radius: 3px;
+  padding: 1px 3px;
 }
 
 .detailValue:hover {
@@ -523,20 +523,20 @@
 /* Action Links */
 .actionLinks {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
-  margin: 15px 0;
+  margin: 12px 0;
 }
 
 .scanLink,
 .viewLink {
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.2s ease;
-  min-width: 120px;
+  min-width: 100px;
   text-align: center;
   position: relative;
 }
@@ -572,36 +572,36 @@
 .stampInfoBox {
   background-color: #FFF8DC;
   border: 2px solid #F5F5DC;
-  border-radius: 12px;
-  padding: 24px;
-  margin: 24px 0;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
   text-align: left;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .stampInfoBox h4 {
   color: #2C3E50;
-  margin-bottom: 16px;
-  font-size: 18px;
+  margin-bottom: 12px;
+  font-size: 16px;
   font-weight: 600;
   text-align: center;
 }
 
 .stampDetails {
   flex-direction: column;
-    gap: 8px;
+  gap: 6px;
 }
 
 .stampDetail {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
+  padding: 6px 0;
 }
 
 .stampDetail span:first-child {
   color: #6C757D;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 }
 
@@ -646,15 +646,16 @@
 }
 
 .closeSuccessButton {
-  padding: 12px 24px;
+  padding: 10px 20px;
   background-color: #FF6B6B;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #FFFFFF;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-top: 20px;
+  margin-top: 16px;
+  font-size: 14px;
 }
 
 .closeSuccessButton:hover {
@@ -664,8 +665,9 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .previewImage {
-    max-width: 250px;
-    max-height: 150px;
+    max-width: 180px;
+    max-height: 100px;
+    height: 100px;
   }
 
   .actionLinks {
@@ -676,71 +678,38 @@
   .scanLink,
   .viewLink {
     min-width: auto;
+    padding: 8px 12px;
   }
 
   .stampDetails {
-    padding: 12px;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .detailValue {
-    max-width: 150px;
+    max-width: 120px;
   }
 
   .detailValue:hover {
-    min-width: 180px;
-    max-width: 250px;
-    position: absolute;
-    right: 10px;
-    top: 100%;
-    margin-top: 4px;
-    background-color: #4ECDC4;
-    color: #FFFFFF;
-    border: 1px solid #45B7B8;
-    padding: 8px 12px;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
-    z-index: 1000;
-  }
-
-  .stampInfoBox {
-    padding: 16px;
-    margin: 16px 0;
-  }
-
-  .stampInfoBox h4 {
-    font-size: 16px;
-    margin-bottom: 12px;
-  }
-
-  .stampDetail {
-    padding: 6px 0;
-  }
-
-  .stampDetail span:first-child,
-  .utilizationValue,
-  .sizeValue,
-  .remainingValue,
-  .expiryValue {
-    font-size: 13px !important;
+    color: #4ECDC4;
+    background-color: rgba(78, 205, 196, 0.1);
+    max-width: 180px;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    box-shadow: none;
+    transform: none;
   }
 
   .contractLink:hover {
-    background-color: #FF6B6B;
-    color: #FFFFFF;
-  }
-
-  .actionLinks {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .scanLink,
-  .viewLink {
-    min-width: auto;
+    color: #FF5252;
+    background-color: rgba(255, 107, 107, 0.1);
   }
 
   .scanLink:hover {
-    background-color: #FF5252;
+    background-color: #FFFFFF;
     box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
   }
 
@@ -748,6 +717,28 @@
     background-color: #4ECDC4;
     color: #FFFFFF;
     box-shadow: 0 2px 8px rgba(78, 205, 196, 0.4);
+  }
+
+  .stampInfoBox {
+    padding: 12px;
+    margin: 12px 0;
+  }
+
+  .stampInfoBox h4 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .stampDetail {
+    padding: 4px 0;
+  }
+
+  .stampDetail span:first-child,
+  .utilizationValue,
+  .sizeValue,
+  .remainingValue,
+  .expiryValue {
+    font-size: 12px !important;
   }
 }
 
