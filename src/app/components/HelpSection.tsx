@@ -3,12 +3,51 @@ import styles from './css/HelpSection.module.css';
 
 interface HelpSectionProps {
   nodeAddress: string;
+  openAiApiKey: string;
+  onOpenAiKeyChange: (newKey: string) => void;
 }
 
-const HelpSection: React.FC<HelpSectionProps> = ({ nodeAddress }) => {
+const HelpSection: React.FC<HelpSectionProps> = ({
+  nodeAddress,
+  openAiApiKey,
+  onOpenAiKeyChange,
+}) => {
   return (
     <div className={styles.helpContainer}>
       <div className={styles.helpContent}>
+        <div className={styles.helpHeader}>
+          <h2>Settings</h2>
+        </div>
+
+        {/* OpenAI API Key Settings */}
+        <div className={styles.settingsSection}>
+          <h3>OpenAI API Configuration</h3>
+          <div className={styles.settingItem}>
+            <label className={styles.settingLabel}>
+              OpenAI API Key
+              <span className={styles.optional}>(Optional)</span>
+              {openAiApiKey && <span className={styles.statusIndicator}>✓ Configured</span>}
+            </label>
+            <input
+              type="password"
+              value={openAiApiKey}
+              onChange={e => onOpenAiKeyChange(e.target.value)}
+              placeholder="sk-..."
+              className={styles.settingInput}
+            />
+            <p className={styles.settingDescription}>
+              Enter your OpenAI API key to enable AI-powered features. Your key is stored locally on
+              your device and never sent to our servers.
+              {openAiApiKey && (
+                <>
+                  <br />
+                  <strong>Status:</strong> API key is configured and ready to use.
+                </>
+              )}
+            </p>
+          </div>
+        </div>
+
         <div className={styles.helpHeader}>
           <h2>How to use BuzzMint?</h2>
         </div>

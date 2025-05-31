@@ -189,11 +189,36 @@ const SwapComponent: React.FC = () => {
   const [isCustomRpc, setIsCustomRpc] = useState(false);
   const [customRpcUrl, setCustomRpcUrl] = useState<string>('');
 
+  // Add state for OpenAI API key
+  const [openAiApiKey, setOpenAiApiKey] = useState<string>('');
+
   // Watch for changes to custom RPC URL settings and update global setting
   useEffect(() => {
     // Update the global RPC URL when custom RPC settings change
     setGnosisRpcUrl(isCustomRpc ? customRpcUrl : undefined);
   }, [isCustomRpc, customRpcUrl]);
+
+  // Load OpenAI API key from localStorage on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedApiKey = localStorage.getItem('buzzmint_openai_key');
+      if (savedApiKey) {
+        setOpenAiApiKey(savedApiKey);
+      }
+    }
+  }, []);
+
+  // Save OpenAI API key to localStorage whenever it changes
+  const handleOpenAiKeyChange = (newKey: string) => {
+    setOpenAiApiKey(newKey);
+    if (typeof window !== 'undefined') {
+      if (newKey.trim()) {
+        localStorage.setItem('buzzmint_openai_key', newKey.trim());
+      } else {
+        localStorage.removeItem('buzzmint_openai_key');
+      }
+    }
+  };
 
   // Initial setup that runs only once to set the chain ID from wallet
   useEffect(() => {
@@ -2397,7 +2422,11 @@ const SwapComponent: React.FC = () => {
           )}
         </>
       ) : showHelp ? (
-        <HelpSection nodeAddress={nodeAddress} />
+        <HelpSection
+          nodeAddress={nodeAddress}
+          openAiApiKey={openAiApiKey}
+          onOpenAiKeyChange={handleOpenAiKeyChange}
+        />
       ) : showStampList ? (
         <StampListSection
           setShowStampList={setShowStampList}
