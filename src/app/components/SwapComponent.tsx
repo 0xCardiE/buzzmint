@@ -162,6 +162,9 @@ const SwapComponent: React.FC = () => {
     stampId: string;
   } | null>(null);
 
+  // Add state to track if this is the first NFT upload
+  const [isFirstNftUpload, setIsFirstNftUpload] = useState(false);
+
   // Add a ref to track the current wallet client
   const currentWalletClientRef = useRef(walletClient);
 
@@ -1282,7 +1285,9 @@ const SwapComponent: React.FC = () => {
           setUploadStep('idle');
           setIsLoading(false);
         } else {
-          // Collection exists - proceed directly to minting
+          // Collection exists - check if this is the first NFT and proceed to minting
+          const isFirst = await checkIfFirstNftUpload(postageBatchId);
+          setIsFirstNftUpload(isFirst);
           await mintToExistingCollection(reference, selectedFile.name, postageBatchId);
         }
       }
@@ -1624,6 +1629,8 @@ const SwapComponent: React.FC = () => {
         setUploadStep('ready');
         // Set the postage batch ID for upload
         setPostageBatchId(stampId);
+        // This is the first NFT upload for a new collection
+        setIsFirstNftUpload(true);
         // Clear the success message to show upload interface
         setStatusMessage({ step: '', message: '' });
         setIsLoading(false);
@@ -1639,6 +1646,41 @@ const SwapComponent: React.FC = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Function to check if this is the first NFT upload
+  const checkIfFirstNftUpload = async (stampId: string) => {
+    if (!publicClient) return false;
+
+    try {
+      // Check if collection exists
+      const collectionExists = await checkCollectionExists(stampId);
+      if (!collectionExists) {
+        return true; // No collection exists, so this would be first NFT
+      }
+
+      // Get NFT contract address
+      const nftContractAddress = await publicClient.readContract({
+        address: BUZZMINT_FACTORY_ADDRESS,
+        abi: BUZZMINT_FACTORY_ABI,
+        functionName: 'getContractAddress',
+        args: [stampId],
+      });
+
+      // Get the next token ID
+      const nextTokenId = await publicClient.readContract({
+        address: nftContractAddress as `0x${string}`,
+        abi: BUZZMINT_COLLECTION_ABI,
+        functionName: 'getNextTokenId',
+      });
+
+      // If next token ID is 1, this will be the first NFT
+      return Number(nextTokenId) === 1;
+    } catch (error) {
+      console.error('Error checking if first NFT upload:', error);
+      // Default to false if we can't determine
+      return false;
     }
   };
 
@@ -1934,10 +1976,12 @@ const SwapComponent: React.FC = () => {
                           }...${postageBatchId.slice(-4)}`
                         : 'Upload File'}
                     </h3>
-                    <div className={styles.uploadWarning}>
-                      Warning: Upload of first NFT may take longer as storage creation might still
-                      be propagating.
-                    </div>
+                    {isFirstNftUpload && (
+                      <div className={styles.uploadWarning}>
+                        Warning: Upload of first NFT may take longer as storage creation might still
+                        be propagating.
+                      </div>
+                    )}
                     {statusMessage.step === 'waiting_creation' ||
                     statusMessage.step === 'waiting_usable' ? (
                       <div className={styles.waitingMessage}>
@@ -2277,6 +2321,8 @@ const SwapComponent: React.FC = () => {
           setPostageBatchId={setPostageBatchId}
           setShowOverlay={setShowOverlay}
           setUploadStep={setUploadStep}
+          checkIfFirstNftUpload={checkIfFirstNftUpload}
+          setIsFirstNftUpload={setIsFirstNftUpload}
         />
       ) : showUploadHistory ? (
         <UploadHistorySection address={address} setShowUploadHistory={setShowUploadHistory} />

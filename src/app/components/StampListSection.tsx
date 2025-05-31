@@ -19,6 +19,8 @@ interface StampListSectionProps {
   setPostageBatchId: (id: string) => void;
   setShowOverlay: (show: boolean) => void;
   setUploadStep: (step: UploadStep) => void;
+  checkIfFirstNftUpload: (stampId: string) => Promise<boolean>;
+  setIsFirstNftUpload: (isFirst: boolean) => void;
 }
 
 interface BatchEvent {
@@ -54,6 +56,8 @@ const StampListSection: React.FC<StampListSectionProps> = ({
   setPostageBatchId,
   setShowOverlay,
   setUploadStep,
+  checkIfFirstNftUpload,
+  setIsFirstNftUpload,
 }) => {
   const [collections, setCollections] = useState<BatchEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -192,9 +196,15 @@ const StampListSection: React.FC<StampListSectionProps> = ({
     fetchCollections();
   }, [address, beeApiUrl]); // Only dependencies that actually need to trigger re-fetching
 
-  const handleCollectionSelect = (stamp: any) => {
-    setPostageBatchId(stamp.batchId.slice(2));
+  const handleCollectionSelect = async (stamp: any) => {
+    const stampId = stamp.batchId.slice(2);
+    setPostageBatchId(stampId);
     setShowOverlay(true);
+
+    // Check if this is the first NFT upload
+    const isFirst = await checkIfFirstNftUpload(stampId);
+    setIsFirstNftUpload(isFirst);
+
     setUploadStep('ready');
     setShowStampList(false);
   };
