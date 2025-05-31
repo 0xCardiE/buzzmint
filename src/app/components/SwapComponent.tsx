@@ -2300,13 +2300,13 @@ const SwapComponent: React.FC = () => {
 
             <h3 className={styles.uploadTitle}>Create NFT Collection</h3>
             <p className={styles.collectionDescription}>
-              This is your first upload to this storage collection. Please provide details for your
-              NFT collection:
+              This is your first upload to this storage collection. Please provide a name and symbol
+              for your NFT collection:
             </p>
 
             <div className={styles.collectionForm}>
               <div className={styles.inputGroup}>
-                <label className={styles.label}>Collection Name</label>
+                <label className={styles.label}>Collection Name *</label>
                 <input
                   type="text"
                   value={collectionName}
@@ -2314,11 +2314,12 @@ const SwapComponent: React.FC = () => {
                   placeholder="e.g., My AI Art Collection"
                   className={styles.input}
                   maxLength={50}
+                  required
                 />
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.label}>Collection Symbol</label>
+                <label className={styles.label}>Collection Symbol *</label>
                 <input
                   type="text"
                   value={collectionSymbol}
@@ -2326,6 +2327,7 @@ const SwapComponent: React.FC = () => {
                   placeholder="e.g., MYART"
                   className={styles.input}
                   maxLength={10}
+                  required
                 />
               </div>
 
@@ -2349,20 +2351,6 @@ const SwapComponent: React.FC = () => {
                   className={`${styles.button} ${!collectionName.trim() || !collectionSymbol.trim() ? styles.buttonDisabled : ''}`}
                 >
                   Create Collection & Mint NFT
-                </button>
-
-                <button
-                  onClick={() => {
-                    // Use default values
-                    setCollectionName(
-                      `BuzzMint Collection - ${pendingUploadData?.stampId?.slice(0, 8)}`
-                    );
-                    setCollectionSymbol(`BUZZ-${pendingUploadData?.stampId?.slice(0, 6)}`);
-                    setTimeout(() => handleCollectionCreation(), 100);
-                  }}
-                  className={`${styles.button} ${styles.secondaryButton}`}
-                >
-                  Use Default Names
                 </button>
               </div>
             </div>
@@ -2388,13 +2376,13 @@ const SwapComponent: React.FC = () => {
 
             <h3 className={styles.uploadTitle}>Create Your NFT Collection</h3>
             <p className={styles.collectionDescription}>
-              Great! Your storage is ready. Now let's create your NFT collection where you'll mint
-              your digital assets:
+              Great! Your storage is ready. Now please provide a name and symbol for your NFT
+              collection:
             </p>
 
             <div className={styles.collectionForm}>
               <div className={styles.inputGroup}>
-                <label className={styles.label}>Collection Name</label>
+                <label className={styles.label}>Collection Name *</label>
                 <input
                   type="text"
                   value={collectionName}
@@ -2402,11 +2390,12 @@ const SwapComponent: React.FC = () => {
                   placeholder="e.g., My AI Art Collection"
                   className={styles.input}
                   maxLength={50}
+                  required
                 />
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.label}>Collection Symbol</label>
+                <label className={styles.label}>Collection Symbol *</label>
                 <input
                   type="text"
                   value={collectionSymbol}
@@ -2414,6 +2403,7 @@ const SwapComponent: React.FC = () => {
                   placeholder="e.g., MYART"
                   className={styles.input}
                   maxLength={10}
+                  required
                 />
               </div>
 
@@ -2437,20 +2427,6 @@ const SwapComponent: React.FC = () => {
                   className={`${styles.button} ${!collectionName.trim() || !collectionSymbol.trim() ? styles.buttonDisabled : ''}`}
                 >
                   Create NFT Collection
-                </button>
-
-                <button
-                  onClick={() => {
-                    // Use default values
-                    setCollectionName(
-                      `BuzzMint Collection - ${createdStorageInfo?.batchId?.slice(0, 8)}`
-                    );
-                    setCollectionSymbol(`BUZZ-${createdStorageInfo?.batchId?.slice(0, 6)}`);
-                    setTimeout(() => handlePostStorageCollectionCreation(), 100);
-                  }}
-                  className={`${styles.button} ${styles.secondaryButton}`}
-                >
-                  Use Default Names
                 </button>
               </div>
             </div>
