@@ -8,14 +8,25 @@ export default function BuzzMintPage() {
     <div className="buzz-theme">
       {/* Header */}
       <header className="buzz-header">
-        <div className="buzz-logo-container">
+        <button
+          className="buzz-logo-container"
+          onClick={() => (window.location.href = '/')}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '0',
+            margin: '0',
+            outline: 'none',
+            textAlign: 'left',
+          }}
+          type="button"
+          aria-label="Go to home page"
+        >
           <div className="buzz-logo-icon">B</div>
           <span className="buzz-logo-text">buzzMint</span>
-          <div className="buzz-ai-badge">
-            <div className="buzz-ai-icon">AI</div>
-            AI-Powered
-          </div>
-        </div>
+          <div className="buzz-ai-small">+AI</div>
+        </button>
         <div className="buzz-header-buttons">
           <ConnectButton />
         </div>

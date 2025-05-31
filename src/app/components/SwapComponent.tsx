@@ -1922,7 +1922,7 @@ const SwapComponent: React.FC = () => {
             ) : isTopUp ? (
               'Extend Collection'
             ) : (
-              'Execute Swap'
+              'Buy Storage'
             )}
           </button>
 
