@@ -2498,19 +2498,21 @@ const SwapComponent: React.FC = () => {
                         <h4>Storage Collection Details</h4>
                         <div className={styles.stampDetails}>
                           <div className={styles.stampDetail}>
-                            <span>Utilization:</span>
-                            <span className={styles.utilizationValue}>
-                              {uploadStampInfo.utilizationPercent?.toFixed(2)}%
+                            <span>Size:</span>
+                            <span className={styles.sizeValue}>
+                              {uploadStampInfo.depth === 19
+                                ? '~100 MB'
+                                : uploadStampInfo.depth === 20
+                                  ? '~600 MB'
+                                  : uploadStampInfo.depth === 21
+                                    ? '~2 GB'
+                                    : uploadStampInfo.totalSize}
                             </span>
                           </div>
                           <div className={styles.stampDetail}>
-                            <span>Total Size:</span>
-                            <span className={styles.sizeValue}>{uploadStampInfo.totalSize}</span>
-                          </div>
-                          <div className={styles.stampDetail}>
-                            <span>Remaining:</span>
-                            <span className={styles.remainingValue}>
-                              {(100 - (uploadStampInfo.utilizationPercent || 0)).toFixed(2)}%
+                            <span>Used:</span>
+                            <span className={styles.utilizationValue}>
+                              {uploadStampInfo.utilizationPercent?.toFixed(2)}%
                             </span>
                           </div>
                           <div className={styles.stampDetail}>

@@ -416,25 +416,25 @@
 
 .successMessage {
   text-align: center;
-  padding: 20px;
+  padding: 15px;
 }
 
 .successIcon {
-  font-size: 48px;
+  font-size: 32px;
   color: #3fb950;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .successMessage h3 {
   color: #2C3E50;
-  margin-bottom: 20px;
-  font-size: 24px;
+  margin-bottom: 15px;
+  font-size: 20px;
   font-weight: 600;
 }
 
 /* Image Preview */
 .imagePreview {
-  margin: 20px 0;
+  margin: 15px 0;
   display: flex;
   justify-content: center;
 }
@@ -453,8 +453,8 @@
   background-color: #F8F9FA;
   border: 1px solid #E9ECEF;
   border-radius: 8px;
-  padding: 16px;
-  margin: 20px 0;
+  padding: 12px;
+  margin: 15px 0;
   text-align: left;
 }
 
@@ -479,15 +479,14 @@
   color: #2C3E50;
   font-size: 14px;
   font-weight: 500;
-  /* Handle long file names with ellipsis */
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-all;
-  /* Show full text on hover */
   position: relative;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .detailValue:hover {
@@ -506,6 +505,7 @@
   top: 100%;
   min-width: 200px;
   margin-top: 2px;
+  animation: none;
 }
 
 .contractLink {
@@ -513,7 +513,7 @@
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
 }
 
 .contractLink:hover {
@@ -526,7 +526,7 @@
   display: flex;
   gap: 12px;
   justify-content: center;
-  margin: 20px 0;
+  margin: 15px 0;
 }
 
 .scanLink,
@@ -536,7 +536,7 @@
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   min-width: 120px;
   text-align: center;
 }
@@ -550,6 +550,7 @@
 .scanLink:hover {
   background-color: #FF5252;
   border-color: #FF5252;
+  transform: translateY(-1px);
 }
 
 .viewLink {
@@ -559,8 +560,10 @@
 }
 
 .viewLink:hover {
-  background-color: #FF6B6B;
-  color: #FFFFFF;
+  background-color: #FFE6E6;
+  color: #FF5252;
+  border-color: #FF5252;
+  transform: translateY(-1px);
 }
 
 /* Enhanced Stamp Info Box */
@@ -583,10 +586,8 @@
 }
 
 .stampDetails {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  flex-direction: column;
+    gap: 8px;
 }
 
 .stampDetail {
@@ -676,11 +677,6 @@
   }
 
   .stampDetails {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .nftDetails {
     padding: 12px;
   }
 
