@@ -1246,6 +1246,7 @@ const SwapComponent: React.FC = () => {
   const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [collectionName, setCollectionName] = useState('');
   const [collectionSymbol, setCollectionSymbol] = useState('');
+  const [currentCollectionName, setCurrentCollectionName] = useState<string>(''); // For upload modal title
   const [pendingUploadData, setPendingUploadData] = useState<{
     reference: string;
     filename: string;
@@ -1272,6 +1273,33 @@ const SwapComponent: React.FC = () => {
     }
   };
 
+  // Helper function to fetch collection name for display
+  const fetchCollectionNameForUpload = async (stampId: string) => {
+    if (!publicClient) return;
+
+    try {
+      // Get NFT contract address for this stamp ID
+      const nftContractAddress = await publicClient.readContract({
+        address: BUZZMINT_FACTORY_ADDRESS,
+        abi: BUZZMINT_FACTORY_ABI,
+        functionName: 'getContractAddress',
+        args: [stampId],
+      });
+
+      // Fetch collection name from the NFT contract
+      const collectionNameForDisplay = (await publicClient.readContract({
+        address: nftContractAddress as `0x${string}`,
+        abi: BUZZMINT_COLLECTION_ABI,
+        functionName: 'name',
+      })) as string;
+
+      setCurrentCollectionName(collectionNameForDisplay);
+    } catch (error) {
+      console.error('Error fetching collection name for upload:', error);
+      setCurrentCollectionName('');
+    }
+  };
+
   // Modified upload function to handle collection workflow
   const handleFileUpload = async () => {
     if (!selectedFile || !postageBatchId || !walletClient || !publicClient) {
@@ -1281,6 +1309,14 @@ const SwapComponent: React.FC = () => {
       console.log('walletClient', walletClient);
       console.log('publicClient', publicClient);
       return;
+    }
+
+    // Check if collection exists and fetch name before starting upload
+    const collectionExists = await checkCollectionExists(postageBatchId);
+    if (collectionExists) {
+      await fetchCollectionNameForUpload(postageBatchId);
+    } else {
+      setCurrentCollectionName(''); // Clear for new collections
     }
 
     setIsLoading(true);
@@ -1311,9 +1347,6 @@ const SwapComponent: React.FC = () => {
       });
 
       if (reference) {
-        // Check if collection exists for this stamp ID
-        const collectionExists = await checkCollectionExists(postageBatchId);
-
         if (!collectionExists) {
           // First upload - show collection creation form
           setPendingUploadData({
@@ -1394,6 +1427,7 @@ const SwapComponent: React.FC = () => {
         tokenId: Number(nextTokenId),
         stampId,
         dataURI,
+        collectionName: currentCollectionName, // Use the fetched collection name
       });
       setUploadStep('complete');
     } catch (error) {
@@ -1446,39 +1480,23 @@ const SwapComponent: React.FC = () => {
 
       setStatusMessage({
         step: 'Complete',
-        message:
-          'NFT Collection Created Successfully! Now add your first image to this collection.',
+        message: 'NFT minted successfully!',
         isSuccess: true,
+        reference,
+        filename,
         transactionHash: hash,
         nftContractAddress: nftContractAddress as string,
+        tokenId: 1, // First NFT is always token ID 1
+        stampId,
+        dataURI,
         collectionName,
-        collectionSymbol,
-        stampId: stampId,
       });
+      setUploadStep('complete');
 
       // Reset form state
       setCollectionName('');
       setCollectionSymbol('');
-      setCreatedStorageInfo(null);
-
-      // Start upload transition loading immediately after success message
-      setTimeout(() => {
-        setIsUploadTransitionLoading(true);
-
-        // After a brief delay, show upload interface
-        setTimeout(() => {
-          setIsUploadTransitionLoading(false);
-          setUploadStep('ready');
-          // Set the postage batch ID for upload
-          setPostageBatchId(stampId);
-          // This is the first NFT upload for a new collection
-          setIsFirstNftUpload(true);
-          // Clear the success message and loading state
-          setStatusMessage({ step: '', message: '' });
-          setIsLoading(false);
-          // Keep overlay open for upload (don't call setShowOverlay(false))
-        }, 1500);
-      }, 1500);
+      setPendingUploadData(null);
     } catch (error) {
       console.error('Collection creation error:', error);
       setStatusMessage({
@@ -1487,8 +1505,9 @@ const SwapComponent: React.FC = () => {
         error: error instanceof Error ? error.message : 'Unknown error',
         isError: true,
       });
-    } finally {
-      setIsLoading(false);
+      setUploadStep('idle');
+      setUploadProgress(0);
+      setIsDistributing(false);
     }
   };
 
@@ -1705,7 +1724,7 @@ const SwapComponent: React.FC = () => {
   };
 
   // Function to check if this is the first NFT upload
-  const checkIfFirstNftUpload = async (stampId: string) => {
+  const checkIfFirstNftUpload = async (stampId: string): Promise<boolean> => {
     if (!publicClient) return false;
 
     try {
@@ -2023,14 +2042,25 @@ const SwapComponent: React.FC = () => {
                 {['ready', 'uploading'].includes(uploadStep) && (
                   <div className={styles.uploadBox}>
                     <h3 className={styles.uploadTitle}>
-                      {postageBatchId
-                        ? `Upload to ${
-                            postageBatchId.startsWith('0x')
-                              ? postageBatchId.slice(2, 8)
-                              : postageBatchId.slice(0, 6)
-                          }...${postageBatchId.slice(-4)}`
-                        : 'Upload File'}
+                      {currentCollectionName
+                        ? `Upload to ${currentCollectionName}`
+                        : postageBatchId
+                          ? `Upload to ${
+                              postageBatchId.startsWith('0x')
+                                ? postageBatchId.slice(2, 8)
+                                : postageBatchId.slice(0, 6)
+                            }...${postageBatchId.slice(-4)}`
+                          : 'Upload File'}
                     </h3>
+                    {currentCollectionName && postageBatchId && (
+                      <div className={styles.uploadSubtitle}>
+                        Collection ID:{' '}
+                        {postageBatchId.startsWith('0x')
+                          ? postageBatchId.slice(2, 8)
+                          : postageBatchId.slice(0, 6)}
+                        ...{postageBatchId.slice(-4)}
+                      </div>
+                    )}
                     {isFirstNftUpload && (
                       <div className={styles.uploadWarning}>
                         Warning: Upload of first NFT may take longer as storage creation might still
@@ -2378,6 +2408,7 @@ const SwapComponent: React.FC = () => {
           setUploadStep={setUploadStep}
           checkIfFirstNftUpload={checkIfFirstNftUpload}
           setIsFirstNftUpload={setIsFirstNftUpload}
+          setCurrentCollectionName={setCurrentCollectionName}
         />
       ) : showUploadHistory ? (
         <UploadHistorySection address={address} setShowUploadHistory={setShowUploadHistory} />

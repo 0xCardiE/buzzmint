@@ -21,6 +21,7 @@ interface StampListSectionProps {
   setUploadStep: (step: UploadStep) => void;
   checkIfFirstNftUpload: (stampId: string) => Promise<boolean>;
   setIsFirstNftUpload: (isFirst: boolean) => void;
+  setCurrentCollectionName: (name: string) => void;
 }
 
 interface BatchEvent {
@@ -58,6 +59,7 @@ const StampListSection: React.FC<StampListSectionProps> = ({
   setUploadStep,
   checkIfFirstNftUpload,
   setIsFirstNftUpload,
+  setCurrentCollectionName,
 }) => {
   const [collections, setCollections] = useState<BatchEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -207,6 +209,9 @@ const StampListSection: React.FC<StampListSectionProps> = ({
 
     setUploadStep('ready');
     setShowStampList(false);
+
+    // Set the current collection name
+    setCurrentCollectionName(stamp.collectionName || 'Unnamed Collection');
   };
 
   return (
