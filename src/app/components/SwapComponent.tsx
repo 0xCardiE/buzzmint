@@ -272,12 +272,24 @@ const SwapComponent: React.FC = () => {
   // Handle AI image generation
   const handleAiGeneration = async () => {
     if (!aiPrompt.trim()) {
-      alert('Please enter a prompt for AI image generation');
+      setStatusMessage({
+        step: 'Error',
+        message: 'AI Generation Failed',
+        error: 'Please enter a prompt for AI image generation',
+        isError: true,
+      });
+      setShowOverlay(true);
       return;
     }
 
     if (!openAiApiKey) {
-      alert('Please configure your OpenAI API key in Settings first');
+      setStatusMessage({
+        step: 'Error',
+        message: 'AI Generation Failed',
+        error: 'Please configure your OpenAI API key in Settings first',
+        isError: true,
+      });
+      setShowOverlay(true);
       return;
     }
 
@@ -299,7 +311,17 @@ const SwapComponent: React.FC = () => {
       setUploadStep('ready');
     } catch (error) {
       console.error('AI generation error:', error);
-      alert(error instanceof Error ? error.message : 'Failed to generate image');
+
+      // Show user-friendly error message in overlay
+      setStatusMessage({
+        step: 'Error',
+        message: 'AI Image Generation Failed',
+        error:
+          'Unable to generate image. This could be due to network issues or API limitations. Please try again with a different prompt or check your internet connection.',
+        isError: true,
+      });
+      setShowOverlay(true);
+      setIsLoading(false);
     } finally {
       setIsGeneratingImage(false);
     }
