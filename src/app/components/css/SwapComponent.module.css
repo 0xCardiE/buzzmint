@@ -1134,87 +1134,227 @@
   }
 }
 
-/* Distribution animation container - optimized for progress streams */
+/* Particle Swarm Network Animation - Compact & Dynamic */
 .distributionContainer {
   position: relative;
-  height: 90px;
+  height: 80px;
   width: 100%;
   margin: 10px 0;
-  background-color: rgba(20, 23, 28, 0.5);
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #30363d;
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.05), rgba(69, 183, 184, 0.05));
+  border-radius: 12px;
+  overflow: visible;
+  border: 1px solid rgba(78, 205, 196, 0.2);
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  padding: 15px 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
   box-sizing: border-box;
 }
 
-/* Source indicator */
+/* Central source node (not always biggest) */
 .centerNode {
   position: absolute;
   top: 50%;
-  left: 8px;
-  transform: translate(0, -50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background-color: #4ECDC4;
+  background: linear-gradient(135deg, #4ECDC4, #45B7B8);
   border-radius: 50%;
-  z-index: 3;
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(78, 205, 196, 0.8);
+  animation: centralVariablePulse 3s ease-in-out infinite;
+}
+
+/* Network particles with variable sizes */
+.particle {
+  position: absolute;
+  background: linear-gradient(135deg, #4ECDC4, #45B7B8);
+  border-radius: 50%;
+  opacity: 0;
   box-shadow: 0 0 8px rgba(78, 205, 196, 0.6);
 }
 
-/* Progress stream tracks */
-.node {
-  position: relative;
-  height: 4px;
-  background-color: rgba(78, 205, 196, 0.1);
-  border-radius: 2px;
-  margin: 8px 0;
-  margin-left: 30px;
-  margin-right: 10px;
+/* Particle positions and individual sizing/animations */
+.particle1 {
+  top: 25%;
+  left: 25%;
+  width: 10px;
+  height: 10px;
+  animation: particleFlyOut 3s ease-out infinite, particleRandomSize1 4s ease-in-out infinite 0.5s;
 }
 
-.node1, .node2, .node3 {
-  width: auto;
-  left: auto;
-  right: auto;
-  top: auto;
-  transform: none;
+.particle2 {
+  top: 25%;
+  right: 25%;
+  width: 6px;
+  height: 6px;
+  animation: particleFlyOut 3s ease-out infinite 0.3s, particleRandomSize2 3.5s ease-in-out infinite 0.8s;
 }
 
-/* Hide unused nodes for simpler animation */
-.node4, .node5, .node6, .node7, .node8 {
-  display: none;
+.particle3 {
+  bottom: 25%;
+  left: 25%;
+  width: 14px;
+  height: 14px;
+  animation: particleFlyOut 3s ease-out infinite 0.6s, particleRandomSize3 4.5s ease-in-out infinite 1.1s;
 }
 
-/* Progress bars inside tracks */
-.chunk {
+.particle4 {
+  bottom: 25%;
+  right: 25%;
+  width: 8px;
+  height: 8px;
+  animation: particleFlyOut 3s ease-out infinite 0.9s, particleRandomSize4 3s ease-in-out infinite 1.4s;
+}
+
+.particle5 {
+  top: 15%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  animation: particleFlyOut 3s ease-out infinite 1.2s, particleRandomSize5 5s ease-in-out infinite 1.7s;
+}
+
+.particle6 {
+  bottom: 15%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  animation: particleFlyOut 3s ease-out infinite 1.5s, particleRandomSize6 3.8s ease-in-out infinite 2s;
+}
+
+/* Connection lines between particles - more compact */
+.connectionLine {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: linear-gradient(90deg, #4ECDC4, #45B7B8);
-  border-radius: 2px;
-  width: 0%;
-  z-index: 2;
-  box-shadow: 0 0 4px rgba(78, 205, 196, 0.5);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(78, 205, 196, 0.4), transparent);
+  opacity: 0;
+  transform-origin: left center;
+  animation: connectionGrow 3s ease-in-out infinite;
 }
 
-/* Animation for each progress stream - sequential filling */
-.chunk1 {
-  animation: progressStream1 2.5s infinite;
-}
-.chunk2 {
-  animation: progressStream2 2.5s infinite 0.8s;
-}
-.chunk3 {
-  animation: progressStream3 2.5s infinite 1.6s;
+.connection1 {
+  top: 35%;
+  left: 30%;
+  width: 40%;
+  transform: rotate(0deg);
+  animation-delay: 1.8s;
 }
 
-/* Hide unused chunks */
-.chunk4, .chunk5, .chunk6, .chunk7, .chunk8 {
+.connection2 {
+  top: 50%;
+  left: 30%;
+  width: 40%;
+  transform: rotate(35deg);
+  animation-delay: 2.1s;
+}
+
+.connection3 {
+  top: 65%;
+  left: 30%;
+  width: 40%;
+  transform: rotate(-35deg);
+  animation-delay: 2.4s;
+}
+
+/* Dynamic sizing animations for each particle */
+@keyframes centralVariablePulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 15px rgba(78, 205, 196, 0.8);
+  }
+  33% {
+    transform: translate(-50%, -50%) scale(1.4);
+    box-shadow: 0 0 20px rgba(78, 205, 196, 1);
+  }
+  66% {
+    transform: translate(-50%, -50%) scale(0.8);
+    box-shadow: 0 0 10px rgba(78, 205, 196, 0.6);
+  }
+}
+
+@keyframes particleRandomSize1 {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.6); }
+  50% { transform: scale(0.7); }
+  75% { transform: scale(1.2); }
+}
+
+@keyframes particleRandomSize2 {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(0.5); }
+  60% { transform: scale(1.8); }
+  90% { transform: scale(1.1); }
+}
+
+@keyframes particleRandomSize3 {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.3); }
+  40% { transform: scale(0.6); }
+  80% { transform: scale(1.5); }
+}
+
+@keyframes particleRandomSize4 {
+  0%, 100% { transform: scale(1); }
+  35% { transform: scale(1.7); }
+  70% { transform: scale(0.8); }
+}
+
+@keyframes particleRandomSize5 {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(0.4); }
+  45% { transform: scale(1.4); }
+  75% { transform: scale(0.9); }
+}
+
+@keyframes particleRandomSize6 {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.9); }
+  80% { transform: scale(0.6); }
+}
+
+@keyframes particleFlyOut {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes connectionGrow {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  30% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  60% {
+    opacity: 0.6;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scaleX(1);
+  }
+}
+
+/* Hide old animation elements */
+.node, .chunk, .node1, .node2, .node3, .node4, .node5, .node6, .node7, .node8,
+.chunk1, .chunk2, .chunk3, .chunk4, .chunk5, .chunk6, .chunk7, .chunk8 {
   display: none;
 }
 

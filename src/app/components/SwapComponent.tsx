@@ -2373,30 +2373,29 @@ const SwapComponent: React.FC = () => {
                                 />
                               </div>
                             ) : (
-                              // Show the distribution animation when distributing to Swarm
+                              // Show the particle swarm network animation when distributing to Swarm
                               <div className={styles.distributionContainer}>
-                                {/* Center cube (source node) */}
+                                {/* Central file node */}
                                 <div className={styles.centerNode}></div>
 
-                                {/* Target nodes (cubes) */}
-                                <div className={`${styles.node} ${styles.node1}`}></div>
-                                <div className={`${styles.node} ${styles.node2}`}></div>
-                                <div className={`${styles.node} ${styles.node3}`}></div>
-                                <div className={`${styles.node} ${styles.node4}`}></div>
-                                <div className={`${styles.node} ${styles.node5}`}></div>
-                                <div className={`${styles.node} ${styles.node6}`}></div>
-                                <div className={`${styles.node} ${styles.node7}`}></div>
-                                <div className={`${styles.node} ${styles.node8}`}></div>
+                                {/* Network particles flying out */}
+                                <div className={`${styles.particle} ${styles.particle1}`}></div>
+                                <div className={`${styles.particle} ${styles.particle2}`}></div>
+                                <div className={`${styles.particle} ${styles.particle3}`}></div>
+                                <div className={`${styles.particle} ${styles.particle4}`}></div>
+                                <div className={`${styles.particle} ${styles.particle5}`}></div>
+                                <div className={`${styles.particle} ${styles.particle6}`}></div>
 
-                                {/* Chunks being distributed */}
-                                <div className={`${styles.chunk} ${styles.chunk1}`}></div>
-                                <div className={`${styles.chunk} ${styles.chunk2}`}></div>
-                                <div className={`${styles.chunk} ${styles.chunk3}`}></div>
-                                <div className={`${styles.chunk} ${styles.chunk4}`}></div>
-                                <div className={`${styles.chunk} ${styles.chunk5}`}></div>
-                                <div className={`${styles.chunk} ${styles.chunk6}`}></div>
-                                <div className={`${styles.chunk} ${styles.chunk7}`}></div>
-                                <div className={`${styles.chunk} ${styles.chunk8}`}></div>
+                                {/* Connection lines between particles */}
+                                <div
+                                  className={`${styles.connectionLine} ${styles.connection1}`}
+                                ></div>
+                                <div
+                                  className={`${styles.connectionLine} ${styles.connection2}`}
+                                ></div>
+                                <div
+                                  className={`${styles.connectionLine} ${styles.connection3}`}
+                                ></div>
                               </div>
                             )}
                           </>
