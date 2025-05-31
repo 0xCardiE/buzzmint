@@ -245,6 +245,17 @@
   overflow: hidden;
 }
 
+.nftLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.nftLink:hover {
+  transform: translateY(-2px);
+}
+
 .nftItem {
   background-color: #FFFFFF;
   border: 1px solid #E9ECEF;
@@ -255,10 +266,9 @@
   max-width: 100%;
 }
 
-.nftItem:hover {
+.nftLink:hover .nftItem {
   border-color: #FF6B6B;
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
-  transform: translateY(-2px);
 }
 
 .nftThumbnail {
@@ -280,7 +290,7 @@
   max-width: 100%;
 }
 
-.nftItem:hover .nftImage {
+.nftLink:hover .nftImage {
   transform: scale(1.05);
 }
 

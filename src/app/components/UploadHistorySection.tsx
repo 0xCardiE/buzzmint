@@ -334,25 +334,33 @@ const UploadHistorySection: React.FC<UploadHistoryProps> = ({ address, setShowUp
               ) : (
                 <div className={styles.nftGrid}>
                   {collection.nfts.slice(0, 6).map(nft => (
-                    <div key={nft.tokenId} className={styles.nftItem}>
-                      <div className={styles.nftThumbnail}>
-                        <img
-                          src={nft.imageUrl}
-                          alt={nft.fileName}
-                          className={styles.nftImage}
-                          onError={e => {
-                            // Fallback to a placeholder if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.src =
-                              'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjVGNURDIi8+CjxwYXRoIGQ9Ik0zMCA3MEw1MCA0MEw3MCA3MEgzMFoiIGZpbGw9IiNGRjZCNkIiLz4KPGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iNSIgZmlsbD0iIzRFQ0RDNCIvPgo8L3N2Zz4K';
-                          }}
-                        />
+                    <a
+                      key={nft.tokenId}
+                      href={`https://gnosis.blockscout.com/token/${collection.contractAddress}/instance/${nft.tokenId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.nftLink}
+                    >
+                      <div className={styles.nftItem}>
+                        <div className={styles.nftThumbnail}>
+                          <img
+                            src={nft.imageUrl}
+                            alt={nft.fileName}
+                            className={styles.nftImage}
+                            onError={e => {
+                              // Fallback to a placeholder if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.src =
+                                'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjVGNURDIi8+CjxwYXRoIGQ9Ik0zMCA3MEw1MCA0MEw3MCA3MEgzMFoiIGZpbGw9IiNGRjZCNkIiLz4KPGNpcmNsZSBjeD0iMzUiIGN5PSIzNSIgcj0iNSIgZmlsbD0iIzRFQ0RDNCIvPgo8L3N2Zz4K';
+                            }}
+                          />
+                        </div>
+                        <div className={styles.nftInfo}>
+                          <p className={styles.nftFileName}>{nft.fileName}</p>
+                          <p className={styles.nftTokenId}>#{nft.tokenId}</p>
+                        </div>
                       </div>
-                      <div className={styles.nftInfo}>
-                        <p className={styles.nftFileName}>{nft.fileName}</p>
-                        <p className={styles.nftTokenId}>#{nft.tokenId}</p>
-                      </div>
-                    </div>
+                    </a>
                   ))}
                   {collection.nfts.length > 6 && (
                     <div className={styles.moreNfts}>+{collection.nfts.length - 6} more</div>
