@@ -58,9 +58,8 @@ export const STORAGE_OPTIONS: StorageOption[] = [
   { depth: 21, size: 'HQ', description: '~2 GB' },
 ];
 
-// Define the simplified time options for buzzMint (shortened for testing)
 export const TIME_OPTIONS = [
-  { days: 1, display: '1 year' },
+  { days: 365, display: '1 year' },
   { days: 365 * 5, display: '5 years' },
   { days: 365 * 10, display: '10 years' },
 ];
