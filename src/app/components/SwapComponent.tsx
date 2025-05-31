@@ -834,12 +834,25 @@ const SwapComponent: React.FC = () => {
 
               console.log('Batch created successfully with ID:', calculatedBatchId);
 
+              // Store storage creation info for collection creation workflow
+              setCreatedStorageInfo({
+                batchId: calculatedBatchId,
+                cost: totalUsdAmount || '0',
+                days: selectedDays || 0,
+              });
+
               setStatusMessage({
                 step: 'Complete',
-                message: 'Storage Bought Successfully',
+                message: 'Storage Created Successfully! Now create your NFT collection.',
                 isSuccess: true,
               });
-              setUploadStep('ready');
+
+              // After a brief delay, show collection creation form
+              setTimeout(() => {
+                setShowPostStorageCollectionForm(true);
+                setStatusMessage({ step: '', message: '' });
+                setIsLoading(false);
+              }, 3000);
             }
           } catch (error) {
             console.error('Failed to create batch ID:', error);
@@ -1002,12 +1015,25 @@ const SwapComponent: React.FC = () => {
                 );
                 console.log('Batch created successfully with ID:', calculatedBatchId);
 
+                // Store storage creation info for collection creation workflow
+                setCreatedStorageInfo({
+                  batchId: calculatedBatchId,
+                  cost: totalUsdAmount || '0',
+                  days: selectedDays || 0,
+                });
+
                 setStatusMessage({
                   step: 'Complete',
-                  message: 'Storage Bought Successfully',
+                  message: 'Storage Created Successfully! Now create your NFT collection.',
                   isSuccess: true,
                 });
-                setUploadStep('ready');
+
+                // After a brief delay, show collection creation form
+                setTimeout(() => {
+                  setShowPostStorageCollectionForm(true);
+                  setStatusMessage({ step: '', message: '' });
+                  setIsLoading(false);
+                }, 3000);
               }
             } catch (error) {
               console.error('Failed to create batch ID:', error);
