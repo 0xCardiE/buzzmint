@@ -9,6 +9,7 @@ export type ExecutionStatus = {
   filename?: string;
   transactionHash?: string;
   nftContractAddress?: string;
+  tokenId?: number;
   collectionName?: string;
   collectionSymbol?: string;
   stampId?: string;

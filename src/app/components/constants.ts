@@ -201,16 +201,6 @@ export const BUZZMINT_FACTORY_ABI = [
       },
       {
         internalType: 'string',
-        name: 'fileName',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
-        name: 'dataURI',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
         name: 'name',
         type: 'string',
       },
@@ -220,17 +210,12 @@ export const BUZZMINT_FACTORY_ABI = [
         type: 'string',
       },
     ],
-    name: 'createContractAndMint',
+    name: 'createContract',
     outputs: [
       {
         internalType: 'address',
         name: '',
         type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'nonpayable',
