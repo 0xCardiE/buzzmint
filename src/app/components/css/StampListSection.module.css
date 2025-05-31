@@ -4,22 +4,13 @@
   margin: 0 auto;
 }
 
-.stampListContent {
-  background-color: #FFFFFF;
-  border-radius: 12px;
-  padding: 2rem;
-  margin: 2rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid #E9ECEF;
-}
-
 .stampListHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #E9ECEF;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #F5F5DC;
 }
 
 .stampListHeader h2 {
@@ -49,17 +40,16 @@
 
 .stampListItem {
   background: #FFFFFF;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 16px;
-  border: 1px solid #E9ECEF;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #F5F5DC;
   transition: all 0.2s ease;
 }
 
 .stampListItem:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   border-color: #FF6B6B;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.1);
 }
 
 .stampListId {
@@ -177,7 +167,7 @@
   transform: none;
 }
 
-.topUpButton {
+.extendButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -196,7 +186,7 @@
   box-shadow: 0 2px 4px rgba(78, 205, 196, 0.2);
 }
 
-.topUpButton:hover {
+.extendButton:hover {
   background-color: #45B7B8;
   box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3);
   transform: translateY(-1px);
@@ -256,13 +246,23 @@
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
-  .stampListContent {
-    padding: 1rem;
-    margin: 1rem 0;
+  .stampListContainer {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .stampListHeader {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .stampListHeader h2 {
+    font-size: 1.3rem;
   }
 
   .stampListItem {
-    padding: 16px;
+    padding: 1rem;
+    margin-bottom: 1rem;
   }
 
   .stampListDetails {
@@ -275,7 +275,7 @@
     gap: 8px;
   }
 
-  .topUpButton {
+  .extendButton {
     width: 100%;
   }
 
@@ -285,6 +285,19 @@
 }
 
 @media (max-width: 480px) {
+  .stampListContainer {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+
+  .stampListHeader h2 {
+    font-size: 1.2rem;
+  }
+
+  .stampListItem {
+    padding: 0.75rem;
+  }
+
   .collectionName strong {
     max-width: 150px;
   }

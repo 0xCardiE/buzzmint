@@ -201,156 +201,154 @@ const StampListSection: React.FC<StampListSectionProps> = ({
 
   return (
     <div className={styles.stampListContainer}>
-      <div className={styles.stampListContent}>
-        <div className={styles.stampListHeader}>
-          <h2>Your Collections</h2>
-        </div>
+      <div className={styles.stampListHeader}>
+        <h2>Your Collections</h2>
+      </div>
 
-        {!address ? (
-          <div className={styles.stampListLoading}>Connect wallet to check collections</div>
-        ) : isLoading ? (
-          <div className={styles.stampListLoading}>Loading collections...</div>
-        ) : collections.length === 0 ? (
-          <div className={styles.stampListEmpty}>No collections found</div>
-        ) : (
-          <>
-            {collections.map((stamp, index) => (
-              <div key={index} className={styles.stampListItem}>
-                <div
-                  className={styles.stampListId}
-                  onClick={() => {
-                    const idToCopy = stamp.batchId.startsWith('0x')
-                      ? stamp.batchId.slice(2)
-                      : stamp.batchId;
-                    navigator.clipboard.writeText(idToCopy);
-                    // Show temporary "Copied!" message
-                    const element = document.querySelector(`[data-stamp-id="${stamp.batchId}"]`);
-                    if (element) {
-                      element.setAttribute('data-copied', 'true');
-                      setTimeout(() => {
-                        element.setAttribute('data-copied', 'false');
-                      }, 2000);
-                    }
-                  }}
-                  data-stamp-id={stamp.batchId}
-                  data-copied="false"
-                  title="Click to copy stamp ID"
-                >
-                  ID: {stamp.batchId.startsWith('0x') ? stamp.batchId.slice(2) : stamp.batchId}
+      {!address ? (
+        <div className={styles.stampListLoading}>Connect wallet to check collections</div>
+      ) : isLoading ? (
+        <div className={styles.stampListLoading}>Loading collections...</div>
+      ) : collections.length === 0 ? (
+        <div className={styles.stampListEmpty}>No collections found</div>
+      ) : (
+        <>
+          {collections.map((stamp, index) => (
+            <div key={index} className={styles.stampListItem}>
+              <div
+                className={styles.stampListId}
+                onClick={() => {
+                  const idToCopy = stamp.batchId.startsWith('0x')
+                    ? stamp.batchId.slice(2)
+                    : stamp.batchId;
+                  navigator.clipboard.writeText(idToCopy);
+                  // Show temporary "Copied!" message
+                  const element = document.querySelector(`[data-stamp-id="${stamp.batchId}"]`);
+                  if (element) {
+                    element.setAttribute('data-copied', 'true');
+                    setTimeout(() => {
+                      element.setAttribute('data-copied', 'false');
+                    }, 2000);
+                  }
+                }}
+                data-stamp-id={stamp.batchId}
+                data-copied="false"
+                title="Click to copy stamp ID"
+              >
+                ID: {stamp.batchId.startsWith('0x') ? stamp.batchId.slice(2) : stamp.batchId}
+              </div>
+
+              {/* NFT Collection Info */}
+              {stamp.nftContractAddress && (
+                <div className={styles.nftCollectionInfo}>
+                  <div className={styles.collectionName}>
+                    <span className={styles.nftLabel}>NFT Collection:</span>
+                    <strong title={stamp.collectionName || 'Unnamed Collection'}>
+                      {stamp.collectionName || 'Unnamed Collection'}
+                    </strong>
+                  </div>
+                  <div className={styles.contractAddress}>
+                    <span className={styles.nftLabel}>Contract:</span>
+                    <a
+                      href={`https://gnosis.blockscout.com/address/${stamp.nftContractAddress}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.contractLink}
+                    >
+                      {stamp.nftContractAddress.slice(0, 6)}...
+                      {stamp.nftContractAddress.slice(-4)}
+                    </a>
+                  </div>
                 </div>
+              )}
 
-                {/* NFT Collection Info */}
-                {stamp.nftContractAddress && (
-                  <div className={styles.nftCollectionInfo}>
-                    <div className={styles.collectionName}>
-                      <span className={styles.nftLabel}>NFT Collection:</span>
-                      <strong title={stamp.collectionName || 'Unnamed Collection'}>
-                        {stamp.collectionName || 'Unnamed Collection'}
-                      </strong>
-                    </div>
-                    <div className={styles.contractAddress}>
-                      <span className={styles.nftLabel}>Contract:</span>
-                      <a
-                        href={`https://gnosis.blockscout.com/address/${stamp.nftContractAddress}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.contractLink}
-                      >
-                        {stamp.nftContractAddress.slice(0, 6)}...
-                        {stamp.nftContractAddress.slice(-4)}
-                      </a>
-                    </div>
+              <div className={styles.stampListDetails}>
+                <div>
+                  <span>Paid</span>
+                  <strong>{Number(stamp.totalAmount).toFixed(2)} BZZ</strong>
+                </div>
+                <div>
+                  <span>Size</span>
+                  <strong>{stamp.size}</strong>
+                </div>
+                {stamp.utilization !== undefined && (
+                  <div>
+                    <span>Utilization</span>
+                    <strong>{stamp.utilization}%</strong>
                   </div>
                 )}
-
-                <div className={styles.stampListDetails}>
+                {stamp.batchTTL !== undefined && (
                   <div>
-                    <span>Paid</span>
-                    <strong>{Number(stamp.totalAmount).toFixed(2)} BZZ</strong>
+                    <span>Expires</span>
+                    <strong>{Math.floor(stamp.batchTTL / 86400)} days</strong>
                   </div>
+                )}
+                {stamp.timestamp && (
                   <div>
-                    <span>Size</span>
-                    <strong>{stamp.size}</strong>
+                    <span>Created</span>
+                    <strong>{new Date(stamp.timestamp * 1000).toLocaleDateString()}</strong>
                   </div>
-                  {stamp.utilization !== undefined && (
-                    <div>
-                      <span>Utilization</span>
-                      <strong>{stamp.utilization}%</strong>
-                    </div>
-                  )}
-                  {stamp.batchTTL !== undefined && (
-                    <div>
-                      <span>Expires</span>
-                      <strong>{Math.floor(stamp.batchTTL / 86400)} days</strong>
-                    </div>
-                  )}
-                  {stamp.timestamp && (
-                    <div>
-                      <span>Created</span>
-                      <strong>{new Date(stamp.timestamp * 1000).toLocaleDateString()}</strong>
-                    </div>
-                  )}
-                </div>
-                <div className={styles.stampActions}>
-                  <button
-                    className={styles.uploadWithStampButton}
-                    onClick={() => {
-                      handleCollectionSelect(stamp);
-                    }}
-                  >
-                    Upload with this collection
-                  </button>
-
-                  <button
-                    className={styles.topUpButton}
-                    title="Top up this collection"
-                    onClick={() => {
-                      try {
-                        console.log('Top-up button clicked');
-                        // Format the batch ID (ensure no 0x prefix for URL)
-                        const formattedId = stamp.batchId.startsWith('0x')
-                          ? stamp.batchId.slice(2)
-                          : stamp.batchId;
-
-                        // Create the topup URL
-                        const topupUrl = `${window.location.origin}/?topup=${formattedId}`;
-                        console.log('Opening new page:', topupUrl);
-
-                        // Use window.open which forces a completely new page load
-                        // The "_self" ensures it replaces the current page
-                        window.open(topupUrl, '_self');
-                      } catch (error) {
-                        console.error('Error during top-up navigation:', error);
-                        // Emergency fallback if all else fails
-                        alert(
-                          'Navigation failed. Please copy the collection ID and use it manually.'
-                        );
-                      }
-                    }}
-                  >
-                    {/* Plus/Add icon in SVG format */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="12" y1="5" x2="12" y2="19"></line>
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    <span style={{ marginLeft: '4px' }}>Top Up</span>
-                  </button>
-                </div>
+                )}
               </div>
-            ))}
-          </>
-        )}
-      </div>
+              <div className={styles.stampActions}>
+                <button
+                  className={styles.uploadWithStampButton}
+                  onClick={() => {
+                    handleCollectionSelect(stamp);
+                  }}
+                >
+                  Upload with this collection
+                </button>
+
+                <button
+                  className={styles.extendButton}
+                  title="Extend this collection"
+                  onClick={() => {
+                    try {
+                      console.log('Extend button clicked');
+                      // Format the batch ID (ensure no 0x prefix for URL)
+                      const formattedId = stamp.batchId.startsWith('0x')
+                        ? stamp.batchId.slice(2)
+                        : stamp.batchId;
+
+                      // Create the extend URL
+                      const extendUrl = `${window.location.origin}/?extend=${formattedId}`;
+                      console.log('Opening new page:', extendUrl);
+
+                      // Use window.open which forces a completely new page load
+                      // The "_self" ensures it replaces the current page
+                      window.open(extendUrl, '_self');
+                    } catch (error) {
+                      console.error('Error during extend navigation:', error);
+                      // Emergency fallback if all else fails
+                      alert(
+                        'Navigation failed. Please copy the collection ID and use it manually.'
+                      );
+                    }
+                  }}
+                >
+                  {/* Plus/Add icon in SVG format */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span style={{ marginLeft: '4px' }}>Extend</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 };
