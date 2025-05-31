@@ -1998,7 +1998,7 @@ const SwapComponent: React.FC = () => {
                           rel="noopener noreferrer"
                           className={styles.scanLink}
                         >
-                          Scan Link
+                          Chain Link
                         </a>
                       )}
 
