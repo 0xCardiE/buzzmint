@@ -165,6 +165,9 @@ const SwapComponent: React.FC = () => {
   // Add state to track if this is the first NFT upload
   const [isFirstNftUpload, setIsFirstNftUpload] = useState(false);
 
+  // Add state for transition loading
+  const [isTransitionLoading, setIsTransitionLoading] = useState(false);
+
   // Add a ref to track the current wallet client
   const currentWalletClientRef = useRef(walletClient);
 
@@ -847,12 +850,16 @@ const SwapComponent: React.FC = () => {
                 isSuccess: true,
               });
 
+              // Start transition loading immediately
+              setIsTransitionLoading(true);
+              setStatusMessage({ step: '', message: '' });
+
               // After a brief delay, show collection creation form
               setTimeout(() => {
+                setIsTransitionLoading(false);
                 setShowPostStorageCollectionForm(true);
-                setStatusMessage({ step: '', message: '' });
                 setIsLoading(false);
-              }, 3000);
+              }, 2000);
             }
           } catch (error) {
             console.error('Failed to create batch ID:', error);
@@ -1028,12 +1035,16 @@ const SwapComponent: React.FC = () => {
                   isSuccess: true,
                 });
 
+                // Start transition loading immediately
+                setIsTransitionLoading(true);
+                setStatusMessage({ step: '', message: '' });
+
                 // After a brief delay, show collection creation form
                 setTimeout(() => {
+                  setIsTransitionLoading(false);
                   setShowPostStorageCollectionForm(true);
-                  setStatusMessage({ step: '', message: '' });
                   setIsLoading(false);
-                }, 3000);
+                }, 2000);
               }
             } catch (error) {
               console.error('Failed to create batch ID:', error);
@@ -2433,7 +2444,7 @@ const SwapComponent: React.FC = () => {
       {/* Post-Storage Collection Creation Form Modal */}
       {showPostStorageCollectionForm && (
         <div className={styles.overlay}>
-          <div className={styles.statusBox}>
+          <div className={`${styles.statusBox} ${styles.largeStatusBox}`}>
             <button
               className={styles.closeButton}
               onClick={() => {
@@ -2501,6 +2512,21 @@ const SwapComponent: React.FC = () => {
                   Create NFT Collection
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Transition Loading Overlay */}
+      {isTransitionLoading && (
+        <div className={styles.overlay}>
+          <div className={`${styles.statusBox} ${styles.largeStatusBox}`}>
+            <div className={styles.transitionLoading}>
+              <div className={styles.spinner}></div>
+              <h3 className={styles.transitionTitle}>Preparing Your NFT Collection</h3>
+              <p className={styles.transitionMessage}>
+                Your storage is ready! Setting up the collection creation form...
+              </p>
             </div>
           </div>
         </div>
