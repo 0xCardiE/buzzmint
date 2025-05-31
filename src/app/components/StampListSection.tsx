@@ -302,25 +302,25 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                   </button>
 
                   <button
-                    className={styles.topUpButton}
-                    title="Top up this collection"
+                    className={styles.extendButton}
+                    title="Extend this collection"
                     onClick={() => {
                       try {
-                        console.log('Top-up button clicked');
+                        console.log('Extend button clicked');
                         // Format the batch ID (ensure no 0x prefix for URL)
                         const formattedId = stamp.batchId.startsWith('0x')
                           ? stamp.batchId.slice(2)
                           : stamp.batchId;
 
-                        // Create the topup URL
-                        const topupUrl = `${window.location.origin}/?topup=${formattedId}`;
-                        console.log('Opening new page:', topupUrl);
+                        // Create the extend URL
+                        const extendUrl = `${window.location.origin}/?extend=${formattedId}`;
+                        console.log('Opening new page:', extendUrl);
 
                         // Use window.open which forces a completely new page load
                         // The "_self" ensures it replaces the current page
-                        window.open(topupUrl, '_self');
+                        window.open(extendUrl, '_self');
                       } catch (error) {
-                        console.error('Error during top-up navigation:', error);
+                        console.error('Error during extend navigation:', error);
                         // Emergency fallback if all else fails
                         alert(
                           'Navigation failed. Please copy the collection ID and use it manually.'
@@ -343,7 +343,7 @@ const StampListSection: React.FC<StampListSectionProps> = ({
                       <line x1="12" y1="5" x2="12" y2="19"></line>
                       <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    <span style={{ marginLeft: '4px' }}>Top Up</span>
+                    <span style={{ marginLeft: '4px' }}>Extend</span>
                   </button>
                 </div>
               </div>

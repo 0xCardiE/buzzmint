@@ -331,7 +331,7 @@ const SwapComponent: React.FC = () => {
               nodeAddress,
               swarmConfig,
               setEstimatedTime,
-              topUpBatchId: isTopUp ? topUpBatchId || undefined : undefined, // Only pass if it's a top-up
+              extendBatchId: isTopUp ? topUpBatchId || undefined : undefined, // Only pass if it's an extension
             }),
           'getGnosisQuote-execution',
           undefined,
@@ -607,7 +607,7 @@ const SwapComponent: React.FC = () => {
 
       // Generate specific transaction message based on operation type
       const operationMsg = isTopUp
-        ? `Topping up batch ${
+        ? `Extending collection ${
             topUpBatchId?.startsWith('0x') ? topUpBatchId.slice(2, 8) : topUpBatchId?.slice(0, 6)
           }...${topUpBatchId?.slice(-4)}`
         : 'Buying storage...';
@@ -683,7 +683,10 @@ const SwapComponent: React.FC = () => {
 
         // Execute the batch creation or top-up
         const batchTxHash = await walletClient.writeContract(contractWriteParams);
-        console.log(`${isTopUp ? 'Top up' : 'Create batch'} transaction hash:`, batchTxHash);
+        console.log(
+          `${isTopUp ? 'Extend collection' : 'Create batch'} transaction hash:`,
+          batchTxHash
+        );
 
         // Wait for batch transaction to be mined
         const batchReceipt = await publicClient.waitForTransactionReceipt({
@@ -693,7 +696,7 @@ const SwapComponent: React.FC = () => {
         if (batchReceipt.status === 'success') {
           if (isTopUp) {
             // For top-up, we already have the batch ID
-            console.log('Successfully topped up batch ID:', topUpBatchId);
+            console.log('Successfully extended collection ID:', topUpBatchId);
             setPostageBatchId(topUpBatchId as string);
 
             // Set top-up completion info
@@ -706,7 +709,7 @@ const SwapComponent: React.FC = () => {
 
             setStatusMessage({
               step: 'Complete',
-              message: 'Batch Topped Up Successfully',
+              message: 'Collection Extended Successfully',
               isSuccess: true,
             });
             // Don't set upload step for top-ups
@@ -732,7 +735,7 @@ const SwapComponent: React.FC = () => {
             }
           }
         } else {
-          throw new Error(`${isTopUp ? 'Top-up' : 'Batch creation'} failed`);
+          throw new Error(`${isTopUp ? 'Extension' : 'Batch creation'} failed`);
         }
       } else {
         throw new Error('Approval failed');
@@ -790,7 +793,7 @@ const SwapComponent: React.FC = () => {
 
               setStatusMessage({
                 step: 'Complete',
-                message: 'Batch Topped Up Successfully',
+                message: 'Collection Extended Successfully',
                 isSuccess: true,
               });
             } else {
@@ -959,7 +962,7 @@ const SwapComponent: React.FC = () => {
 
                 setStatusMessage({
                   step: 'Complete',
-                  message: 'Batch Topped Up Successfully',
+                  message: 'Collection Extended Successfully',
                   isSuccess: true,
                 });
               } else {
@@ -1112,7 +1115,7 @@ const SwapComponent: React.FC = () => {
                 nodeAddress,
                 swarmConfig: updatedConfig,
                 setEstimatedTime,
-                topUpBatchId: isTopUp ? topUpBatchId || undefined : undefined, // Only pass if it's a top-up
+                extendBatchId: isTopUp ? topUpBatchId || undefined : undefined, // Only pass if it's an extension
               }),
             'getGnosisQuote-execution',
             undefined,
@@ -1449,11 +1452,11 @@ const SwapComponent: React.FC = () => {
     if (typeof window !== 'undefined') {
       // First check query parameters
       const url = new URL(window.location.href);
-      const stampParam = url.searchParams.get('topup');
+      const stampParam = url.searchParams.get('extend');
 
-      // Then check hash fragments (e.g., #topup=batchId)
+      // Then check hash fragments (e.g., #extend=batchId)
       const hash = window.location.hash;
-      const hashMatch = hash.match(/^#topup=([a-fA-F0-9]+)$/);
+      const hashMatch = hash.match(/^#extend=([a-fA-F0-9]+)$/);
 
       if (stampParam) {
         // Format with 0x prefix for contract call
@@ -1526,7 +1529,7 @@ const SwapComponent: React.FC = () => {
             setShowUploadHistory(false);
           }}
         >
-          {isTopUp ? 'Top Up' : 'Buy'}
+          {isTopUp ? 'Extend' : 'Buy'}
         </button>
         <button
           className={`${styles.tabButton} ${showStampList ? styles.activeTab : ''}`}
@@ -1660,7 +1663,7 @@ const SwapComponent: React.FC = () => {
               className={styles.label}
               data-tooltip="Duration of storage collections for which you are paying for"
             >
-              {isTopUp ? 'Additional duration' : 'Storage duration'}
+              {isTopUp ? 'Extension duration' : 'Storage duration'}
             </label>
             <div className={styles.buttonGroup}>
               {TIME_OPTIONS.map(option => (
@@ -1721,7 +1724,7 @@ const SwapComponent: React.FC = () => {
             ) : insufficientFunds ? (
               'Insufficient Balance'
             ) : isTopUp ? (
-              'Top Up Batch'
+              'Extend Collection'
             ) : (
               'Execute Swap'
             )}
@@ -1879,7 +1882,7 @@ const SwapComponent: React.FC = () => {
                             <>
                               <div className={styles.smallSpinner}></div>
                               {statusMessage.step === '404'
-                                ? 'Searching for batch ID...'
+                                ? 'Searching for collection ID...'
                                 : statusMessage.step === '422'
                                   ? 'Waiting for batch to be usable...'
                                   : statusMessage.step === 'Uploading'
@@ -2073,9 +2076,9 @@ const SwapComponent: React.FC = () => {
                 {topUpCompleted && (
                   <div className={styles.successMessage}>
                     <div className={styles.successIcon}>✓</div>
-                    <h3>Batch Topped Up Successfully!</h3>
+                    <h3>Collection Extended Successfully!</h3>
                     <div className={styles.referenceBox}>
-                      <p>Batch ID:</p>
+                      <p>Collection ID:</p>
                       <div className={styles.referenceCopyWrapper}>
                         <code
                           className={styles.referenceCode}
@@ -2098,7 +2101,7 @@ const SwapComponent: React.FC = () => {
                     </div>
 
                     <div className={styles.stampInfoBox}>
-                      <h4>Top-Up Details</h4>
+                      <h4>Extension Details</h4>
                       <div className={styles.stampDetails}>
                         <div className={styles.stampDetail}>
                           <span>Added Duration:</span>
