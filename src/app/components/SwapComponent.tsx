@@ -7,9 +7,8 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { config } from '@/app/wagmi';
 import { createConfig, EVM, executeRoute, ChainId, ChainType, getChains, Chain } from '@lifi/sdk';
 import styles from './css/SwapComponent.module.css';
-import { parseAbi, formatUnits, createPublicClient, http } from 'viem';
+import { parseAbi, formatUnits } from 'viem';
 import { getAddress } from 'viem';
-import { gnosis } from 'viem/chains';
 
 import { ExecutionStatus, UploadStep } from './types';
 import {
@@ -147,8 +146,6 @@ const SwapComponent: React.FC = () => {
     batchId: string;
     days: number;
     cost: string;
-    collectionName?: string;
-    nftContractAddress?: string;
   } | null>(null);
 
   // Add a ref to track the current wallet client
@@ -699,22 +696,17 @@ const SwapComponent: React.FC = () => {
             console.log('Successfully topped up batch ID:', topUpBatchId);
             setPostageBatchId(topUpBatchId as string);
 
-            // Fetch collection information
-            const collectionInfo = await fetchCollectionInfo(topUpBatchId);
-
             // Set top-up completion info
             setTopUpCompleted(true);
             setTopUpInfo({
-              batchId: topUpBatchId,
+              batchId: topUpBatchId as string,
               days: selectedDays || 0,
               cost: totalUsdAmount || '0',
-              collectionName: collectionInfo.name,
-              nftContractAddress: collectionInfo.address,
             });
 
             setStatusMessage({
               step: 'Complete',
-              message: 'Collection Extended Successfully',
+              message: 'Batch Topped Up Successfully',
               isSuccess: true,
             });
             // Don't set upload step for top-ups
@@ -788,26 +780,17 @@ const SwapComponent: React.FC = () => {
           try {
             if (isTopUp && topUpBatchId) {
               console.log('Successfully topped up batch ID:', topUpBatchId);
-              
-              // Fetch collection information
-              const collectionInfo1 = await fetchCollectionInfo(topUpBatchId);
-              
               // Set top-up completion info
               setTopUpCompleted(true);
               setTopUpInfo({
                 batchId: topUpBatchId,
-
-              // Set top-up completion info
-              setTopUpCompleted(true);
-              setTopUpInfo({
-                batchId: topUpBatchId as string,
                 days: selectedDays || 0,
                 cost: totalUsdAmount || '0',
               });
 
               setStatusMessage({
                 step: 'Complete',
-                message: 'Collection Extended Successfully',
+                message: 'Batch Topped Up Successfully',
                 isSuccess: true,
               });
             } else {
@@ -966,36 +949,17 @@ const SwapComponent: React.FC = () => {
             try {
               if (isTopUp && topUpBatchId) {
                 console.log('Successfully topped up batch ID:', topUpBatchId);
-
-                // Fetch collection information
-                const collectionInfo = await fetchCollectionInfo(topUpBatchId);
-
                 // Set top-up completion info
                 setTopUpCompleted(true);
                 setTopUpInfo({
                   batchId: topUpBatchId,
                   days: selectedDays || 0,
                   cost: totalUsdAmount || '0',
-                  collectionName: collectionInfo.name,
-                  nftContractAddress: collectionInfo.address,
-                });
-
-                // Fetch collection information
-                const collectionInfo = await fetchCollectionInfo(topUpBatchId);
-
-                // Set top-up completion info
-                setTopUpCompleted(true);
-                setTopUpInfo({
-                  batchId: topUpBatchId,
-                  days: selectedDays || 0,
-                  cost: totalUsdAmount || '0',
-                  collectionName: collectionInfo.name,
-                  nftContractAddress: collectionInfo.address,
                 });
 
                 setStatusMessage({
                   step: 'Complete',
-                  message: 'Collection Extended Successfully',
+                  message: 'Batch Topped Up Successfully',
                   isSuccess: true,
                 });
               } else {
@@ -1485,11 +1449,11 @@ const SwapComponent: React.FC = () => {
     if (typeof window !== 'undefined') {
       // First check query parameters
       const url = new URL(window.location.href);
-      const stampParam = url.searchParams.get('extend');
+      const stampParam = url.searchParams.get('topup');
 
-      // Then check hash fragments (e.g., #extend=batchId)
+      // Then check hash fragments (e.g., #topup=batchId)
       const hash = window.location.hash;
-      const hashMatch = hash.match(/^#extend=([a-fA-F0-9]+)$/);
+      const hashMatch = hash.match(/^#topup=([a-fA-F0-9]+)$/);
 
       if (stampParam) {
         // Format with 0x prefix for contract call
@@ -1548,58 +1512,6 @@ const SwapComponent: React.FC = () => {
     setHasMounted(true);
   }, []);
 
-  // Helper function to fetch collection information for a stamp ID
-  const fetchCollectionInfo = async (
-    stampId: string
-  ): Promise<{ name?: string; address?: string }> => {
-    try {
-      const client = createPublicClient({
-        chain: gnosis,
-        transport: http(),
-      });
-
-      // Check if NFT contract exists for this stamp ID
-      const [hasContract, contractAddress] = (await client.readContract({
-        address: BUZZMINT_FACTORY_ADDRESS,
-        abi: BUZZMINT_FACTORY_ABI,
-        functionName: 'hasContract',
-        args: [stampId.startsWith('0x') ? stampId.slice(2) : stampId],
-      })) as [boolean, string];
-
-      if (hasContract && contractAddress !== '0x0000000000000000000000000000000000000000') {
-        // Get collection name from the NFT contract
-        try {
-          const collectionName = await client.readContract({
-            address: contractAddress as `0x${string}`,
-            abi: [
-              {
-                inputs: [],
-                name: 'name',
-                outputs: [{ internalType: 'string', name: '', type: 'string' }],
-                stateMutability: 'view',
-                type: 'function',
-              },
-            ],
-            functionName: 'name',
-          });
-
-          return {
-            name: collectionName as string,
-            address: contractAddress,
-          };
-        } catch (error) {
-          console.error('Error fetching collection name:', error);
-          return { address: contractAddress };
-        }
-      }
-
-      return {};
-    } catch (error) {
-      console.error('Error fetching collection info:', error);
-      return {};
-    }
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.betaBadge}>BETA</div>
@@ -1614,7 +1526,7 @@ const SwapComponent: React.FC = () => {
             setShowUploadHistory(false);
           }}
         >
-          {isTopUp ? 'Extend' : 'Buy'}
+          {isTopUp ? 'Top Up' : 'Buy'}
         </button>
         <button
           className={`${styles.tabButton} ${showStampList ? styles.activeTab : ''}`}
@@ -1748,7 +1660,7 @@ const SwapComponent: React.FC = () => {
               className={styles.label}
               data-tooltip="Duration of storage collections for which you are paying for"
             >
-              {isTopUp ? 'Extension duration' : 'Storage duration'}
+              {isTopUp ? 'Additional duration' : 'Storage duration'}
             </label>
             <div className={styles.buttonGroup}>
               {TIME_OPTIONS.map(option => (
@@ -1809,7 +1721,7 @@ const SwapComponent: React.FC = () => {
             ) : insufficientFunds ? (
               'Insufficient Balance'
             ) : isTopUp ? (
-              'Extend Batch'
+              'Top Up Batch'
             ) : (
               'Execute Swap'
             )}
@@ -2161,60 +2073,32 @@ const SwapComponent: React.FC = () => {
                 {topUpCompleted && (
                   <div className={styles.successMessage}>
                     <div className={styles.successIcon}>✓</div>
-                    <h3>Collection Extended Successfully!</h3>
-
-                    {/* Collection and File Info */}
-                    <div className={styles.nftDetails}>
-                      {topUpInfo?.collectionName && (
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Collection:</span>
-                          <span className={styles.detailValue}>{topUpInfo.collectionName}</span>
-                        </div>
-                      )}
-
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Collection ID:</span>
-                        <span
-                          className={styles.detailValue}
-                          style={{ fontFamily: 'monospace', cursor: 'pointer' }}
+                    <h3>Batch Topped Up Successfully!</h3>
+                    <div className={styles.referenceBox}>
+                      <p>Batch ID:</p>
+                      <div className={styles.referenceCopyWrapper}>
+                        <code
+                          className={styles.referenceCode}
                           onClick={() => {
                             navigator.clipboard.writeText(topUpInfo?.batchId || '');
-                            // Show temporary "Copied!" message
-                            const element = event?.target as HTMLElement;
-                            if (element) {
-                              const originalText = element.textContent;
-                              element.textContent = 'Copied!';
-                              element.style.color = '#4CAF50';
+                            // Show a temporary "Copied!" message
+                            const codeEl = document.querySelector(`.${styles.referenceCode}`);
+                            if (codeEl) {
+                              codeEl.setAttribute('data-copied', 'true');
                               setTimeout(() => {
-                                element.textContent = originalText;
-                                element.style.color = '';
+                                codeEl.setAttribute('data-copied', 'false');
                               }, 2000);
                             }
                           }}
-                          title="Click to copy"
+                          data-copied="false"
                         >
-                          {topUpInfo?.batchId?.slice(0, 8)}...{topUpInfo?.batchId?.slice(-4)}
-                        </span>
+                          {topUpInfo?.batchId}
+                        </code>
                       </div>
-
-                      {topUpInfo?.nftContractAddress && (
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>NFT Contract:</span>
-                          <a
-                            href={`https://gnosis.blockscout.com/address/${topUpInfo.nftContractAddress}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.contractLink}
-                          >
-                            {topUpInfo.nftContractAddress.slice(0, 6)}...
-                            {topUpInfo.nftContractAddress.slice(-4)}
-                          </a>
-                        </div>
-                      )}
                     </div>
 
                     <div className={styles.stampInfoBox}>
-                      <h4>Extension Details</h4>
+                      <h4>Top-Up Details</h4>
                       <div className={styles.stampDetails}>
                         <div className={styles.stampDetail}>
                           <span>Added Duration:</span>
