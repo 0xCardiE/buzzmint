@@ -486,26 +486,23 @@
   word-break: break-all;
   position: relative;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  background-color: transparent;
+  border-radius: 4px;
+  padding: 2px 4px;
 }
 
 .detailValue:hover {
-  overflow: visible;
-  white-space: normal;
-  word-break: break-word;
-  background-color: #2C3E50;
-  color: #FFFFFF;
-  border: 1px solid #E9ECEF;
-  border-radius: 4px;
-  padding: 4px 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  position: absolute;
-  right: 0;
-  top: 100%;
-  min-width: 200px;
-  margin-top: 2px;
-  animation: none;
+  color: #4ECDC4;
+  background-color: rgba(78, 205, 196, 0.1);
+  max-width: 200px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  box-shadow: none;
+  transform: none;
 }
 
 .contractLink {
@@ -513,12 +510,14 @@
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
 .contractLink:hover {
   color: #FF5252;
-  text-decoration: underline;
+  background-color: rgba(255, 107, 107, 0.1);
 }
 
 /* Action Links */
@@ -539,6 +538,7 @@
   transition: all 0.2s ease;
   min-width: 120px;
   text-align: center;
+  position: relative;
 }
 
 .scanLink {
@@ -548,22 +548,24 @@
 }
 
 .scanLink:hover {
-  background-color: #FF5252;
+  background-color: #FFFFFF;
   border-color: #FF5252;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
 }
 
 .viewLink {
   background-color: #FFFFFF;
-  color: #FF6B6B;
-  border: 2px solid #FF6B6B;
+  color: #4ECDC4;
+  border: 2px solid #4ECDC4;
 }
 
 .viewLink:hover {
-  background-color: #FFE6E6;
-  color: #FF5252;
-  border-color: #FF5252;
+  background-color: #4ECDC4;
+  color: #FFFFFF;
+  border-color: #45B7B8;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
 }
 
 /* Enhanced Stamp Info Box */
@@ -685,10 +687,19 @@
   }
 
   .detailValue:hover {
-    min-width: 150px;
-    position: fixed;
+    min-width: 180px;
+    max-width: 250px;
+    position: absolute;
     right: 10px;
-    top: auto;
+    top: 100%;
+    margin-top: 4px;
+    background-color: #4ECDC4;
+    color: #FFFFFF;
+    border: 1px solid #45B7B8;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.4);
+    z-index: 1000;
   }
 
   .stampInfoBox {
@@ -711,6 +722,32 @@
   .remainingValue,
   .expiryValue {
     font-size: 13px !important;
+  }
+
+  .contractLink:hover {
+    background-color: #FF6B6B;
+    color: #FFFFFF;
+  }
+
+  .actionLinks {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .scanLink,
+  .viewLink {
+    min-width: auto;
+  }
+
+  .scanLink:hover {
+    background-color: #FF5252;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+  }
+
+  .viewLink:hover {
+    background-color: #4ECDC4;
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(78, 205, 196, 0.4);
   }
 }
 
@@ -1703,6 +1740,37 @@
 .promptInput:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* AI Error Message */
+.aiErrorMessage {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 6px;
+  color: #FF6B6B;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: slideDown 0.2s ease-out;
+}
+
+.errorIcon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .generateButton {

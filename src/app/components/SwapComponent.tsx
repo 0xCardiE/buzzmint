@@ -197,6 +197,7 @@ const SwapComponent: React.FC = () => {
   const [aiPrompt, setAiPrompt] = useState<string>('');
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>('');
+  const [aiGenerationError, setAiGenerationError] = useState<string>('');
 
   // Watch for changes to custom RPC URL settings and update global setting
   useEffect(() => {
@@ -271,25 +272,16 @@ const SwapComponent: React.FC = () => {
 
   // Handle AI image generation
   const handleAiGeneration = async () => {
+    // Clear any previous errors
+    setAiGenerationError('');
+
     if (!aiPrompt.trim()) {
-      setStatusMessage({
-        step: 'Error',
-        message: 'AI Generation Failed',
-        error: 'Please enter a prompt for AI image generation',
-        isError: true,
-      });
-      setShowOverlay(true);
+      setAiGenerationError('Please enter a prompt for AI image generation');
       return;
     }
 
     if (!openAiApiKey) {
-      setStatusMessage({
-        step: 'Error',
-        message: 'AI Generation Failed',
-        error: 'Please configure your OpenAI API key in Settings first',
-        isError: true,
-      });
-      setShowOverlay(true);
+      setAiGenerationError('Please configure your OpenAI API key in Settings first');
       return;
     }
 
@@ -309,19 +301,34 @@ const SwapComponent: React.FC = () => {
 
       // Ensure upload step is ready so the upload button becomes enabled
       setUploadStep('ready');
+
+      // Clear any previous errors on success
+      setAiGenerationError('');
     } catch (error) {
       console.error('AI generation error:', error);
 
-      // Show user-friendly error message in overlay
-      setStatusMessage({
-        step: 'Error',
-        message: 'AI Image Generation Failed',
-        error:
-          'Unable to generate image. This could be due to network issues or API limitations. Please try again with a different prompt or check your internet connection.',
-        isError: true,
-      });
-      setShowOverlay(true);
-      setIsLoading(false);
+      // Extract meaningful error message
+      let errorMessage = 'Unable to generate image. Please try again with a different prompt.';
+
+      if (error instanceof Error) {
+        if (error.message.includes('400')) {
+          errorMessage =
+            "Content not allowed. Please try a different prompt that follows OpenAI's usage policies.";
+        } else if (error.message.includes('401')) {
+          errorMessage = 'Invalid API key. Please check your OpenAI API key in Settings.';
+        } else if (error.message.includes('429')) {
+          errorMessage = 'Rate limit exceeded. Please wait a moment and try again.';
+        } else if (error.message.includes('500')) {
+          errorMessage = 'OpenAI service is temporarily unavailable. Please try again later.';
+        } else if (
+          error.message.toLowerCase().includes('network') ||
+          error.message.toLowerCase().includes('fetch')
+        ) {
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+        }
+      }
+
+      setAiGenerationError(errorMessage);
     } finally {
       setIsGeneratingImage(false);
     }
@@ -2317,12 +2324,24 @@ const SwapComponent: React.FC = () => {
                             <div className={styles.promptInputWrapper}>
                               <textarea
                                 value={aiPrompt}
-                                onChange={e => setAiPrompt(e.target.value)}
+                                onChange={e => {
+                                  setAiPrompt(e.target.value);
+                                  // Clear any previous errors when user starts typing
+                                  if (aiGenerationError) {
+                                    setAiGenerationError('');
+                                  }
+                                }}
                                 placeholder="Describe the image you want to generate..."
                                 className={styles.promptInput}
                                 disabled={isGeneratingImage || uploadStep === 'uploading'}
                                 rows={3}
                               />
+                              {aiGenerationError && (
+                                <div className={styles.aiErrorMessage}>
+                                  <span className={styles.errorIcon}>⚠️</span>
+                                  <span>{aiGenerationError}</span>
+                                </div>
+                              )}
                             </div>
 
                             {generatedImageUrl && (
@@ -2513,10 +2532,10 @@ const SwapComponent: React.FC = () => {
                       )}
                     </div>
 
-                    {/* Storage Collection Details */}
+                    {/* Collection Storage Details */}
                     {uploadStampInfo && (
                       <div className={styles.stampInfoBox}>
-                        <h4>Storage Collection Details</h4>
+                        <h4>Collection Storage Details</h4>
                         <div className={styles.stampDetails}>
                           <div className={styles.stampDetail}>
                             <span>Size:</span>
