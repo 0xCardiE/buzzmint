@@ -168,6 +168,9 @@ const SwapComponent: React.FC = () => {
   // Add state for transition loading
   const [isTransitionLoading, setIsTransitionLoading] = useState(false);
 
+  // Add state for collection-to-upload transition loading
+  const [isUploadTransitionLoading, setIsUploadTransitionLoading] = useState(false);
+
   // Add a ref to track the current wallet client
   const currentWalletClientRef = useRef(walletClient);
 
@@ -1450,7 +1453,7 @@ const SwapComponent: React.FC = () => {
         nftContractAddress: nftContractAddress as string,
         collectionName,
         collectionSymbol,
-        stampId: batchId,
+        stampId: stampId,
       });
 
       // Reset form state
@@ -1458,16 +1461,24 @@ const SwapComponent: React.FC = () => {
       setCollectionSymbol('');
       setCreatedStorageInfo(null);
 
-      // After a brief delay, transition to upload mode but keep overlay open
+      // Start upload transition loading immediately after success message
       setTimeout(() => {
-        setUploadStep('ready');
-        // Set the postage batch ID for upload
-        setPostageBatchId(stampId);
-        // Clear the success message to show upload interface
-        setStatusMessage({ step: '', message: '' });
-        setIsLoading(false);
-        // Keep overlay open for upload (don't call setShowOverlay(false))
-      }, 3000);
+        setIsUploadTransitionLoading(true);
+
+        // After a brief delay, show upload interface
+        setTimeout(() => {
+          setIsUploadTransitionLoading(false);
+          setUploadStep('ready');
+          // Set the postage batch ID for upload
+          setPostageBatchId(stampId);
+          // This is the first NFT upload for a new collection
+          setIsFirstNftUpload(true);
+          // Clear the success message and loading state
+          setStatusMessage({ step: '', message: '' });
+          setIsLoading(false);
+          // Keep overlay open for upload (don't call setShowOverlay(false))
+        }, 1500);
+      }, 1500);
     } catch (error) {
       console.error('Collection creation error:', error);
       setStatusMessage({
@@ -1663,16 +1674,23 @@ const SwapComponent: React.FC = () => {
 
       // After a brief delay, transition to upload mode but keep overlay open
       setTimeout(() => {
-        setUploadStep('ready');
-        // Set the postage batch ID for upload
-        setPostageBatchId(stampId);
-        // This is the first NFT upload for a new collection
-        setIsFirstNftUpload(true);
-        // Clear the success message to show upload interface
-        setStatusMessage({ step: '', message: '' });
-        setIsLoading(false);
-        // Keep overlay open for upload (don't call setShowOverlay(false))
-      }, 3000);
+        // Start upload transition loading immediately
+        setIsUploadTransitionLoading(true);
+
+        // After another brief delay, show upload interface
+        setTimeout(() => {
+          setIsUploadTransitionLoading(false);
+          setUploadStep('ready');
+          // Set the postage batch ID for upload
+          setPostageBatchId(stampId);
+          // This is the first NFT upload for a new collection
+          setIsFirstNftUpload(true);
+          // Clear the success message and loading state
+          setStatusMessage({ step: '', message: '' });
+          setIsLoading(false);
+          // Keep overlay open for upload (don't call setShowOverlay(false))
+        }, 1500);
+      }, 2000);
     } catch (error) {
       console.error('Collection creation error:', error);
       setStatusMessage({
@@ -2526,6 +2544,21 @@ const SwapComponent: React.FC = () => {
               <h3 className={styles.transitionTitle}>Preparing Your NFT Collection</h3>
               <p className={styles.transitionMessage}>
                 Your storage is ready! Setting up the collection creation form...
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Upload Transition Loading Overlay */}
+      {isUploadTransitionLoading && (
+        <div className={styles.overlay}>
+          <div className={`${styles.statusBox} ${styles.largeStatusBox}`}>
+            <div className={styles.transitionLoading}>
+              <div className={styles.spinner}></div>
+              <h3 className={styles.transitionTitle}>Preparing for Upload</h3>
+              <p className={styles.transitionMessage}>
+                Your NFT collection is ready! Setting up the upload interface...
               </p>
             </div>
           </div>
